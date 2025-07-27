@@ -326,26 +326,48 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // --- Anne Image System with Mood-Based Switching ---
-    function changeAnneImage(mood, withTransition = true) {
-        if (anneImages[mood]) {
-            currentMood = mood;
+    function changeAnneImage(personalityKey, withTransition = true) {
+        const personality = PERSONALITIES[personalityKey];
+        if (personality) {
+            currentMood = personalityKey;
 
             if (withTransition) {
                 anneMainImg.style.transform = 'scale(0.95) translateY(10px)';
                 anneMainImg.style.opacity = '0.8';
 
                 setTimeout(() => {
-                    anneMainImg.src = anneImages[mood];
+                    anneMainImg.src = personality.image;
                     anneMainImg.style.transform = 'scale(1) translateY(0)';
                     anneMainImg.style.opacity = '1';
-                    updateMoodRing(mood);
+                    updateMoodRing(personalityKey);
+                    updatePersonalityAvatar(personalityKey);
                     createHeartParticles();
+                    // Play personality audio
+                    playPersonalityAudio(personalityKey);
                 }, 300);
             } else {
-                anneMainImg.src = anneImages[mood];
-                anneMainImg.style.opacity = '1'; // Ensure opacity is restored
-                updateMoodRing(mood);
+                anneMainImg.src = personality.image;
+                anneMainImg.style.opacity = '1';
+                updateMoodRing(personalityKey);
+                updatePersonalityAvatar(personalityKey);
+                playPersonalityAudio(personalityKey);
             }
+        }
+    }
+
+    function updatePersonalityAvatar(personalityKey) {
+        const personality = PERSONALITIES[personalityKey];
+        if (personality && avatarImg && avatarLabel && avatarRing) {
+            avatarImg.src = personality.image;
+            avatarLabel.textContent = personality.name;
+
+            // Update ring color class
+            avatarRing.className = `avatar-pulse-ring ${personalityKey}`;
+
+            // Update ring and label colors
+            avatarRing.style.borderColor = personality.glow;
+            avatarLabel.style.color = personality.glow;
+            avatarLabel.style.textShadow = `0 0 10px ${personality.glow}`;
         }
     }
 
@@ -974,7 +996,7 @@ Anne:`,
     const negativeWords = ['sad', 'angry', 'hate', 'terrible', 'bad', 'awful'];
 
     const positiveVideos = [
-        '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴��保持微笑.mp4',
+        '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
         '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的左右摇晃.mp4',
         '视频资源/生成加油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
