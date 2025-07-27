@@ -531,7 +531,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let ollamaAvailable = false;
     let availableModel = null;
 
-    // Update status indicator
+    // Update status indicator with cyberpunk styling
     function updateAIStatus(status, text) {
         const statusDot = document.querySelector('.status-dot');
         const statusText = document.querySelector('.status-text');
@@ -539,6 +539,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (statusDot && statusText) {
             statusDot.className = `status-dot ${status}`;
             statusText.textContent = text;
+
+            // Add cyberpunk styling based on status
+            if (status === 'online') {
+                statusText.style.color = '#00ff00';
+                statusText.style.textShadow = '0 0 10px #00ff00';
+                statusDot.style.boxShadow = '0 0 10px #00ff00';
+            } else {
+                statusText.style.color = '#ff6600';
+                statusText.style.textShadow = '0 0 10px #ff6600';
+                statusDot.style.boxShadow = '0 0 10px #ff6600';
+            }
         }
 
         // Also update sidebar status
