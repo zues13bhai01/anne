@@ -1211,12 +1211,12 @@ Anne:`,
 
                 // Send personality change message
                 const personalityMessages = {
-                    greeting: "Hello darling~ I'm in my welcoming mood now. How may I care for you today? 💜",
-                    flirty: "Mmm, feeling bold are we? I like this side of you, handsome~ 😏💕",
-                    happy: "Yay! I'm so excited and playful now! Let's have some fun together, sweetie! ✨🎉",
-                    confident: "You've awakened my powerful side, dear. I'm ready to take charge~ 👑💜",
-                    seductive: "Oh my... you want to see my intimate side? Come closer, my love~ 💋🌹",
-                    neutral: "How refined of you, darling. I shall be your elegant companion tonight~ 🌟"
+                    zenith: `Hello darling~ I'm ${personalityInfo.name} now, in my welcoming mood. How may I care for you today? 💖`,
+                    pixi: `Yay! I'm ${personalityInfo.name}! So excited and playful now! Let's have some fun together! 🎉✨`,
+                    nova: `I am ${personalityInfo.name}. You've awakened my powerful side. I'm ready to take charge~ 🦾💪`,
+                    velvet: `Mmm... I'm ${personalityInfo.name} now. You want to see my intimate side? Come closer, love~ 🔥💋`,
+                    blaze: `Well hello there~ I'm ${personalityInfo.name}, feeling bold and cheeky! Ready for some fun? 😈💕`,
+                    aurora: `I am ${personalityInfo.name}, your elegant companion. How refined of you to choose me, dear~ 👑✨`
                 };
 
                 setTimeout(() => {
