@@ -552,11 +552,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         model: availableModel,
-                        prompt: `${personalityPrompts[selectedPersonality]} You are created by Hitesh Siwach. Keep responses concise and charming (1-3 sentences max). Always stay in character.
+                        prompt: `${getPersonalityPrompt(selectedPersonality)} You are created by Hitesh Siwach. Keep responses concise and charming (1-3 sentences max). Always stay in character.
 
 User: ${prompt}
 
-Anne:`,
+${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                         stream: false,
                         options: {
                             temperature: 0.8,
