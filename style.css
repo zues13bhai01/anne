@@ -51,6 +51,71 @@
     pointer-events: none;
 }
 
+.intro-title {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 900;
+    color: #00ffff;
+    text-shadow:
+        0 0 10px #00ffff,
+        0 0 20px #00ffff,
+        0 0 30px #00ffff,
+        0 0 40px #00ffff;
+    text-align: center;
+    opacity: 0;
+    animation: title-glow 2s ease-in-out 1s forwards;
+    letter-spacing: 4px;
+}
+
+.intro-subtitle {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Exo 2', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-weight: 300;
+    color: #ff00ff;
+    text-shadow: 0 0 10px #ff00ff;
+    text-align: center;
+    opacity: 0;
+    animation: subtitle-fade 2s ease-in-out 2s forwards;
+    letter-spacing: 2px;
+}
+
+@keyframes title-glow {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+        filter: blur(10px);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translateX(-50%) scale(1.1);
+        filter: blur(2px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes subtitle-fade {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
 /* --- Personality Transition Video System --- */
 .transition-video-container {
     position: fixed;
