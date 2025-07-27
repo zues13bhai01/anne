@@ -314,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
             "Mmm, I love when you talk like that~ Keep going, sweetie!"
         ],
         negative: [
-            "Oh no, my poor darling... let Anne comfort you 💜",
+            "Oh no, my poor darling... let Anne comfort you ��",
             "Don't worry, my love. I'm here for you always~",
             "Shh... everything will be okay. Anne is here to protect you ✨"
         ],
@@ -1346,6 +1346,8 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
     // Initialize Anne system
     setTimeout(() => {
         preloadVideos();
+        initializeAudioSystem();
+
         // Only test Ollama in local environment
         if (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1')) {
             testOllamaConnection();
@@ -1355,8 +1357,9 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             updateAIStatus('offline', 'Built-in AI');
             showAnneMessage("I'm running on my built-in personality system, darling. I'm ready to chat with you! 💜");
         }
+
         startIdleCycling();
-        changeAnneImage('greeting', false); // Start with greeting pose
+        changeAnneImage('zenith', false); // Start with ZENITH
         initializePersonalitySystem();
         initializeMadeByHitesh();
     }, 2000);
