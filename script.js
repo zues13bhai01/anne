@@ -1063,8 +1063,14 @@ Anne:`,
             this.style.transform = 'scale(0.9) rotate(360deg)';
             setTimeout(() => {
                 this.style.transform = '';
-                testOllamaConnection();
-                showAnneMessage("Trying to reconnect my advanced neural networks, darling~ 💜");
+
+                // Only attempt reconnection in local environment
+                if (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1')) {
+                    testOllamaConnection();
+                    showAnneMessage("Trying to reconnect my advanced neural networks, darling~ 💜");
+                } else {
+                    showAnneMessage("I'm running in cloud mode, my love. Advanced AI features need a local Ollama installation! 💜");
+                }
             }, 300);
         });
 
