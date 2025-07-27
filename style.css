@@ -32,6 +32,8 @@
     border-radius: 20px;
     box-shadow: 0 0 50px rgba(255, 0, 255, 0.5);
     filter: drop-shadow(0 0 30px rgba(0, 255, 255, 0.3));
+    /* Attempt to make black backgrounds transparent */
+    mix-blend-mode: screen;
 }
 
 .intro-video-overlay {
