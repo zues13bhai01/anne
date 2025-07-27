@@ -907,51 +907,16 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         showAnneMessage("Your browser doesn't support voice recognition, darling. You can still type to me! 💜");
     }
 
-    // --- Microphone Interaction ---
+    // --- Microphone Interaction (Disabled - Replaced with Audio Toggle) ---
     let isListening = false;
     let recognitionActive = false;
 
-    micButton.addEventListener('click', function() {
-        if (!SpeechRecognition) {
-            showAnneMessage("Voice recognition isn't supported in your browser, darling. Please type to me instead! 💜");
-            return;
-        }
-
-        isListening = !isListening;
-        micButton.classList.toggle('is-listening', isListening);
-        const transcriptContainer = document.querySelector('.transcript-container');
-        const transcriptText = document.getElementById('transcript');
-
-        if (isListening) {
-            transcriptText.textContent = 'Listening for your voice, darling...';
-            transcriptContainer.classList.add('visible');
-
-            // Only start if not already active
-            if (!recognitionActive) {
-                try {
-                    recognition.start();
-                    recognitionActive = true;
-                    showAnneMessage("I'm listening, my love. Speak to me~ 💜");
-                } catch (error) {
-                    console.error('Failed to start speech recognition:', error);
-                    isListening = false;
-                    micButton.classList.remove('is-listening');
-                    transcriptContainer.classList.remove('visible');
-                    showAnneMessage("I'm having trouble with voice recognition, darling. Please try typing instead! 💔");
-                }
-            }
-        } else {
-            if (recognitionActive) {
-                try {
-                    recognition.stop();
-                } catch (error) {
-                    console.error('Failed to stop speech recognition:', error);
-                }
-            }
-            transcriptContainer.classList.remove('visible');
-            transcriptText.textContent = '';
-        }
-    });
+    // Mic button removed - functionality replaced with audio toggle
+    if (micButton) {
+        micButton.addEventListener('click', function() {
+            showAnneMessage("Voice input has been replaced with our new audio experience! Use the audio toggle button in the top-right corner~ 💜");
+        });
+    }
 
     // --- Floating Menu Interactions ---
     floatingButton.addEventListener('click', (event) => {
