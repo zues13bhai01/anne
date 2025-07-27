@@ -285,6 +285,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Test Ollama connection and find available model
     async function testOllamaConnection() {
+        // Skip Ollama testing in cloud environment
+        if (window.location.hostname !== 'localhost' && !window.location.hostname.includes('127.0.0.1')) {
+            ollamaAvailable = false;
+            updateAIStatus('offline', 'Built-in AI');
+            console.log('Cloud environment detected - skipping Ollama connection test');
+            return false;
+        }
+
         updateAIStatus('', 'Testing...');
 
         const models = ['llama3.2', 'llama3.1', 'llama3', 'llama2', 'mistral', 'codellama', 'qwen', 'phi', 'gemma'];
@@ -627,7 +635,7 @@ Anne:`,
         } catch (error) {
             console.error('Microphone permission denied:', error);
             hasVoicePermission = false;
-            showAnneMessage("I need microphone permission to hear you, my love. Please allow access in your browser settings. 💔");
+            showAnneMessage("I need microphone permission to hear you, my love. Please allow access in your browser settings. ��");
             return false;
         }
     }
@@ -749,7 +757,7 @@ Anne:`,
                 showAnneMessage(`Look at me pose for you, darling~ Do you like what you see? 💜`);
             } else if (action.includes('cheer')) {
                 changeAnneImage('happy', true);
-                showAnneMessage(`Yay! I'm so excited to cheer you up, my love! ��`);
+                showAnneMessage(`Yay! I'm so excited to cheer you up, my love! ✨`);
             } else if (action.includes('dance')) {
                 changeAnneImage('flirty', true);
                 showAnneMessage(`Watch me move for you, sweetheart~ 💃💕`);
