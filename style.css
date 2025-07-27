@@ -816,8 +816,11 @@ html, body {
 }
 
 .reconnect-btn:hover {
-    transform: scale(1.1) rotate(180deg);
-    box-shadow: 0 0 15px rgba(255, 0, 255, 0.6);
+    transform: scale(1.2) rotate(180deg);
+    box-shadow:
+        0 0 25px rgba(255, 0, 255, 0.8),
+        0 0 35px rgba(0, 255, 255, 0.6);
+    border-color: #ff00ff;
 }
 
 .reconnect-btn i {
