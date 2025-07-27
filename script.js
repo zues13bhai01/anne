@@ -369,6 +369,22 @@ document.addEventListener('DOMContentLoaded', function() {
             avatarLabel.style.color = personality.glow;
             avatarLabel.style.textShadow = `0 0 10px ${personality.glow}`;
         }
+
+        // Update sidebar selected personality display
+        updateSidebarPersonalityDisplay(personalityKey);
+    }
+
+    function updateSidebarPersonalityDisplay(personalityKey) {
+        const personality = PERSONALITIES[personalityKey];
+        if (!personality) return;
+
+        const selectedImg = document.getElementById('selected-personality-img');
+        const selectedLabel = document.getElementById('selected-label');
+        const selectedDesc = document.getElementById('selected-desc');
+
+        if (selectedImg) selectedImg.src = personality.image;
+        if (selectedLabel) selectedLabel.textContent = personality.name;
+        if (selectedDesc) selectedDesc.textContent = `${personality.emoji} ${personality.displayName}`;
     }
 
     function updateMoodRing(mood) {
@@ -1067,7 +1083,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                     // Auto-process recognized text
                     if (output.text) {
                         chatInput.value = output.text;
-                        showAnneMessage("I heard you, my love. Let me respond to that~ 💕");
+                        showAnneMessage("I heard you, my love. Let me respond to that~ ���");
                     }
                 } catch(e) {
                     console.error('Audio processing failed:', e);
