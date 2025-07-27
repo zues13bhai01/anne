@@ -719,9 +719,13 @@ Anne:`,
 
     // --- Microphone Interaction ---
     let isListening = false;
+    let recognitionActive = false;
 
     micButton.addEventListener('click', function() {
-        if (!SpeechRecognition) return;
+        if (!SpeechRecognition) {
+            showAnneMessage("Voice recognition isn't supported in your browser, darling. Please type to me instead! 💜");
+            return;
+        }
 
         isListening = !isListening;
         micButton.classList.toggle('is-listening', isListening);
@@ -731,10 +735,29 @@ Anne:`,
         if (isListening) {
             transcriptText.textContent = 'Listening for your voice, darling...';
             transcriptContainer.classList.add('visible');
-            recognition.start();
-            showAnneMessage("I'm listening, my love. Speak to me~ 💜");
+
+            // Only start if not already active
+            if (!recognitionActive) {
+                try {
+                    recognition.start();
+                    recognitionActive = true;
+                    showAnneMessage("I'm listening, my love. Speak to me~ 💜");
+                } catch (error) {
+                    console.error('Failed to start speech recognition:', error);
+                    isListening = false;
+                    micButton.classList.remove('is-listening');
+                    transcriptContainer.classList.remove('visible');
+                    showAnneMessage("I'm having trouble with voice recognition, darling. Please try typing instead! 💔");
+                }
+            }
         } else {
-            recognition.stop();
+            if (recognitionActive) {
+                try {
+                    recognition.stop();
+                } catch (error) {
+                    console.error('Failed to stop speech recognition:', error);
+                }
+            }
             transcriptContainer.classList.remove('visible');
             transcriptText.textContent = '';
         }
