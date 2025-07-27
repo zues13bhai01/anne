@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anne System Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 10px;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .success { background: #004d00; }
+        .error { background: #4d0000; }
+        .warning { background: #4d4d00; }
+        button {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #ff1493;
+        }
+    </style>
+</head>
+<body>
+    <h1>🤖 Anne System Test Page</h1>
+    
+    <div class="test-section">
+        <h3>🧪 System Status</h3>
+        <div id="system-status"></div>
+        <button onclick="testSystems()">Test All Systems</button>
+    </div>
+
+    <div class="test-section">
+        <h3>🤖 Ollama Test</h3>
+        <div id="ollama-status"></div>
+        <button onclick="testOllama()">Test Ollama Connection</button>
+        <button onclick="testOllamaGeneration()">Test Ollama Generation</button>
+    </div>
+
+    <div class="test-section">
+        <h3>🎤 Voice Test</h3>
+        <div id="voice-status"></div>
+        <button onclick="testVoice()">Test Voice Recognition</button>
+        <button onclick="testTTS()">Test Text-to-Speech</button>
+    </div>
+
+    <div class="test-section">
+        <h3>✨ Animation Test</h3>
+        <div id="animation-container"></div>
+        <button onclick="testAnimations()">Test Text Animations</button>
+    </div>
+
+    <script>
+        // Test functions
+        async function testSystems() {
+            const statusDiv = document.getElementById('system-status');
+            statusDiv.innerHTML = 'Testing systems...';
+            
+            try {
+                // Check if Anne systems are loaded
+                const results = {
+                    textAnimations: typeof window.AnneTextAnimations !== 'undefined',
+                    ollama: typeof window.AnneOllama !== 'undefined',
+                    mainController: typeof window.AnneMainController !== 'undefined',
+                    speechRecognition: 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window,
+                    speechSynthesis: 'speechSynthesis' in window
+                };
+
+                let html = '<h4>System Check Results:</h4>';
+                for (const [system, status] of Object.entries(results)) {
+                    const className = status ? 'success' : 'error';
+                    const statusText = status ? '✅ Available' : '❌ Not Available';
+                    html += `<div class="test-result ${className}">${system}: ${statusText}</div>`;
+                }
+
+                // Test Ollama connectivity
+                if (window.AnneOllama) {
+                    const ollamaStatus = window.AnneOllama.getStatus();
+                    const ollamaClass = ollamaStatus.connected ? 'success' : 'warning';
+                    const ollamaText = ollamaStatus.connected ? '✅ Connected' : '⚠️ Offline (Fallback Mode)';
+                    html += `<div class="test-result ${ollamaClass}">Ollama Status: ${ollamaText}</div>`;
+                    html += `<div class="test-result">Current Model: ${ollamaStatus.currentModel}</div>`;
+                }
+
+                statusDiv.innerHTML = html;
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="test-result error">Error: ${error.message}</div>`;
+            }
+        }
+
+        async function testOllama() {
+            const statusDiv = document.getElementById('ollama-status');
+            statusDiv.innerHTML = 'Testing Ollama connection...';
+
+            try {
+                // Add timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+                const response = await fetch('http://localhost:11434/api/tags', {
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.innerHTML = `
+                        <div class="test-result success">✅ Ollama Connected</div>
+                        <div class="test-result">Available models: ${data.models?.length || 0}</div>
+                    `;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                let errorMessage = 'Ollama not available';
+
+                if (error.name === 'AbortError') {
+                    errorMessage = 'Connection timeout (server not responding)';
+                } else if (error.message.includes('Failed to fetch')) {
+                    errorMessage = 'Server not running at localhost:11434';
+                } else {
+                    errorMessage = error.message;
+                }
+
+                statusDiv.innerHTML = `<div class="test-result warning">⚠️ ${errorMessage}</div>`;
+            }
+        }
+
+        async function testOllamaGeneration() {
+            const statusDiv = document.getElementById('ollama-status');
+            statusDiv.innerHTML = 'Testing Ollama generation...';
+            
+            try {
+                const response = await fetch('http://localhost:11434/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        model: 'llama3',
+                        prompt: 'Hello! Please respond with just "Hi there!" to test the connection.',
+                        stream: false,
+                        options: { num_predict: 10 }
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.innerHTML = `
+                        <div class="test-result success">✅ Generation successful</div>
+                        <div class="test-result">Response: "${data.response}"</div>
+                    `;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="test-result error">❌ Generation failed: ${error.message}</div>`;
+            }
+        }
+
+        function testVoice() {
+            const statusDiv = document.getElementById('voice-status');
+            
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                statusDiv.innerHTML = '<div class="test-result success">✅ Speech Recognition Available</div>';
+                
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    statusDiv.innerHTML += `<div class="test-result success">Heard: "${transcript}"</div>`;
+                };
+                
+                recognition.onerror = function(event) {
+                    statusDiv.innerHTML += `<div class="test-result error">Error: ${event.error}</div>`;
+                };
+                
+                recognition.start();
+                statusDiv.innerHTML += '<div class="test-result">🎤 Listening... Say something!</div>';
+            } else {
+                statusDiv.innerHTML = '<div class="test-result error">❌ Speech Recognition not supported</div>';
+            }
+        }
+
+        function testTTS() {
+            const statusDiv = document.getElementById('voice-status');
+
+            if (window.AnneElevenLabsTTS) {
+                const ttsStatus = window.AnneElevenLabsTTS.getStatus();
+                let html = '<h4>TTS System Status:</h4>';
+
+                if (ttsStatus.apiKeyValid) {
+                    html += '<div class="test-result success">✅ ElevenLabs API Available</div>';
+                } else {
+                    html += '<div class="test-result warning">⚠️ ElevenLabs API Unavailable (Using Web Speech Fallback)</div>';
+                }
+
+                html += `<div class="test-result">Current Voice: ${ttsStatus.currentVoice}</div>`;
+                html += `<div class="test-result">Queue Length: ${ttsStatus.queueLength}</div>`;
+
+                statusDiv.innerHTML += html;
+
+                // Test speaking
+                window.AnneElevenLabsTTS.speak('Hello! This is Anne speaking. TTS system test!', 'sweet', 'happy');
+                statusDiv.innerHTML += '<div class="test-result success">🔊 Playing test message</div>';
+
+            } else if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance('Hello! This is Anne speaking. Web Speech API fallback test!');
+                utterance.pitch = 1.2;
+                utterance.rate = 0.9;
+                speechSynthesis.speak(utterance);
+
+                statusDiv.innerHTML += '<div class="test-result warning">⚠️ Using Web Speech API fallback</div>';
+            } else {
+                statusDiv.innerHTML += '<div class="test-result error">❌ No speech synthesis available</div>';
+            }
+        }
+
+        function testAnimations() {
+            const container = document.getElementById('animation-container');
+            container.innerHTML = '';
+            
+            if (window.AnneTextAnimations) {
+                const animations = [
+                    { type: 'slideIn', text: 'Hi, I\'m Anne! 💕', delay: 0 },
+                    { type: 'fadeInUp', text: 'Made with ❤️ by Hitesh', delay: 1000 },
+                    { type: 'wavyText', text: 'Beautiful animations!', delay: 2000 }
+                ];
+                
+                animations.forEach(async (anim, index) => {
+                    setTimeout(async () => {
+                        const div = document.createElement('div');
+                        div.style.margin = '10px 0';
+                        container.appendChild(div);
+                        await window.AnneTextAnimations[anim.type](anim.text, div);
+                    }, anim.delay);
+                });
+                
+                // Test typewriter
+                setTimeout(async () => {
+                    const div = document.createElement('div');
+                    div.style.margin = '10px 0';
+                    container.appendChild(div);
+                    await window.AnneTextAnimations.typewriter('Testing typewriter effect...', div, 50);
+                }, 3500);
+                
+            } else {
+                container.innerHTML = '<div class="test-result error">❌ Text Animations not loaded</div>';
+            }
+        }
+
+        // Auto-run basic tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(testSystems, 500);
+        });
+    </script>
+
+    <!-- Load Anne systems -->
+    <script type="module" src="js/anne-text-animations.js"></script>
+    <script type="module" src="js/anne-ollama-connector.js"></script>
+    <script type="module" src="js/anne-elevenlabs-tts.js"></script>
+    <script type="module" src="js/anne-main-controller.js"></script>
+</body>
+</html>

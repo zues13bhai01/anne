@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anne - AI Waifu Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入 Font Awesome 图标库，用于麦克风图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- 加载屏幕 -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="anne-portrait">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800" alt="Anne Portrait" class="loading-anne-img">
+                <div class="loading-glow"></div>
+            </div>
+            <div class="anne-logo">ANNE</div>
+            <div class="loading-text">Hi, I'm Anne — built with love, powered by Ollama, designed by Hitesh 💜</div>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Cinematic Video Background -->
+    <div class="video-background-container">
+        <video class="cinematic-video" id="cinematic-video" autoplay muted loop playsinline preload="auto">
+            <source src="https://cdn.builder.io/o/assets%2Ffa667d61b04349a1b5f967185269a859%2F72d38cc9d9e64117a9b6c3498ffbfdef?alt=media&token=1a867bde-328c-4e1a-96f2-614778f8f639&apiKey=fa667d61b04349a1b5f967185269a859" type="video/mp4">
+            <!-- WebM fallback for better compatibility -->
+            <source src="https://cdn.builder.io/o/assets%2Ffa667d61b04349a1b5f967185269a859%2F72d38cc9d9e64117a9b6c3498ffbfdef?alt=media&token=1a867bde-328c-4e1a-96f2-614778f8f639&apiKey=fa667d61b04349a1b5f967185269a859" type="video/webm">
+        </video>
+        <div class="video-glow-overlay"></div>
+    </div>
+
+    <!-- Anne Background -->
+    <div class="anne-container">
+        <div class="anne-background">
+            <div class="mood-ring" id="mood-ring"></div>
+            <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800" alt="Anne" class="anne-main-img" id="anne-main-img">
+            <div class="anne-particles" id="anne-particles"></div>
+        </div>
+    </div>
+
+    <!-- Anne Personality Sidebar -->
+    <div class="personality-sidebar" id="personality-sidebar">
+        <div class="sidebar-header">
+            <h3>ANNE'S PERSONALITIES</h3>
+            <div class="ai-status-panel">
+                <div class="status-indicator" id="sidebar-status">
+                    <span class="status-dot" id="sidebar-status-dot"></span>
+                    <span class="status-text" id="sidebar-status-text">Initializing...</span>
+                </div>
+                <button class="reconnect-btn" id="reconnect-btn" title="Reconnect to Ollama">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Enhanced Selection Display -->
+        <div class="selected-personality-display" id="selected-personality-display">
+            <div class="selected-image-container">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800" alt="Selected Anne" class="selected-personality-img" id="selected-personality-img">
+                <div class="selection-glow-ring"></div>
+                <div class="selection-particles"></div>
+            </div>
+            <div class="selected-personality-info">
+                <div class="selected-label" id="selected-label">WELCOMING</div>
+                <div class="selected-desc" id="selected-desc">Sweet & Caring</div>
+            </div>
+        </div>
+
+        <div class="personality-grid">
+            <div class="personality-card active" data-personality="greeting">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800" alt="Greeting Anne">
+                <div class="personality-label">WELCOMING</div>
+                <div class="personality-desc">Sweet & Caring</div>
+                <div class="card-glow-effect"></div>
+            </div>
+
+            <div class="personality-card" data-personality="flirty">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F005a15af210d4f08a16c100cfa44824c?format=webp&width=800" alt="Flirty Anne">
+                <div class="personality-label">FLIRTY</div>
+                <div class="personality-desc">Bold & Teasing</div>
+                <div class="card-glow-effect"></div>
+            </div>
+
+            <div class="personality-card" data-personality="happy">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Fe68ae80624f34ce3a4387915b9605722?format=webp&width=800" alt="Happy Anne">
+                <div class="personality-label">PLAYFUL</div>
+                <div class="personality-desc">Excited & Fun</div>
+                <div class="card-glow-effect"></div>
+            </div>
+
+            <div class="personality-card" data-personality="confident">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F417a7d864e7b4d43a753589d6c319df0?format=webp&width=800" alt="Confident Anne">
+                <div class="personality-label">CONFIDENT</div>
+                <div class="personality-desc">Strong & Powerful</div>
+                <div class="card-glow-effect"></div>
+            </div>
+
+            <div class="personality-card" data-personality="seductive">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F1077ea0a19484cf2b28f3136a22ce91c?format=webp&width=800" alt="Seductive Anne">
+                <div class="personality-label">SEDUCTIVE</div>
+                <div class="personality-desc">Intimate & Sensual</div>
+                <div class="card-glow-effect"></div>
+            </div>
+
+            <div class="personality-card" data-personality="neutral">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F060d04d5760e4253930d2417bc9e0db0?format=webp&width=800" alt="Neutral Anne">
+                <div class="personality-label">ELEGANT</div>
+                <div class="personality-desc">Classy & Refined</div>
+                <div class="card-glow-effect"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 内容层，覆盖在视频之上 -->
+    <div class="content-overlay">
+
+        <!-- 顶部好感度条 -->
+        <header class="top-bar">
+            <div class="status-row">
+                <label for="favorability-bar">NEURAL SYNC</label>
+                <div class="ai-status" id="ai-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Initializing...</span>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-fill" id="favorability-bar"></div>
+            </div>
+        </header>
+
+        <!-- 语音识别结果显示区域 -->
+        <div class="transcript-container">
+            <p id="transcript"></p>
+        </div>
+
+        <!-- 情感分析测试区域 -->
+        <div class="sentiment-analysis-container">
+            <input type="text" id="sentiment-input" placeholder="Tell me something, darling...">
+            <button id="analyze-button">ANALYZE EMOTION</button>
+            <p id="sentiment-result"></p>
+        </div>
+
+        <!-- 本地语音识别测试区域 -->
+        <div id="local-asr-container" class="local-asr-container">
+            <button id="local-mic-button">START VOICE RECOGNITION</button>
+            <p>Neural Voice Analysis: <span id="local-asr-result"></span></p>
+        </div>
+
+        <!-- Anne Chat Interface -->
+        <div class="anne-chat-container">
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Ask Anne anything, darling..." class="chat-input">
+                <button id="chat-send" class="chat-send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 悬浮球 -->
+        <div id="floating-button">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <!-- 悬浮菜单 -->
+        <div id="menu-container" class="hidden">
+            <button class="menu-item" data-video="视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的左右摇晃.mp4">Pose</button>
+            <button class="menu-item" data-video="视频资源/生成加油视频.mp4">Cheer</button>
+            <button class="menu-item" data-video="视频资源/生成跳舞视频.mp4">Dance</button>
+        </div>
+
+        <!-- 底部麦克风和链接 -->
+        <footer class="bottom-bar">
+            <button class="mic-button" id="mic-button" aria-label="Start Listening">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <a href="https://x.com/zues13bhai" target="_blank" rel="noopener noreferrer" class="footer-credit">
+                ⚡ Made by Hitesh
+            </a>
+        </footer>
+
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

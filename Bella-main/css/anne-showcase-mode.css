@@ -1,0 +1,477 @@
+/* === ANNE CYBERPUNK SHOWCASE MODE STYLES === */
+
+/* --- Showcase Button --- */
+.showcase-btn {
+    position: relative;
+    background: linear-gradient(45deg, var(--cyber-electric), #00d4ff);
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin: 5px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.showcase-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 0deg,
+        transparent,
+        var(--cyber-electric),
+        transparent
+    );
+    animation: rotate 2s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.showcase-btn:hover::before {
+    opacity: 0.5;
+}
+
+.showcase-btn i {
+    position: relative;
+    z-index: 1;
+    font-size: 24px;
+    color: var(--cyber-black);
+    text-shadow: none;
+}
+
+.showcase-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 
+        0 0 30px var(--cyber-electric),
+        0 0 60px rgba(0, 255, 255, 0.3);
+}
+
+/* --- Showcase Overlay --- */
+.showcase-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.showcase-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* --- Showcase Controls --- */
+.showcase-controls {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--cyber-glass-border);
+    border-radius: 25px;
+    padding: 15px 25px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(255, 27, 141, 0.2);
+}
+
+.showcase-control-btn {
+    background: var(--cyber-glass);
+    border: 1px solid var(--cyber-glass-border);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--cyber-text);
+}
+
+.showcase-control-btn:hover {
+    background: rgba(255, 27, 141, 0.2);
+    border-color: var(--cyber-pink);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 27, 141, 0.5);
+}
+
+.showcase-control-btn i {
+    font-size: 18px;
+}
+
+.showcase-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-left: 15px;
+}
+
+.current-pose-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cyber-pink);
+    text-shadow: 0 0 10px var(--cyber-pink);
+    letter-spacing: 1px;
+}
+
+.pose-counter {
+    font-family: 'Rajdhani', monospace;
+    font-size: 14px;
+    color: var(--cyber-text-dim);
+    letter-spacing: 1px;
+}
+
+/* --- Progress Bar --- */
+.showcase-progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.showcase-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, 
+        var(--cyber-pink), 
+        var(--cyber-electric), 
+        var(--cyber-neon));
+    box-shadow: 
+        0 0 10px var(--cyber-pink),
+        0 0 20px rgba(255, 27, 141, 0.5);
+    transition: width 0ms linear;
+}
+
+/* --- Grok Display --- */
+.grok-display {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.grok-display.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.grok-container {
+    position: relative;
+    width: 180px;
+    height: 240px;
+}
+
+.grok-label {
+    position: absolute;
+    top: -25px;
+    left: 0;
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--cyber-electric);
+    text-shadow: 0 0 10px var(--cyber-electric);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.grok-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.grok-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+    filter: 
+        contrast(1.1) 
+        brightness(0.9) 
+        saturate(1.2)
+        hue-rotate(10deg);
+}
+
+.grok-border {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 17px;
+    background: linear-gradient(
+        45deg,
+        var(--cyber-electric),
+        var(--cyber-pink),
+        var(--cyber-neon),
+        var(--cyber-electric)
+    );
+    background-size: 400% 400%;
+    animation: border-glow 3s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes border-glow {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.grok-image-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        transparent 60%,
+        rgba(0, 255, 255, 0.2) 100%
+    );
+    pointer-events: none;
+}
+
+/* --- Hitesh Branding --- */
+.hitesh-branding {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hitesh-branding.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.brand-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Orbitron', monospace;
+    font-size: 24px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--cyber-glass-border);
+    border-radius: 20px;
+    padding: 15px 30px;
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(255, 27, 141, 0.3);
+}
+
+.lightning {
+    font-size: 28px;
+    color: var(--cyber-electric);
+    text-shadow: 0 0 20px var(--cyber-electric);
+    animation: lightning-pulse 2s ease-in-out infinite;
+}
+
+@keyframes lightning-pulse {
+    0%, 100% {
+        text-shadow: 0 0 20px var(--cyber-electric);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 
+            0 0 30px var(--cyber-electric),
+            0 0 40px var(--cyber-electric);
+        transform: scale(1.1);
+    }
+}
+
+.made-by {
+    color: var(--cyber-text-dim);
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.hitesh {
+    color: var(--cyber-pink);
+    text-shadow: 0 0 15px var(--cyber-pink);
+    animation: name-glow 3s ease-in-out infinite alternate;
+    position: relative;
+}
+
+@keyframes name-glow {
+    0% {
+        text-shadow: 0 0 15px var(--cyber-pink);
+    }
+    100% {
+        text-shadow: 
+            0 0 25px var(--cyber-pink),
+            0 0 35px var(--cyber-hot-pink);
+    }
+}
+
+.hitesh::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        var(--cyber-pink), 
+        transparent);
+    animation: underline-sweep 4s ease-in-out infinite;
+}
+
+@keyframes underline-sweep {
+    0%, 100% {
+        transform: translateX(-100%);
+    }
+    50% {
+        transform: translateX(100%);
+    }
+}
+
+/* --- Cinematic Flash Effect --- */
+@keyframes flash-effect {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    30% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+/* --- Enhanced Character Display --- */
+.showcase-overlay.active ~ .video-container .bg-video {
+    filter: 
+        contrast(1.4) 
+        brightness(1.1) 
+        saturate(1.3)
+        hue-rotate(320deg)
+        drop-shadow(0 0 50px rgba(255, 27, 141, 0.8))
+        drop-shadow(0 0 100px rgba(255, 0, 255, 0.4));
+    transform: scale(1.05);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .showcase-controls {
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        gap: 10px;
+    }
+
+    .showcase-control-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .current-pose-name {
+        font-size: 14px;
+    }
+
+    .pose-counter {
+        font-size: 12px;
+    }
+
+    .grok-display {
+        bottom: 20px;
+        left: 20px;
+    }
+
+    .grok-container {
+        width: 140px;
+        height: 180px;
+    }
+
+    .hitesh-branding {
+        bottom: 20px;
+    }
+
+    .brand-text {
+        font-size: 18px;
+        padding: 12px 25px;
+        gap: 8px;
+    }
+
+    .lightning {
+        font-size: 22px;
+    }
+
+    .made-by {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .showcase-controls {
+        top: 15px;
+        right: 15px;
+        padding: 10px 15px;
+    }
+
+    .grok-container {
+        width: 120px;
+        height: 160px;
+    }
+
+    .brand-text {
+        font-size: 16px;
+        padding: 10px 20px;
+        letter-spacing: 2px;
+    }
+}
+
+/* --- Performance Optimizations --- */
+.grok-display,
+.hitesh-branding,
+.showcase-overlay {
+    will-change: transform, opacity;
+}
+
+.grok-image,
+.showcase-progress-fill {
+    will-change: transform, opacity;
+}

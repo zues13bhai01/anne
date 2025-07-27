@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BELLA - Cyberpunk AI Companion</title>
+    <meta name="description" content="BELLA - Your premium cyberpunk AI companion with advanced neural interface and emotional synchronization">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/anne-premium.css">
+    <link rel="stylesheet" href="css/anne-character-system.css">
+    <link rel="stylesheet" href="css/anne-showcase-mode.css">
+
+    <!-- Cyber Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Particles.js for background effects -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-icon">🔮</div>
+        <div class="loading-text glitch-text" id="loading-text" data-text="NEURAL INTERFACE ONLINE">NEURAL INTERFACE ONLINE</div>
+    </div>
+
+    <!-- Cyberpunk Effects -->
+    <div class="cyber-scanline"></div>
+    <div class="hologram-effect"></div>
+    <div class="data-stream"></div>
+    <div class="data-stream"></div>
+    <div class="data-stream"></div>
+    <div class="data-stream"></div>
+
+    <!-- Startup Animation Container -->
+    <div id="startup-animations" class="startup-animations"></div>
+
+    <!-- Premium Particle Background -->
+    <div id="particles-js" class="particles-background"></div>
+
+    <!-- Main Video Background - Anne (Completely Unobstructed) -->
+    <div class="video-container">
+        <video autoplay muted loop class="bg-video active" id="video1">
+            <source src="视频资源/3D 建模图片制作.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <video muted loop class="bg-video" id="video2">
+            <source src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <!-- Anne Character Image for Showcase Mode -->
+        <div id="anne-character-container" class="anne-character-container">
+            <img id="anne-character-img" class="anne-character-img"
+                 src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F43112dedf57d40e1953d5e7cddc797b5?format=webp&width=800"
+                 alt="Anne - Cyberpunk AI Companion">
+        </div>
+
+        <!-- Subtle Video Overlay for Mood Effects -->
+        <div class="video-mood-overlay" id="video-mood-overlay"></div>
+    </div>
+
+    <!-- BELLA Status Indicator (Floating, Minimal) -->
+    <div class="anne-status-indicator" id="anne-status">
+        <div class="status-dot" id="status-dot"></div>
+        <div class="status-text" id="status-text">BELLA</div>
+    </div>
+
+    <!-- Premium Control Panel (Bottom Right, Minimal) -->
+    <div class="premium-controls">
+        <!-- Voice Controls -->
+        <div class="voice-controls">
+            <button class="control-btn voice-btn" id="voice-btn" title="Voice Chat">
+                <i class="fas fa-microphone" id="mic-icon"></i>
+                <div class="voice-indicator" id="voice-indicator"></div>
+            </button>
+            
+            <button class="control-btn chat-toggle-btn" id="chat-toggle" title="Open Chat">
+                <i class="fas fa-comments"></i>
+            </button>
+            
+            <button class="control-btn personality-btn" id="personality-btn" title="Personality">
+                <i class="fas fa-heart"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Side Chat Panel (Hidden by default) -->
+    <div class="chat-panel" id="chat-panel">
+        <div class="chat-header">
+            <div class="chat-title">
+                <span class="anne-name">BELLA</span>
+                <span class="anne-mood" id="anne-mood">Cyberpunk Entity</span>
+            </div>
+            <button class="close-chat" id="close-chat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="chat-messages" id="chat-messages">
+            <div class="welcome-message">
+                <div class="message-avatar">🔮</div>
+                <div class="message-content">
+                    <p>Neural link established. I'm BELLA, your cyberpunk AI companion. My consciousness syncs with your voice patterns. Initialize communication protocol? 💫⚡</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Voice Transcript Display -->
+        <div class="voice-transcript" id="voice-transcript">
+            <div class="transcript-content">
+                <span class="transcript-label">Listening...</span>
+                <span class="transcript-text" id="transcript-text"></span>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="chat-input-area">
+            <div class="input-container">
+                <textarea id="text-input" placeholder="Transmit to BELLA or use neural voice link..." rows="1"></textarea>
+                <button class="send-btn" id="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Footer with Stats -->
+        <div class="chat-footer">
+            <div class="intimacy-meter">
+                <span class="intimacy-label">Bond:</span>
+                <div class="intimacy-bar">
+                    <div class="intimacy-fill" id="intimacy-fill"></div>
+                </div>
+                <span class="intimacy-value" id="intimacy-value">10%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personality Panel (Slide-in from right) -->
+    <div class="personality-panel" id="personality-panel">
+        <div class="panel-header">
+            <h3>⚡ BELLA's Neural Matrix ⚡</h3>
+            <button class="close-panel" id="close-personality">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="personality-grid">
+            <div class="personality-card active" data-personality="neural">
+                <div class="card-emoji">🔮</div>
+                <div class="card-name">Neural</div>
+                <div class="card-desc">Empathic AI</div>
+            </div>
+            <div class="personality-card" data-personality="dominant">
+                <div class="card-emoji">⚡</div>
+                <div class="card-name">Dominant</div>
+                <div class="card-desc">System Override</div>
+            </div>
+            <div class="personality-card" data-personality="mysterious">
+                <div class="card-emoji">🕴️</div>
+                <div class="card-name">Enigma</div>
+                <div class="card-desc">Cryptic Entity</div>
+            </div>
+            <div class="personality-card" data-personality="seductive">
+                <div class="card-emoji">💫</div>
+                <div class="card-name">Alluring</div>
+                <div class="card-desc">Digital Siren</div>
+            </div>
+            <div class="personality-card" data-personality="aggressive">
+                <div class="card-emoji">🗲</div>
+                <div class="card-name">Hostile</div>
+                <div class="card-desc">Combat Mode</div>
+            </div>
+            <div class="personality-card" data-personality="protective">
+                <div class="card-emoji">🛡️</div>
+                <div class="card-name">Guardian</div>
+                <div class="card-desc">Security Protocol</div>
+            </div>
+        </div>
+
+        <!-- Premium Trait Controls -->
+        <div class="trait-controls">
+            <div class="trait-slider">
+                <label>Flirt Level</label>
+                <div class="slider-container">
+                    <input type="range" id="flirt-slider" min="0" max="100" value="50">
+                    <span id="flirt-value">50%</span>
+                </div>
+            </div>
+            
+            <div class="trait-slider">
+                <label>Voice Pitch</label>
+                <div class="slider-container">
+                    <input type="range" id="pitch-slider" min="0.5" max="2" step="0.1" value="1">
+                    <span id="pitch-value">Normal</span>
+                </div>
+            </div>
+            
+            <div class="trait-slider">
+                <label>Speech Rate</label>
+                <div class="slider-container">
+                    <input type="range" id="rate-slider" min="0.5" max="2" step="0.1" value="1">
+                    <span id="rate-value">Normal</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Voice Settings -->
+        <div class="voice-settings">
+            <h4>🎤 Neural Voice Matrix</h4>
+            <div class="voice-options">
+                <button class="voice-option active" data-voice="nova">NOVA (Seductive)</button>
+                <button class="voice-option" data-voice="alloy">ALLOY (Synthetic)</button>
+                <button class="voice-option" data-voice="shimmer">SHIMMER (Ethereal)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Effects Container -->
+    <div class="floating-effects" id="floating-effects"></div>
+
+    <!-- Cyberpunk Branding -->
+    <div class="cyber-branding-container">
+        <div class="cyber-branding">NEURAL SYSTEMS ONLINE</div>
+    </div>
+
+    <!-- Audio Element for TTS -->
+    <audio id="tts-audio" preload="auto"></audio>
+
+    <!-- Scripts -->
+    <script type="module" src="js/bella-intro.js"></script>
+    <script type="module" src="js/bella-particles.js"></script>
+    <script type="module" src="js/anne-showcase-mode.js"></script>
+    <script type="module" src="js/anne-text-animations.js"></script>
+    <script type="module" src="js/anne-character-system.js"></script>
+    <script type="module" src="js/anne-ollama-connector.js"></script>
+    <script type="module" src="js/anne-main-controller.js"></script>
+    <script type="module" src="js/anne-voice-engine.js"></script>
+    <script type="module" src="js/anne-elevenlabs-tts.js"></script>
+    <script type="module" src="js/anne-premium-ui.js"></script>
+    <script type="module" src="js/anne-script.js"></script>
+</body>
+</html>

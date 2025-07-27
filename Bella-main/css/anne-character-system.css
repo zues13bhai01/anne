@@ -1,0 +1,864 @@
+/**
+ * Anne Character System CSS
+ * Advanced character display with jiggle physics and cinematic effects
+ */
+
+/* Character Container */
+.anne-character-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Breathing Animation Container */
+.anne-breathing-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.anne-breathing-container.breathing-effect {
+    animation: breathing 3s ease-in-out infinite;
+}
+
+/* Jiggle Physics Container */
+.anne-jiggle-container {
+    position: relative;
+    transform-origin: center bottom;
+    transition: transform 0.1s ease-out;
+}
+
+.anne-jiggle-container.jiggle-effect {
+    animation: jigglePhysics var(--jiggle-duration, 300ms) ease-in-out infinite;
+}
+
+/* Enhanced physics effects for different body areas */
+.anne-jiggle-container.jiggle-effect.physics-enhanced {
+    animation:
+        jigglePhysics var(--jiggle-duration, 300ms) ease-in-out infinite,
+        breastPhysics calc(var(--jiggle-duration, 300ms) * 1.2) ease-in-out infinite,
+        hipSway calc(var(--jiggle-duration, 300ms) * 1.5) ease-in-out infinite;
+}
+
+.anne-jiggle-container.jiggle-effect.physics-hair {
+    animation:
+        jigglePhysics var(--jiggle-duration, 300ms) ease-in-out infinite,
+        hairPhysics calc(var(--jiggle-duration, 300ms) * 0.8) ease-in-out infinite;
+}
+
+.anne-jiggle-container.jiggle-effect.physics-dress {
+    animation:
+        jigglePhysics var(--jiggle-duration, 300ms) ease-in-out infinite,
+        dressPhysics calc(var(--jiggle-duration, 300ms) * 1.1) ease-in-out infinite;
+}
+
+/* Main Character Image */
+.anne-character-img {
+    max-width: 60vh;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+    transform-origin: center bottom;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .anne-character-img {
+        max-width: 80vw;
+        max-height: 70vh;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+    .anne-character-img {
+        max-height: 85vh;
+        max-width: 45vh;
+    }
+}
+
+/* Character positioning variants */
+.anne-character-container.position-left {
+    justify-content: flex-start;
+    padding-left: 10vw;
+}
+
+.anne-character-container.position-right {
+    justify-content: flex-end;
+    padding-right: 10vw;
+}
+
+.anne-character-container.position-center {
+    justify-content: center;
+}
+
+/* Advanced Cinematic Effects */
+.anne-character-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 20, 147, 0.05) 0%,
+        rgba(138, 43, 226, 0.05) 50%,
+        rgba(0, 191, 255, 0.05) 100%
+    );
+    pointer-events: none;
+    z-index: -1;
+    animation: cinematicLighting 10s ease-in-out infinite;
+}
+
+/* Dynamic lighting animation */
+@keyframes cinematicLighting {
+    0%, 100% {
+        background: linear-gradient(
+            135deg,
+            rgba(255, 20, 147, 0.05) 0%,
+            rgba(138, 43, 226, 0.05) 50%,
+            rgba(0, 191, 255, 0.05) 100%
+        );
+    }
+    33% {
+        background: linear-gradient(
+            225deg,
+            rgba(0, 191, 255, 0.08) 0%,
+            rgba(255, 20, 147, 0.03) 50%,
+            rgba(138, 43, 226, 0.06) 100%
+        );
+    }
+    66% {
+        background: linear-gradient(
+            315deg,
+            rgba(138, 43, 226, 0.07) 0%,
+            rgba(0, 191, 255, 0.04) 50%,
+            rgba(255, 20, 147, 0.06) 100%
+        );
+    }
+}
+
+/* Camera zoom and pan effects */
+.anne-character-container.camera-zoom-in {
+    animation: cameraZoomIn 2s ease-out forwards;
+}
+
+.anne-character-container.camera-zoom-out {
+    animation: cameraZoomOut 2s ease-out forwards;
+}
+
+.anne-character-container.camera-pan-left {
+    animation: cameraPanLeft 3s ease-in-out forwards;
+}
+
+.anne-character-container.camera-pan-right {
+    animation: cameraPanRight 3s ease-in-out forwards;
+}
+
+@keyframes cameraZoomIn {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.2);
+    }
+}
+
+@keyframes cameraZoomOut {
+    0% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes cameraPanLeft {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-100px) scale(1.1);
+    }
+    100% {
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes cameraPanRight {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(100px) scale(1.1);
+    }
+    100% {
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* Depth of field effects */
+.anne-character-container.depth-of-field::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 30%,
+        rgba(0, 0, 0, 0.1) 70%,
+        rgba(0, 0, 0, 0.3) 100%
+    );
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Film grain effect */
+.anne-character-container.film-grain::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+    background-size: 10px 10px, 15px 15px, 8px 8px;
+    pointer-events: none;
+    z-index: 1;
+    animation: filmGrain 0.1s infinite linear;
+}
+
+@keyframes filmGrain {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    100% {
+        transform: translateX(1px) translateY(1px);
+    }
+}
+
+/* Lighting Effects */
+.anne-character-img {
+    position: relative;
+}
+
+.anne-character-img::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    right: -10%;
+    bottom: -10%;
+    background: radial-gradient(
+        ellipse at center top,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Animations */
+
+/* Breathing Effect */
+@keyframes breathing {
+    0%, 100% {
+        transform: scale(1) translateY(0);
+    }
+    50% {
+        transform: scale(1.02) translateY(-5px);
+    }
+}
+
+/* Enhanced Jiggle Physics - Multiple variations */
+@keyframes jigglePhysics {
+    0%, 100% {
+        transform: scale(1) rotate(0deg) translateY(0);
+    }
+    25% {
+        transform: scale(var(--jiggle-scale, 1.05)) rotate(0.5deg) translateY(-2px);
+    }
+    50% {
+        transform: scale(1.02) rotate(0deg) translateY(0);
+    }
+    75% {
+        transform: scale(var(--jiggle-scale, 1.05)) rotate(-0.5deg) translateY(-1px);
+    }
+}
+
+/* Breast/body physics simulation */
+@keyframes breastPhysics {
+    0%, 100% {
+        transform: scaleY(1) scaleX(1);
+    }
+    25% {
+        transform: scaleY(0.98) scaleX(1.02);
+    }
+    50% {
+        transform: scaleY(1.01) scaleX(0.99);
+    }
+    75% {
+        transform: scaleY(0.99) scaleX(1.01);
+    }
+}
+
+/* Hip sway animation */
+@keyframes hipSway {
+    0%, 100% {
+        transform: skewX(0deg) translateX(0);
+    }
+    25% {
+        transform: skewX(1deg) translateX(2px);
+    }
+    75% {
+        transform: skewX(-1deg) translateX(-2px);
+    }
+}
+
+/* Hair physics simulation */
+@keyframes hairPhysics {
+    0%, 100% {
+        transform: rotate(0deg) scaleX(1);
+    }
+    33% {
+        transform: rotate(1deg) scaleX(1.01);
+    }
+    66% {
+        transform: rotate(-0.8deg) scaleX(0.99);
+    }
+}
+
+/* Skirt/dress physics */
+@keyframes dressPhysics {
+    0%, 100% {
+        transform: scaleY(1) skewX(0deg);
+    }
+    50% {
+        transform: scaleY(1.02) skewX(0.5deg);
+    }
+}
+
+/* Soft body jiggle for different elements */
+@keyframes softJiggle {
+    0%, 100% {
+        transform: translateY(0) scaleY(1);
+    }
+    25% {
+        transform: translateY(-2px) scaleY(1.01);
+    }
+    75% {
+        transform: translateY(1px) scaleY(0.99);
+    }
+}
+
+/* Hair/clothing physics simulation */
+@keyframes clothPhysics {
+    0%, 100% {
+        transform: skewX(0deg) scaleX(1);
+    }
+    33% {
+        transform: skewX(1deg) scaleX(1.01);
+    }
+    66% {
+        transform: skewX(-0.5deg) scaleX(0.99);
+    }
+}
+
+/* Entrance Animations */
+.anne-character-img.entrance-fade {
+    animation: entranceFade 1.5s ease-out;
+}
+
+.anne-character-img.entrance-slide {
+    animation: entranceSlide 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.anne-character-img.entrance-scale {
+    animation: entranceScale 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes entranceFade {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes entranceSlide {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes entranceScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Mood-based Effects */
+.anne-character-container.mood-flirty .anne-character-img {
+    filter: drop-shadow(0 10px 30px rgba(255, 20, 147, 0.4))
+           hue-rotate(10deg) saturate(1.1);
+}
+
+.anne-character-container.mood-sweet .anne-character-img {
+    filter: drop-shadow(0 10px 30px rgba(255, 182, 193, 0.4))
+           brightness(1.1) saturate(1.05);
+}
+
+.anne-character-container.mood-sassy .anne-character-img {
+    filter: drop-shadow(0 10px 30px rgba(138, 43, 226, 0.4))
+           contrast(1.1) saturate(1.2);
+}
+
+.anne-character-container.mood-tsundere .anne-character-img {
+    filter: drop-shadow(0 10px 30px rgba(255, 69, 0, 0.4))
+           hue-rotate(-10deg) contrast(1.05);
+}
+
+/* Interaction Effects */
+.anne-character-img.talking {
+    animation: talkingGesture 2s ease-in-out infinite;
+}
+
+.anne-character-img.listening {
+    animation: listeningPulse 1.5s ease-in-out infinite;
+}
+
+.anne-character-img.excited {
+    animation: excitedBounce 0.6s ease-in-out infinite;
+}
+
+@keyframes talkingGesture {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    25% {
+        transform: translateY(-3px) scale(1.01);
+    }
+    75% {
+        transform: translateY(-1px) scale(1.005);
+    }
+}
+
+@keyframes listeningPulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.02);
+        filter: brightness(1.1);
+    }
+}
+
+@keyframes excitedBounce {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-8px) scale(1.03);
+    }
+}
+
+/* Particle Effects Container */
+.anne-character-container .particle-effects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Heart particles for sweet moments */
+.heart-particle {
+    position: absolute;
+    font-size: 1.2rem;
+    color: rgba(255, 182, 193, 0.8);
+    animation: floatHeart 3s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes floatHeart {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(0.5);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(1.2);
+    }
+}
+
+/* Sparkle effects */
+.sparkle-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: linear-gradient(45deg, #ff69b4, #ff1493);
+    border-radius: 50%;
+    animation: sparkleFloat 2s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes sparkleFloat {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(0) rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-50px) scale(1) rotate(180deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(0) rotate(360deg);
+    }
+}
+
+/* Glow effects for special moments */
+.anne-character-container.special-glow .anne-character-img {
+    animation: specialGlow 2s ease-in-out infinite;
+}
+
+@keyframes specialGlow {
+    0%, 100% {
+        filter: drop-shadow(0 10px 30px rgba(255, 255, 255, 0.3))
+               drop-shadow(0 0 50px rgba(255, 20, 147, 0.2));
+    }
+    50% {
+        filter: drop-shadow(0 10px 30px rgba(255, 255, 255, 0.5))
+               drop-shadow(0 0 80px rgba(255, 20, 147, 0.4));
+    }
+}
+
+/* Performance optimizations */
+.anne-character-img {
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
+    transform3d: translate3d(0, 0, 0);
+}
+
+.anne-jiggle-container {
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+/* Character Controls in Personality Panel */
+.character-controls {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.character-controls .section-header h4 {
+    margin: 0 0 15px 0;
+    color: #ff69b4;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.pose-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.pose-btn {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 10px 5px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+}
+
+.pose-btn:hover {
+    background: linear-gradient(145deg, rgba(255, 105, 180, 0.3), rgba(255, 105, 180, 0.1));
+    border-color: #ff69b4;
+    transform: translateY(-2px);
+}
+
+.pose-btn i {
+    font-size: 1.2rem;
+    color: #ff69b4;
+}
+
+.animation-controls {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.animation-controls h4 {
+    margin: 0 0 10px 0;
+    color: #ff69b4;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.anim-btn {
+    background: linear-gradient(145deg, rgba(138, 43, 226, 0.2), rgba(138, 43, 226, 0.1));
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 3px;
+    font-size: 0.8rem;
+}
+
+.anim-btn:hover {
+    background: linear-gradient(145deg, rgba(138, 43, 226, 0.4), rgba(138, 43, 226, 0.2));
+    border-color: #8a2be2;
+    transform: scale(1.05);
+}
+
+.anim-btn i {
+    font-size: 1rem;
+    color: #dda0dd;
+}
+
+/* Cinematic Controls */
+.cinematic-controls {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.cinematic-controls h4 {
+    margin: 0 0 10px 0;
+    color: #ff6b35;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.cinema-btn {
+    background: linear-gradient(145deg, rgba(255, 107, 53, 0.2), rgba(255, 107, 53, 0.1));
+    border: 1px solid rgba(255, 107, 53, 0.3);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 3px;
+    font-size: 0.8rem;
+}
+
+.cinema-btn:hover {
+    background: linear-gradient(145deg, rgba(255, 107, 53, 0.4), rgba(255, 107, 53, 0.2));
+    border-color: #ff6b35;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
+}
+
+.cinema-btn i {
+    font-size: 1rem;
+    color: #ffb366;
+}
+
+/* Pose Gallery */
+.pose-gallery-controls {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.pose-gallery-controls h4 {
+    margin: 0 0 10px 0;
+    color: #40e0d0;
+    font-size: 0.9rem;
+}
+
+.gallery-btn {
+    background: linear-gradient(145deg, rgba(64, 224, 208, 0.2), rgba(64, 224, 208, 0.1));
+    border: 1px solid rgba(64, 224, 208, 0.3);
+    border-radius: 6px;
+    padding: 10px 15px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gallery-btn:hover {
+    background: linear-gradient(145deg, rgba(64, 224, 208, 0.4), rgba(64, 224, 208, 0.2));
+    border-color: #40e0d0;
+    transform: scale(1.05);
+}
+
+.pose-gallery {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.pose-gallery.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.9);
+}
+
+.gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gallery-header h4 {
+    margin: 0;
+    color: #ff69b4;
+    font-size: 1.2rem;
+}
+
+.close-gallery {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-gallery:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.gallery-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.gallery-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #ff69b4;
+    transform: translateY(-5px);
+}
+
+.gallery-item.selected {
+    border-color: #40e0d0;
+    background: rgba(64, 224, 208, 0.1);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.pose-name {
+    text-align: center;
+    color: white;
+    font-size: 0.9rem;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .gallery-item img {
+        height: 200px;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .anne-character-img,
+    .anne-jiggle-container,
+    .anne-breathing-container {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

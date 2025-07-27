@@ -1,0 +1,890 @@
+/* Anne Premium Interface - Clean & Unobstructed */
+/* Created by Hitesh Siwach (@zues13bhai) */
+
+:root {
+    --anne-primary: #ff69b4;
+    --anne-secondary: #ff1493;
+    --anne-accent: #ffd700;
+    --anne-dark: #000;
+    --anne-light: #fff;
+    --anne-glass: rgba(255, 255, 255, 0.1);
+    --anne-glass-border: rgba(255, 255, 255, 0.2);
+    --anne-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --gradient-primary: linear-gradient(135deg, var(--anne-primary), var(--anne-secondary));
+    --gradient-glass: linear-gradient(135deg, var(--anne-glass), rgba(255, 255, 255, 0.05));
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    background: #000;
+    color: var(--anne-light);
+    user-select: none;
+}
+
+/* Loading Screen */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #000 0%, #111 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.8s ease;
+}
+
+.loading-content {
+    text-align: center;
+    color: var(--anne-light);
+}
+
+.loading-avatar {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: pulse 2s infinite;
+}
+
+.loading-text {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: var(--anne-primary);
+}
+
+.loading-bar {
+    width: 200px;
+    height: 4px;
+    background: var(--anne-glass);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.loading-progress {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+    animation: loading 3s ease-in-out infinite;
+}
+
+@keyframes loading {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    100% { width: 100%; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Startup Animations Container */
+.startup-animations {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Particle Background */
+.particles-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Video Container - Anne (COMPLETELY UNOBSTRUCTED) */
+.video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.bg-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.bg-video.active {
+    opacity: 1;
+}
+
+.video-mood-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    transition: all 0.5s ease;
+    mix-blend-mode: overlay;
+}
+
+.video-mood-overlay.happy {
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+}
+
+.video-mood-overlay.love {
+    background: radial-gradient(circle, rgba(255, 105, 180, 0.15) 0%, transparent 70%);
+}
+
+.video-mood-overlay.flirty {
+    background: radial-gradient(circle, rgba(255, 20, 147, 0.2) 0%, transparent 70%);
+}
+
+/* Anne Status Indicator (Minimal, Non-Intrusive) */
+.anne-status-indicator {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--anne-glass-border);
+    box-shadow: var(--anne-shadow);
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.anne-status-indicator:hover {
+    transform: scale(1.05);
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    animation: breathe 2s ease-in-out infinite;
+}
+
+.status-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--anne-light);
+}
+
+@keyframes breathe {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(0.9); }
+}
+
+/* Premium Controls (Bottom Right, Minimal) */
+.premium-controls {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 100;
+}
+
+.voice-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.control-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    border: 2px solid var(--anne-glass-border);
+    color: var(--anne-light);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--anne-shadow);
+}
+
+.control-btn:hover {
+    transform: scale(1.1);
+    border-color: var(--anne-primary);
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+}
+
+.voice-btn {
+    background: var(--gradient-primary);
+    border-color: var(--anne-secondary);
+}
+
+.voice-btn.listening {
+    animation: voicePulse 1s ease-in-out infinite;
+}
+
+.voice-btn.speaking {
+    background: var(--gradient-primary);
+    animation: speakingPulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes voicePulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(255, 105, 180, 0.8); }
+}
+
+@keyframes speakingPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+}
+
+.voice-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.voice-btn.listening .voice-indicator {
+    opacity: 1;
+    animation: voiceRing 2s linear infinite;
+}
+
+@keyframes voiceRing {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
+}
+
+/* Side Chat Panel */
+.chat-panel {
+    position: fixed;
+    top: 0;
+    right: -450px;
+    width: 450px;
+    height: 100vh;
+    background: var(--gradient-glass);
+    backdrop-filter: blur(25px);
+    border-left: 1px solid var(--anne-glass-border);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    z-index: 200;
+    transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-panel.open {
+    right: 0;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--anne-glass-border);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.chat-title .anne-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.anne-mood {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-left: 0.5rem;
+}
+
+.close-chat {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--anne-light);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-chat:hover {
+    background: var(--anne-primary);
+    transform: rotate(90deg);
+}
+
+/* Chat Messages */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.welcome-message, .message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    animation: messageSlideIn 0.5s ease-out;
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.message.user .message-avatar {
+    background: var(--gradient-glass);
+    border: 1px solid var(--anne-glass-border);
+}
+
+.message-content {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 0.75rem 1rem;
+    max-width: 280px;
+    border: 1px solid var(--anne-glass-border);
+}
+
+.message.user .message-content {
+    background: var(--gradient-primary);
+}
+
+.message-content p {
+    margin: 0;
+    line-height: 1.4;
+    color: var(--anne-light);
+}
+
+@keyframes messageSlideIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Typing Indicator */
+.typing .typing-dots {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.typing-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--anne-primary);
+    animation: typingDot 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: 0s; }
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingDot {
+    0%, 60%, 100% { transform: scale(0.8); opacity: 0.5; }
+    30% { transform: scale(1.2); opacity: 1; }
+}
+
+/* Chat Message Styling */
+.chat-message {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    animation: messageSlideIn 0.5s ease-out;
+}
+
+.message-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--gradient-glass);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.user-message .message-avatar {
+    background: var(--gradient-primary);
+}
+
+.message-content {
+    flex: 1;
+    background: var(--anne-glass);
+    border-radius: 15px;
+    padding: 0.75rem 1rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--anne-glass-border);
+}
+
+.message-time {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Voice Transcript */
+.voice-transcript {
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid var(--anne-glass-border);
+    display: none;
+}
+
+.voice-transcript.active {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+.transcript-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.transcript-label {
+    color: var(--anne-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.transcript-text {
+    color: var(--anne-light);
+    font-style: italic;
+}
+
+@keyframes slideDown {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Chat Input */
+.chat-input-area {
+    padding: 1rem;
+    border-top: 1px solid var(--anne-glass-border);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.input-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    background: var(--anne-glass);
+    border-radius: 25px;
+    padding: 0.5rem;
+    border: 1px solid var(--anne-glass-border);
+}
+
+#text-input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--anne-light);
+    font-size: 1rem;
+    padding: 0.5rem;
+    resize: none;
+    max-height: 100px;
+    outline: none;
+}
+
+#text-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.send-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    background: var(--gradient-primary);
+    color: var(--anne-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.send-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Chat Footer */
+.chat-footer {
+    padding: 1rem;
+    border-top: 1px solid var(--anne-glass-border);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.intimacy-meter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.intimacy-label {
+    color: var(--anne-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.intimacy-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--anne-glass);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.intimacy-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.intimacy-value {
+    color: var(--anne-light);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Personality Panel */
+.personality-panel {
+    position: fixed;
+    top: 0;
+    right: -500px;
+    width: 500px;
+    height: 100vh;
+    background: var(--gradient-glass);
+    backdrop-filter: blur(25px);
+    border-left: 1px solid var(--anne-glass-border);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    z-index: 300;
+    transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    overflow-y: auto;
+}
+
+.personality-panel.open {
+    right: 0;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--anne-glass-border);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.panel-header h3 {
+    color: var(--anne-light);
+    margin: 0;
+}
+
+.close-panel {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--anne-light);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-panel:hover {
+    background: var(--anne-primary);
+    transform: rotate(90deg);
+}
+
+/* Personality Grid */
+.personality-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
+}
+
+.personality-card {
+    background: var(--anne-glass);
+    border: 1px solid var(--anne-glass-border);
+    border-radius: 15px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.personality-card:hover {
+    background: rgba(255, 105, 180, 0.2);
+    border-color: var(--anne-primary);
+    transform: translateY(-5px);
+}
+
+.personality-card.active {
+    background: rgba(255, 105, 180, 0.3);
+    border-color: var(--anne-primary);
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+}
+
+.card-emoji {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-name {
+    font-weight: bold;
+    color: var(--anne-light);
+    margin-bottom: 0.25rem;
+}
+
+.card-desc {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Trait Controls */
+.trait-controls {
+    padding: 1.5rem;
+    border-top: 1px solid var(--anne-glass-border);
+}
+
+.trait-slider {
+    margin-bottom: 1.5rem;
+}
+
+.trait-slider label {
+    display: block;
+    color: var(--anne-primary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.slider-container input[type="range"] {
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--anne-glass);
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+}
+
+.slider-container span {
+    color: var(--anne-light);
+    font-weight: 600;
+    min-width: 60px;
+}
+
+/* Voice Settings */
+.voice-settings {
+    padding: 1.5rem;
+    border-top: 1px solid var(--anne-glass-border);
+}
+
+.voice-settings h4 {
+    color: var(--anne-light);
+    margin-bottom: 1rem;
+}
+
+.voice-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.voice-option {
+    background: var(--anne-glass);
+    border: 1px solid var(--anne-glass-border);
+    border-radius: 10px;
+    padding: 0.75rem;
+    color: var(--anne-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.voice-option:hover {
+    background: rgba(255, 105, 180, 0.2);
+    border-color: var(--anne-primary);
+}
+
+.voice-option.active {
+    background: var(--gradient-primary);
+    border-color: var(--anne-secondary);
+}
+
+/* Floating Effects */
+.floating-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+}
+
+.floating-heart {
+    position: absolute;
+    color: var(--anne-primary);
+    font-size: 1.5rem;
+    animation: floatUp 3s linear infinite;
+    opacity: 0;
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100vh) rotate(360deg);
+    }
+}
+
+/* Custom Scrollbar */
+.chat-messages::-webkit-scrollbar,
+.personality-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track,
+.personality-panel::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb,
+.personality-panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 105, 180, 0.5);
+    border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover,
+.personality-panel::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 105, 180, 0.8);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .chat-panel,
+    .personality-panel {
+        width: 100%;
+        right: -100%;
+    }
+    
+    .anne-status-indicator {
+        top: 15px;
+        left: 15px;
+        font-size: 0.9rem;
+    }
+    
+    .premium-controls {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .control-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+    
+    .personality-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Accessibility */
+.control-btn:focus,
+.personality-card:focus,
+.voice-option:focus {
+    outline: 2px solid var(--anne-primary);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --anne-glass: rgba(255, 255, 255, 0.2);
+        --anne-glass-border: rgba(255, 255, 255, 0.4);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
