@@ -1,5 +1,160 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap');
 
+/* --- Intro Video Animation System --- */
+.intro-video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+}
+
+.intro-video-container.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.intro-video {
+    max-width: 90%;
+    max-height: 90%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 20px;
+    box-shadow: 0 0 50px rgba(255, 0, 255, 0.5);
+    filter: drop-shadow(0 0 30px rgba(0, 255, 255, 0.3));
+}
+
+.intro-video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 30%,
+        rgba(255, 0, 255, 0.1) 70%,
+        rgba(0, 0, 0, 0.3) 100%
+    );
+    pointer-events: none;
+}
+
+/* --- Personality Transition Video System --- */
+.transition-video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 150;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.transition-video-container.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.transition-video {
+    max-width: 70%;
+    max-height: 70%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 15px;
+    box-shadow: 0 0 40px rgba(255, 0, 255, 0.4);
+    filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.2));
+}
+
+.transition-caption {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Orbitron', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #00ffff;
+    text-shadow: 0 0 20px #00ffff;
+    text-align: center;
+    opacity: 0;
+    animation: caption-fade-in 0.5s ease-in-out 0.5s forwards;
+}
+
+@keyframes caption-fade-in {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* --- Made by Hitesh - Always Visible Label --- */
+.made-by-hitesh {
+    position: fixed;
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    font-family: 'Inter', 'Poppins', 'Roboto', sans-serif;
+    font-size: clamp(12px, 1.2vw, 16px);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    opacity: 0;
+    animation: credit-fade-in 1s ease-in-out 2s forwards;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.made-by-hitesh:hover {
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff, 0 2px 4px rgba(0, 0, 0, 0.5);
+    transform: translateX(-50%) scale(1.05);
+}
+
+.credit-text {
+    display: block;
+    position: relative;
+}
+
+.credit-underline {
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff00ff, #00ffff);
+    margin: 4px auto 0;
+    transition: width 0.3s ease;
+}
+
+.made-by-hitesh:hover .credit-underline {
+    width: 100%;
+}
+
+@keyframes credit-fade-in {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
 /* --- Enhanced Anne Loading Screen --- */
 #loading-screen {
     position: fixed;
