@@ -970,6 +970,93 @@ html, body {
     text-shadow: 0 0 5px #ff00ff;
 }
 
+/* --- Enhanced Personality Glow Effects --- */
+.zenith-glow {
+    background: radial-gradient(circle, rgba(187, 0, 255, 0.3), transparent 70%);
+    animation: glow-zenith 3s ease-in-out infinite;
+}
+.pixi-glow {
+    background: radial-gradient(circle, rgba(255, 255, 153, 0.3), transparent 70%);
+    animation: glow-pixi 2s ease-in-out infinite;
+}
+.nova-glow {
+    background: radial-gradient(circle, rgba(0, 187, 255, 0.3), transparent 70%);
+    animation: glow-nova 2.5s ease-in-out infinite;
+}
+.velvet-glow {
+    background: radial-gradient(circle, rgba(255, 0, 187, 0.3), transparent 70%);
+    animation: glow-velvet 3.5s ease-in-out infinite;
+}
+.blaze-glow {
+    background: radial-gradient(circle, rgba(255, 136, 68, 0.3), transparent 70%);
+    animation: glow-blaze 2.2s ease-in-out infinite;
+}
+.aurora-glow {
+    background: radial-gradient(circle, rgba(187, 255, 0, 0.3), transparent 70%);
+    animation: glow-aurora 4s ease-in-out infinite;
+}
+
+@keyframes glow-zenith {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+@keyframes glow-pixi {
+    0%, 100% { opacity: 0.4; transform: scale(1) rotate(0deg); }
+    50% { opacity: 0.8; transform: scale(1.15) rotate(180deg); }
+}
+
+@keyframes glow-nova {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+@keyframes glow-velvet {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.08); }
+}
+
+@keyframes glow-blaze {
+    0%, 100% { opacity: 0.4; transform: scale(1) rotate(0deg); }
+    25% { opacity: 0.7; transform: scale(1.1) rotate(90deg); }
+    75% { opacity: 0.6; transform: scale(1.05) rotate(270deg); }
+}
+
+@keyframes glow-aurora {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    33% { opacity: 0.5; transform: scale(1.05); }
+    66% { opacity: 0.7; transform: scale(1.1); }
+}
+
+/* --- Audio Visualizers --- */
+.audio-visualizer {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #00ffff, #ff00ff);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: visualizer-pulse 1s ease-in-out infinite;
+}
+
+.personality-card.active .audio-visualizer {
+    opacity: 1;
+}
+
+@keyframes visualizer-pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    }
+    50% {
+        transform: scale(1.2);
+        box-shadow: 0 0 15px rgba(255, 0, 255, 0.8);
+    }
+}
+
 /* --- Futuristic Content Overlay --- */
 .content-overlay {
     position: relative;
