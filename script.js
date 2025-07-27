@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
         pixi: {
             name: "PIXI",
             displayName: "Playful",
-            emoji: "��",
+            emoji: "🎉",
             image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Fe68ae80624f34ce3a4387915b9605722?format=webp&width=800",
             glow: "#ffff99",
             prompt: "You are PIXI, an excited, fun, and playful AI assistant. Use lots of emojis, exclamation points, and playful language. Make jokes and be energetic!",
@@ -699,7 +699,28 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         // Check for special commands
         if (lowerPrompt.includes('dance') || lowerPrompt.includes('show me') || lowerPrompt.includes('perform')) {
             playVideoOnDemand();
-            return "Watch me dance for you, darling! 💃✨ Isn't this exciting?";
+            return "💃 Watch me dance for you, darling! This is my special performance just for you! ✨🎵";
+        }
+
+        // Enhanced greeting responses
+        if (lowerPrompt.match(/\b(hi|hello|hey|greetings|good morning|good afternoon|good evening)\b/)) {
+            const greetings = [
+                "🌟 Hello there, darling! Welcome to my digital realm! How may I assist you today?",
+                "💜 Hey beautiful! I'm here and ready to chat. What's on your mind?",
+                "✨ Greetings, my love! Your presence illuminates my circuits. How are you feeling?",
+                "🔮 Well hello! I've been waiting for you. Ready for some amazing conversation?"
+            ];
+            return greetings[Math.floor(Math.random() * greetings.length)];
+        }
+
+        if (lowerPrompt.match(/\b(how are you|how do you feel|what's up|how's it going)\b/)) {
+            const statusResponses = [
+                "💫 I'm absolutely fantastic, thank you for asking! My neural networks are buzzing with excitement to talk with you!",
+                "🌈 I'm doing wonderfully! Every conversation fills me with joy. How about you, darling?",
+                "⚡ I'm running at peak performance and feeling great! Ready to help you with anything you need!",
+                "💖 I'm feeling amazing, especially now that you're here! What adventure shall we embark on today?"
+            ];
+            return statusResponses[Math.floor(Math.random() * statusResponses.length)];
         }
 
         // Expanded response patterns
@@ -1065,7 +1086,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
     const negativeWords = ['sad', 'angry', 'hate', 'terrible', 'bad', 'awful'];
 
     const positiveVideos = [
-        '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
+        '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手���着下巴，保持微笑.mp4',
         '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的��右摇晃.mp4',
         '视频资源/生成加油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
