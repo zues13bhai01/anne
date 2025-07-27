@@ -853,7 +853,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             switch(event.error) {
                 case 'not-allowed':
                     isListening = false;
-                    micButton.classList.remove('is-listening');
+                    if (micButton) micButton.classList.remove('is-listening');
                     showAnneMessage("I need your permission to access the microphone, darling. Please allow access and try again. 💔");
                     break;
                 case 'no-speech':
@@ -861,7 +861,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                     break;
                 case 'network':
                     isListening = false;
-                    micButton.classList.remove('is-listening');
+                    if (micButton) micButton.classList.remove('is-listening');
                     showAnneMessage("There's a network issue affecting my hearing, sweetheart. Voice recognition is temporarily disabled. 💔");
                     break;
                 case 'aborted':
