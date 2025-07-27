@@ -107,57 +107,111 @@
     to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
-/* --- Made by Hitesh - Always Visible Label --- */
+/* --- Cyberpunk Made by Hitesh Label --- */
 .made-by-hitesh {
     position: fixed;
     bottom: 2%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 9999;
-    font-family: 'Inter', 'Poppins', 'Roboto', sans-serif;
-    font-size: clamp(12px, 1.2vw, 16px);
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-family: 'Orbitron', 'VT323', monospace;
+    font-size: clamp(14px, 1.4vw, 18px);
+    font-weight: 700;
+    color: #00ffff;
+    text-shadow:
+        0 0 5px #00ffff,
+        0 0 10px #00ffff,
+        0 0 15px #00ffff,
+        0 0 20px #00ffff;
     text-align: center;
     opacity: 0;
-    animation: credit-fade-in 1s ease-in-out 2s forwards;
+    animation: cyberpunk-fade-in 2s ease-in-out 1s forwards;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .made-by-hitesh:hover {
-    color: #00ffff;
-    text-shadow: 0 0 10px #00ffff, 0 2px 4px rgba(0, 0, 0, 0.5);
-    transform: translateX(-50%) scale(1.05);
+    color: #ff00ff;
+    text-shadow:
+        0 0 5px #ff00ff,
+        0 0 10px #ff00ff,
+        0 0 15px #ff00ff,
+        0 0 20px #ff00ff,
+        0 0 25px #ff00ff;
+    transform: translateX(-50%) scale(1.1);
+    animation: glitch-effect 0.3s ease-in-out;
 }
 
 .credit-text {
     display: block;
     position: relative;
+    background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+    background-size: 300% 300%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: neon-gradient 3s ease-in-out infinite;
 }
 
 .credit-underline {
     width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #ff00ff, #00ffff);
-    margin: 4px auto 0;
-    transition: width 0.3s ease;
+    height: 3px;
+    background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
+    background-size: 200% 200%;
+    margin: 6px auto 0;
+    transition: width 0.5s ease;
+    animation: gradient-pulse 2s ease-in-out infinite;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
 .made-by-hitesh:hover .credit-underline {
-    width: 100%;
+    width: 120%;
+    animation: neon-underline 0.5s ease-in-out;
 }
 
-@keyframes credit-fade-in {
-    from {
+@keyframes cyberpunk-fade-in {
+    0% {
         opacity: 0;
-        transform: translateX(-50%) translateY(10px);
+        transform: translateX(-50%) translateY(20px) scale(0.8);
+        filter: blur(5px);
     }
-    to {
+    50% {
+        opacity: 0.8;
+        transform: translateX(-50%) translateY(-5px) scale(1.1);
+        filter: blur(2px);
+    }
+    100% {
         opacity: 1;
-        transform: translateX(-50%) translateY(0);
+        transform: translateX(-50%) translateY(0) scale(1);
+        filter: blur(0);
     }
+}
+
+@keyframes glitch-effect {
+    0%, 100% { transform: translateX(-50%) scale(1.1); }
+    20% { transform: translateX(-48%) scale(1.1) skew(2deg); }
+    40% { transform: translateX(-52%) scale(1.1) skew(-1deg); }
+    60% { transform: translateX(-49%) scale(1.1) skew(1deg); }
+    80% { transform: translateX(-51%) scale(1.1) skew(-2deg); }
+}
+
+@keyframes neon-gradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes gradient-pulse {
+    0%, 100% { background-position: 0% 50%; opacity: 0.7; }
+    50% { background-position: 100% 50%; opacity: 1; }
+}
+
+@keyframes neon-underline {
+    0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.6); }
+    100% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.7); }
 }
 
 /* --- Enhanced Anne Loading Screen --- */
