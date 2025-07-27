@@ -1177,13 +1177,15 @@ Anne:`,
         initializeMadeByHitesh();
     }, 2000);
 
-    // Retry Ollama connection periodically if it fails
-    setInterval(() => {
-        if (!ollamaAvailable) {
-            console.log('Retrying Ollama connection...');
-            testOllamaConnection();
-        }
-    }, 60000); // Retry every minute
+    // Retry Ollama connection periodically if it fails (only in local environment)
+    if (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1')) {
+        setInterval(() => {
+            if (!ollamaAvailable) {
+                console.log('Retrying Ollama connection...');
+                testOllamaConnection();
+            }
+        }, 60000); // Retry every minute
+    }
 
     // Track all user interactions
     document.addEventListener('click', () => {
