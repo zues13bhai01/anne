@@ -23,6 +23,33 @@
         </div>
     </div>
 
+    <!-- Audio System -->
+    <audio id="intro-audio" preload="auto" volume="0.5"></audio>
+    <audio id="audio-zenith" loop preload="auto" volume="0.3"></audio>
+    <audio id="audio-pixi" loop preload="auto" volume="0.3"></audio>
+    <audio id="audio-nova" loop preload="auto" volume="0.3"></audio>
+    <audio id="audio-velvet" loop preload="auto" volume="0.3"></audio>
+    <audio id="audio-blaze" loop preload="auto" volume="0.3"></audio>
+    <audio id="audio-aurora" loop preload="auto" volume="0.3"></audio>
+
+    <!-- Intro Video Animation -->
+    <div id="intro-video-container" class="intro-video-container">
+        <video id="intro-video" class="intro-video" playsinline preload="auto">
+            <source src="https://cdn.builder.io/o/assets%2F05795d83a50240879a66a110f8707954%2F723bb05ebc7e4a96aea0aad0e23fb501?alt=media&token=4152e4af-12a2-4ec4-8dc9-5cd324d5381d&apiKey=05795d83a50240879a66a110f8707954" type="video/mp4">
+        </video>
+        <div class="intro-video-overlay"></div>
+        <div class="intro-title">ANNE AI</div>
+        <div class="intro-subtitle">Advanced Neural Network Entity</div>
+    </div>
+
+    <!-- Personality Transition Video -->
+    <div id="transition-video-container" class="transition-video-container">
+        <video id="transition-video" class="transition-video" muted playsinline preload="auto">
+            <source src="https://cdn.builder.io/o/assets%2F05795d83a50240879a66a110f8707954%2F723bb05ebc7e4a96aea0aad0e23fb501?alt=media&token=4152e4af-12a2-4ec4-8dc9-5cd324d5381d&apiKey=05795d83a50240879a66a110f8707954" type="video/mp4">
+        </video>
+        <div class="transition-caption" id="transition-caption">Switching to Welcoming...</div>
+    </div>
+
     <!-- Cinematic Video Background -->
     <div class="video-background-container">
         <video class="cinematic-video" id="cinematic-video" autoplay muted loop playsinline preload="auto">
@@ -39,6 +66,13 @@
             <div class="mood-ring" id="mood-ring"></div>
             <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800" alt="Anne" class="anne-main-img" id="anne-main-img">
             <div class="anne-particles" id="anne-particles"></div>
+
+            <!-- Current Personality Avatar Badge -->
+            <div class="personality-avatar-badge" id="personality-avatar">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800" alt="Current Personality" id="avatar-img">
+                <div class="avatar-pulse-ring" id="avatar-ring"></div>
+                <div class="avatar-label" id="avatar-label">ZENITH</div>
+            </div>
         </div>
     </div>
 
@@ -71,46 +105,52 @@
         </div>
 
         <div class="personality-grid">
-            <div class="personality-card active" data-personality="greeting">
-                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800" alt="Greeting Anne">
-                <div class="personality-label">WELCOMING</div>
-                <div class="personality-desc">Sweet & Caring</div>
-                <div class="card-glow-effect"></div>
+            <div class="personality-card active" data-personality="zenith">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800" alt="Zenith">
+                <div class="personality-label">ZENITH</div>
+                <div class="personality-desc">💖 Welcoming</div>
+                <div class="card-glow-effect zenith-glow"></div>
+                <div class="audio-visualizer" id="viz-zenith"></div>
             </div>
 
-            <div class="personality-card" data-personality="flirty">
-                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F005a15af210d4f08a16c100cfa44824c?format=webp&width=800" alt="Flirty Anne">
-                <div class="personality-label">FLIRTY</div>
-                <div class="personality-desc">Bold & Teasing</div>
-                <div class="card-glow-effect"></div>
+            <div class="personality-card" data-personality="blaze">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F005a15af210d4f08a16c100cfa44824c?format=webp&width=800" alt="Blaze">
+                <div class="personality-label">BLAZE</div>
+                <div class="personality-desc">😈 Flirty</div>
+                <div class="card-glow-effect blaze-glow"></div>
+                <div class="audio-visualizer" id="viz-blaze"></div>
             </div>
 
-            <div class="personality-card" data-personality="happy">
-                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Fe68ae80624f34ce3a4387915b9605722?format=webp&width=800" alt="Happy Anne">
-                <div class="personality-label">PLAYFUL</div>
-                <div class="personality-desc">Excited & Fun</div>
-                <div class="card-glow-effect"></div>
+            <div class="personality-card" data-personality="pixi">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Fe68ae80624f34ce3a4387915b9605722?format=webp&width=800" alt="Pixi">
+                <div class="personality-label">PIXI</div>
+                <div class="personality-desc">🎉 Playful</div>
+                <div class="card-glow-effect pixi-glow"></div>
+                <div class="audio-visualizer" id="viz-pixi"></div>
             </div>
 
-            <div class="personality-card" data-personality="confident">
-                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F417a7d864e7b4d43a753589d6c319df0?format=webp&width=800" alt="Confident Anne">
-                <div class="personality-label">CONFIDENT</div>
-                <div class="personality-desc">Strong & Powerful</div>
-                <div class="card-glow-effect"></div>
+            <div class="personality-card" data-personality="nova">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F417a7d864e7b4d43a753589d6c319df0?format=webp&width=800" alt="Nova">
+                <div class="personality-label">NOVA</div>
+                <div class="personality-desc">🦾 Confident</div>
+                <div class="card-glow-effect nova-glow"></div>
+                <div class="audio-visualizer" id="viz-nova"></div>
             </div>
 
-            <div class="personality-card" data-personality="seductive">
-                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F1077ea0a19484cf2b28f3136a22ce91c?format=webp&width=800" alt="Seductive Anne">
-                <div class="personality-label">SEDUCTIVE</div>
-                <div class="personality-desc">Intimate & Sensual</div>
-                <div class="card-glow-effect"></div>
+            <div class="personality-card" data-personality="velvet">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F1077ea0a19484cf2b28f3136a22ce91c?format=webp&width=800" alt="Velvet">
+                <div class="personality-label">VELVET</div>
+                <div class="personality-desc">🔥 Seductive</div>
+                <div class="card-glow-effect velvet-glow"></div>
+                <div class="audio-visualizer" id="viz-velvet"></div>
             </div>
 
-            <div class="personality-card" data-personality="neutral">
-                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F060d04d5760e4253930d2417bc9e0db0?format=webp&width=800" alt="Neutral Anne">
-                <div class="personality-label">ELEGANT</div>
-                <div class="personality-desc">Classy & Refined</div>
-                <div class="card-glow-effect"></div>
+            <div class="personality-card" data-personality="aurora">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F060d04d5760e4253930d2417bc9e0db0?format=webp&width=800" alt="Aurora">
+                <div class="personality-label">AURORA</div>
+                <div class="personality-desc">👑 Elegant</div>
+                <div class="card-glow-effect aurora-glow"></div>
+                <div class="audio-visualizer" id="viz-aurora"></div>
             </div>
         </div>
     </div>
@@ -173,16 +213,19 @@
             <button class="menu-item" data-video="视频资源/生成跳舞视频.mp4">Dance</button>
         </div>
 
-        <!-- 底部麦克风和链接 -->
-        <footer class="bottom-bar">
-            <button class="mic-button" id="mic-button" aria-label="Start Listening">
-                <i class="fas fa-microphone"></i>
+        <!-- Audio Control -->
+        <div class="audio-control-container">
+            <button class="audio-toggle-btn" id="audio-toggle-btn" title="Toggle Audio">
+                <i class="fas fa-volume-up" id="audio-icon"></i>
             </button>
-            <a href="https://x.com/zues13bhai" target="_blank" rel="noopener noreferrer" class="footer-credit">
-                ⚡ Made by Hitesh
-            </a>
-        </footer>
+        </div>
 
+    </div>
+
+    <!-- Made by Hitesh Label - Always Visible -->
+    <div class="made-by-hitesh" id="made-by-hitesh">
+        <span class="credit-text">Made by Hitesh</span>
+        <div class="credit-underline"></div>
     </div>
 
     <script type="module" src="script.js"></script>

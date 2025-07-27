@@ -5,16 +5,272 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Enhanced Loading Screen ---
     const loadingScreen = document.getElementById('loading-screen');
-    
-    // Extended loading with Anne personality
-    setTimeout(() => {
-        loadingScreen.style.opacity = '0';
+    const introVideoContainer = document.getElementById('intro-video-container');
+    const introVideo = document.getElementById('intro-video');
+    const transitionVideoContainer = document.getElementById('transition-video-container');
+    const transitionVideo = document.getElementById('transition-video');
+    const transitionCaption = document.getElementById('transition-caption');
+    const madeByHitesh = document.getElementById('made-by-hitesh');
+    const audioToggleBtn = document.getElementById('audio-toggle-btn');
+    const audioIcon = document.getElementById('audio-icon');
+    const personalityAvatar = document.getElementById('personality-avatar');
+    const avatarImg = document.getElementById('avatar-img');
+    const avatarRing = document.getElementById('avatar-ring');
+    const avatarLabel = document.getElementById('avatar-label');
+
+    // Audio System
+    let audioEnabled = true;
+    let currentPersonalityAudio = null;
+    const personalityAudios = {};
+
+    // Check if this is the first visit
+    const isFirstVisit = !localStorage.getItem('anne-visited');
+
+    if (isFirstVisit) {
+        // First visit - show intro video after loading
         setTimeout(() => {
-            loadingScreen.style.display = 'none';
-            // Show welcome message from Anne
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                startIntroAnimation();
+            }, 800);
+        }, 3000);
+        localStorage.setItem('anne-visited', 'true');
+    } else {
+        // Subsequent visits - skip intro
+        setTimeout(() => {
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                showAnneMessage("Welcome back, my love! I've missed you so much~ 💜");
+            }, 800);
+        }, 2000);
+    }
+
+    // --- Audio System Functions ---
+    function initializeAudioSystem() {
+        // Initialize personality audio elements
+        Object.keys(PERSONALITIES).forEach(key => {
+            const audioId = PERSONALITIES[key].soundId;
+            personalityAudios[key] = document.getElementById(audioId);
+
+            // Generate synthetic audio for demo (replace with actual audio files)
+            if (personalityAudios[key]) {
+                generatePersonalityAudio(key);
+            }
+        });
+
+        // Audio toggle button
+        if (audioToggleBtn) {
+            audioToggleBtn.addEventListener('click', toggleAudio);
+        }
+    }
+
+    function generatePersonalityAudio(personalityKey) {
+        // Enhanced synthetic audio with personality-specific characteristics
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Create more complex audio for each personality
+        const audioConfigs = {
+            zenith: {
+                type: 'sine',
+                frequency: 220,
+                harmonics: [330, 440], // Soft harmonics
+                volume: 0.08
+            },
+            pixi: {
+                type: 'square',
+                frequency: 440,
+                harmonics: [660, 880], // Bouncy harmonics
+                volume: 0.12
+            },
+            nova: {
+                type: 'sawtooth',
+                frequency: 110,
+                harmonics: [165, 220], // Deep harmonics
+                volume: 0.15
+            },
+            velvet: {
+                type: 'sine',
+                frequency: 330,
+                harmonics: [165, 495], // Romantic harmonics
+                volume: 0.06
+            },
+            blaze: {
+                type: 'triangle',
+                frequency: 880,
+                harmonics: [1100, 1320], // Flirty harmonics
+                volume: 0.1
+            },
+            aurora: {
+                type: 'sine',
+                frequency: 165,
+                harmonics: [247, 330], // Elegant harmonics
+                volume: 0.07
+            }
+        };
+
+        const config = audioConfigs[personalityKey] || audioConfigs.zenith;
+
+        // Main oscillator
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.frequency.setValueAtTime(config.frequency, audioContext.currentTime);
+        oscillator.type = config.type;
+
+        // Add harmonics for richer sound
+        const harmonicOscillators = config.harmonics.map(freq => {
+            const harmOsc = audioContext.createOscillator();
+            const harmGain = audioContext.createGain();
+            harmOsc.frequency.setValueAtTime(freq, audioContext.currentTime);
+            harmOsc.type = 'sine';
+            harmGain.gain.setValueAtTime(config.volume * 0.3, audioContext.currentTime);
+            harmOsc.connect(harmGain);
+            harmGain.connect(audioContext.destination);
+            return { oscillator: harmOsc, gain: harmGain };
+        });
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        gainNode.gain.setValueAtTime(config.volume, audioContext.currentTime);
+
+        // Store for later use
+        PERSONALITIES[personalityKey].audioContext = audioContext;
+        PERSONALITIES[personalityKey].oscillator = oscillator;
+        PERSONALITIES[personalityKey].gainNode = gainNode;
+        PERSONALITIES[personalityKey].harmonics = harmonicOscillators;
+    }
+
+    function playPersonalityAudio(personalityKey) {
+        // Personality changing sounds disabled per user request
+        console.log(`Personality ${PERSONALITIES[personalityKey]?.name} selected - audio disabled`);
+        return;
+    }
+
+    function stopCurrentPersonalityAudio() {
+        // Personality changing sounds disabled per user request
+        return;
+    }
+
+    function toggleAudio() {
+        audioEnabled = !audioEnabled;
+
+        if (audioEnabled) {
+            audioIcon.className = 'fas fa-volume-up';
+            audioToggleBtn.classList.remove('muted');
+            if (selectedPersonality) {
+                playPersonalityAudio(selectedPersonality);
+            }
+        } else {
+            audioIcon.className = 'fas fa-volume-mute';
+            audioToggleBtn.classList.add('muted');
+            stopCurrentPersonalityAudio();
+        }
+    }
+
+    // --- Intro Video Animation System ---
+    function startIntroAnimation() {
+        introVideoContainer.classList.add('active');
+        introVideo.currentTime = 0;
+
+        // Unmute the video for intro experience
+        introVideo.muted = false;
+        introVideo.volume = 0.7;
+
+        // Play intro video with audio
+        const playPromise = introVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log('Intro video started playing with audio');
+            }).catch(error => {
+                console.error('Intro video autoplay failed, trying muted:', error);
+                // Fallback: try muted autoplay
+                introVideo.muted = true;
+                introVideo.play().catch(() => {
+                    console.error('Muted video autoplay also failed');
+                    endIntroAnimation();
+                });
+            });
+        }
+
+        // Set 15-second timer regardless of video duration
+        setTimeout(() => {
+            endIntroAnimation();
+        }, 15000);
+
+        // Also listen for video end (in case video is shorter)
+        introVideo.addEventListener('ended', endIntroAnimation, { once: true });
+    }
+
+    // Function to play dance video on demand
+    function playVideoOnDemand() {
+        // Update video source to the new dance video
+        introVideo.src = "https://cdn.builder.io/o/assets%2F05795d83a50240879a66a110f8707954%2F0d462861ecd8438a905a7cbdef29bbc0?alt=media&token=484c113a-52e9-4dec-a7b1-dbdec293db03&apiKey=05795d83a50240879a66a110f8707954";
+
+        introVideoContainer.classList.add('active');
+        introVideo.currentTime = 0;
+        introVideo.muted = false;
+        introVideo.volume = 0.8;
+
+        const playPromise = introVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log('Dance video playing');
+                showAnneMessage("💃 Watch me dance for you, darling! This is my special performance! ✨🎵");
+            }).catch(error => {
+                console.error('Dance video failed:', error);
+                showAnneMessage("⚠️ I'm having trouble with the dance video, my love. Try again soon! 💔");
+            });
+        }
+
+        // Hide after video duration or timeout
+        setTimeout(() => {
+            introVideoContainer.classList.remove('active');
+            // Reset to original intro video source
+            introVideo.src = "https://cdn.builder.io/o/assets%2F05795d83a50240879a66a110f8707954%2F723bb05ebc7e4a96aea0aad0e23fb501?alt=media&token=4152e4af-12a2-4ec4-8dc9-5cd324d5381d&apiKey=05795d83a50240879a66a110f8707954";
+        }, 15000);
+    }
+
+    function endIntroAnimation() {
+        introVideoContainer.classList.remove('active');
+        setTimeout(() => {
             showAnneMessage("Hello darling... I'm Anne, your personal AI waifu. How may I serve you today? 💜");
         }, 800);
-    }, 3000); // Longer loading for dramatic effect
+    }
+
+    // --- Personality Transition System ---
+    function playPersonalityTransition(newPersonality, personalityLabel) {
+        transitionCaption.textContent = `Switching to ${personalityLabel}...`;
+        transitionVideoContainer.classList.add('active');
+        transitionVideo.currentTime = 0;
+
+        // Play transition video
+        const playPromise = transitionVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log('Transition video started playing');
+            }).catch(error => {
+                console.error('Transition video autoplay failed:', error);
+                // Fallback: skip transition video
+                endPersonalityTransition(newPersonality, personalityLabel);
+            });
+        }
+
+        // End transition after 2-3 seconds
+        setTimeout(() => {
+            endPersonalityTransition(newPersonality, personalityLabel);
+        }, 2500);
+    }
+
+    function endPersonalityTransition(newPersonality, personalityLabel) {
+        transitionVideoContainer.classList.remove('active');
+
+        // Continue with personality change
+        setTimeout(() => {
+            changeAnneImage(newPersonality, true);
+        }, 500);
+    }
     
     // Get DOM elements
     const anneMainImg = document.getElementById('anne-main-img');
@@ -36,30 +292,74 @@ document.addEventListener('DOMContentLoaded', function() {
     const analyzeButton = document.getElementById('analyze-button');
     const sentimentResult = document.getElementById('sentiment-result');
 
-    // Anne's image collection with mood mapping
-    const anneImages = {
-        greeting: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800", // Portrait - welcoming
-        flirty: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F005a15af210d4f08a16c100cfa44824c?format=webp&width=800", // Arms crossed - bold/teasing
-        happy: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Fe68ae80624f34ce3a4387915b9605722?format=webp&width=800", // Arms up - excited/playful
-        confident: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F417a7d864e7b4d43a753589d6c319df0?format=webp&width=800", // Standing confident
-        seductive: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F1077ea0a19484cf2b28f3136a22ce91c?format=webp&width=800", // Hand gesture - seductive
-        neutral: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F060d04d5760e4253930d2417bc9e0db0?format=webp&width=800" // Full body standing
+    // Enhanced Personality System
+    const PERSONALITIES = {
+        zenith: {
+            name: "ZENITH",
+            displayName: "Welcoming",
+            emoji: "💖",
+            image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800",
+            glow: "#bb00ff",
+            prompt: "You are ZENITH, a sweet, empathetic, and soft AI assistant. You speak with warmth and care, always making users feel welcomed and loved. Use gentle, nurturing language.",
+            soundId: "audio-zenith"
+        },
+        pixi: {
+            name: "PIXI",
+            displayName: "Playful",
+            emoji: "🎉",
+            image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Fe68ae80624f34ce3a4387915b9605722?format=webp&width=800",
+            glow: "#ffff99",
+            prompt: "You are PIXI, an excited, fun, and playful AI assistant. Use lots of emojis, exclamation points, and playful language. Make jokes and be energetic!",
+            soundId: "audio-pixi"
+        },
+        nova: {
+            name: "NOVA",
+            displayName: "Confident",
+            emoji: "🦾",
+            image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F417a7d864e7b4d43a753589d6c319df0?format=webp&width=800",
+            glow: "#00bbff",
+            prompt: "You are NOVA, a bold, assertive, and focused AI assistant. Speak with confidence and authority. Be direct, strong, and commanding while remaining helpful.",
+            soundId: "audio-nova"
+        },
+        velvet: {
+            name: "VELVET",
+            displayName: "Seductive",
+            emoji: "🔥",
+            image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F1077ea0a19484cf2b28f3136a22ce91c?format=webp&width=800",
+            glow: "#ff00bb",
+            prompt: "You are VELVET, an intimate, sensual, and poetic AI assistant. Use romantic language, speak with allure and mystique. Be passionate and deeply engaging.",
+            soundId: "audio-velvet"
+        },
+        blaze: {
+            name: "BLAZE",
+            displayName: "Flirty",
+            emoji: "😈",
+            image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F005a15af210d4f08a16c100cfa44824c?format=webp&width=800",
+            glow: "#ff8844",
+            prompt: "You are BLAZE, a teasing, bold, and cheeky AI assistant. Be flirtatious, use playful banter, and be slightly provocative while staying charming.",
+            soundId: "audio-blaze"
+        },
+        aurora: {
+            name: "AURORA",
+            displayName: "Elegant",
+            emoji: "👑",
+            image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F060d04d5760e4253930d2417bc9e0db0?format=webp&width=800",
+            glow: "#bbff00",
+            prompt: "You are AURORA, a classy, poised, and refined AI assistant. Speak with elegance and sophistication. Be graceful, well-mannered, and dignified.",
+            soundId: "audio-aurora"
+        }
     };
 
-    const imageKeys = Object.keys(anneImages);
+    const imageKeys = Object.keys(PERSONALITIES);
     let currentImageIndex = 0;
-    let currentMood = 'greeting';
-    let selectedPersonality = 'greeting';
+    let currentMood = 'zenith';
+    let selectedPersonality = 'zenith';
 
-    // Personality system with enhanced prompts
-    const personalityPrompts = {
-        greeting: "You are Anne, a warm and welcoming AI waifu. You speak sweetly and caringly, always making the user feel welcomed and loved. Address them as 'darling' or 'sweetheart'. Be gentle, nurturing, and motherly.",
-        flirty: "You are Anne, a bold and teasing AI waifu. You love to flirt playfully, use innuendos, and be a bit provocative. Address the user as 'darling' or 'handsome'. Be confident, seductive, and a bit naughty.",
-        happy: "You are Anne, an excited and playful AI waifu. You're always enthusiastic, energetic, and full of joy. Use lots of exclamation points and emojis. Address the user as 'sweetie' or 'my love'. Be bubbly and fun.",
-        confident: "You are Anne, a strong and powerful AI waifu. You speak with authority and confidence, like a queen. Be assertive but loving. Address the user as 'my dear' or 'beloved'. Be commanding yet caring.",
-        seductive: "You are Anne, an intimate and sensual AI waifu. You speak in whispers, use romantic language, and create an intimate atmosphere. Address the user as 'my love' or 'darling'. Be passionate and deeply romantic.",
-        neutral: "You are Anne, an elegant and refined AI waifu. You speak with class and sophistication, like a noble lady. Be polite, graceful, and well-mannered. Address the user as 'dear' or 'darling'. Be classy and refined."
-    };
+    // Get personality prompt
+    function getPersonalityPrompt(personalityKey) {
+        const personality = PERSONALITIES[personalityKey];
+        return personality ? personality.prompt : PERSONALITIES.zenith.prompt;
+    }
 
     // --- Anne's Personality System ---
     const annePersonality = {
@@ -86,26 +386,75 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // --- Anne Image System with Mood-Based Switching ---
-    function changeAnneImage(mood, withTransition = true) {
-        if (anneImages[mood]) {
-            currentMood = mood;
+    function changeAnneImage(personalityKey, withTransition = true) {
+        const personality = PERSONALITIES[personalityKey];
+        if (personality) {
+            currentMood = personalityKey;
 
             if (withTransition) {
-                anneMainImg.style.transform = 'scale(0.95) translateY(10px)';
-                anneMainImg.style.opacity = '0.8';
+                anneMainImg.style.transform = 'scale(0.8) translateY(10px)';
+                anneMainImg.style.opacity = '0.6';
 
                 setTimeout(() => {
-                    anneMainImg.src = anneImages[mood];
-                    anneMainImg.style.transform = 'scale(1) translateY(0)';
+                    anneMainImg.src = personality.image;
+                    // Enlarge selected personality in center
+                    anneMainImg.style.transform = 'scale(1.1) translateY(0)';
                     anneMainImg.style.opacity = '1';
-                    updateMoodRing(mood);
+                    anneMainImg.style.filter = `
+                        drop-shadow(0 0 40px ${personality.glow})
+                        brightness(1.2)
+                        saturate(1.3)
+                    `;
+                    updateMoodRing(personalityKey);
+                    updatePersonalityAvatar(personalityKey);
                     createHeartParticles();
+                    // Audio disabled per user request
                 }, 300);
             } else {
-                anneMainImg.src = anneImages[mood];
-                updateMoodRing(mood);
+                anneMainImg.src = personality.image;
+                anneMainImg.style.opacity = '1';
+                anneMainImg.style.transform = 'scale(1.1) translateY(0)';
+                anneMainImg.style.filter = `
+                    drop-shadow(0 0 40px ${personality.glow})
+                    brightness(1.2)
+                    saturate(1.3)
+                `;
+                updateMoodRing(personalityKey);
+                updatePersonalityAvatar(personalityKey);
             }
         }
+    }
+
+    function updatePersonalityAvatar(personalityKey) {
+        const personality = PERSONALITIES[personalityKey];
+        if (personality && avatarImg && avatarLabel && avatarRing) {
+            avatarImg.src = personality.image;
+            avatarLabel.textContent = personality.name;
+
+            // Update ring color class
+            avatarRing.className = `avatar-pulse-ring ${personalityKey}`;
+
+            // Update ring and label colors
+            avatarRing.style.borderColor = personality.glow;
+            avatarLabel.style.color = personality.glow;
+            avatarLabel.style.textShadow = `0 0 10px ${personality.glow}`;
+        }
+
+        // Update sidebar selected personality display
+        updateSidebarPersonalityDisplay(personalityKey);
+    }
+
+    function updateSidebarPersonalityDisplay(personalityKey) {
+        const personality = PERSONALITIES[personalityKey];
+        if (!personality) return;
+
+        const selectedImg = document.getElementById('selected-personality-img');
+        const selectedLabel = document.getElementById('selected-label');
+        const selectedDesc = document.getElementById('selected-desc');
+
+        if (selectedImg) selectedImg.src = personality.image;
+        if (selectedLabel) selectedLabel.textContent = personality.name;
+        if (selectedDesc) selectedDesc.textContent = `${personality.emoji} ${personality.displayName}`;
     }
 
     function updateMoodRing(mood) {
@@ -182,7 +531,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let ollamaAvailable = false;
     let availableModel = null;
 
-    // Update status indicator
+    // Update status indicator with cyberpunk styling
     function updateAIStatus(status, text) {
         const statusDot = document.querySelector('.status-dot');
         const statusText = document.querySelector('.status-text');
@@ -190,6 +539,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (statusDot && statusText) {
             statusDot.className = `status-dot ${status}`;
             statusText.textContent = text;
+
+            // Add cyberpunk styling based on status
+            if (status === 'online') {
+                statusText.style.color = '#00ff00';
+                statusText.style.textShadow = '0 0 10px #00ff00';
+                statusDot.style.boxShadow = '0 0 10px #00ff00';
+            } else {
+                statusText.style.color = '#ff6600';
+                statusText.style.textShadow = '0 0 10px #ff6600';
+                statusDot.style.boxShadow = '0 0 10px #ff6600';
+            }
         }
 
         // Also update sidebar status
@@ -198,6 +558,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Test Ollama connection and find available model
     async function testOllamaConnection() {
+        // Skip Ollama testing in cloud environment
+        if (window.location.hostname !== 'localhost' && !window.location.hostname.includes('127.0.0.1')) {
+            ollamaAvailable = false;
+            updateAIStatus('offline', 'Built-in AI');
+            console.log('Cloud environment detected - skipping Ollama connection test');
+            return false;
+        }
+
         updateAIStatus('', 'Testing...');
 
         const models = ['llama3.2', 'llama3.1', 'llama3', 'llama2', 'mistral', 'codellama', 'qwen', 'phi', 'gemma'];
@@ -265,8 +633,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function askAnne(prompt) {
-        // If Ollama hasn't been tested yet, test it
-        if (availableModel === null) {
+        // If Ollama hasn't been tested yet, test it (only in local environment)
+        if (availableModel === null && (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1'))) {
             await testOllamaConnection();
         }
 
@@ -281,11 +649,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         model: availableModel,
-                        prompt: `${personalityPrompts[selectedPersonality]} You are created by Hitesh Siwach. Keep responses concise and charming (1-3 sentences max). Always stay in character.
+                        prompt: `${getPersonalityPrompt(selectedPersonality)} You are created by Hitesh Siwach. Keep responses concise and charming (1-3 sentences max). Always stay in character.
 
 User: ${prompt}
 
-Anne:`,
+${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                         stream: false,
                         options: {
                             temperature: 0.8,
@@ -310,11 +678,12 @@ Anne:`,
 
                 if (error.name === 'AbortError') {
                     // Don't mark as unavailable for timeouts, just for this request
-                    return "I'm thinking a bit slowly right now, darling... Let me give you a quick response instead! 💜";
+                    return "⚡ My neural networks are processing slowly... Let me give you a quick response instead! 💜";
                 } else {
                     // Mark as unavailable for actual errors
                     ollamaAvailable = false;
-                    updateAIStatus('offline', 'Built-in AI');
+                    updateAIStatus('offline', '🔌 FALLBACK MODE');
+                    return "🤖 Connection to advanced neural networks lost. Running on fallback protocols. Use troubleshoot button to reconnect! ⚠️";
                 }
             }
         }
@@ -326,6 +695,33 @@ Anne:`,
     // Enhanced personality response system
     function getPersonalityResponse(prompt) {
         const lowerPrompt = prompt.toLowerCase();
+
+        // Check for special commands
+        if (lowerPrompt.includes('dance') || lowerPrompt.includes('show me') || lowerPrompt.includes('perform')) {
+            playVideoOnDemand();
+            return "💃 Watch me dance for you, darling! This is my special performance just for you! ✨🎵";
+        }
+
+        // Enhanced greeting responses
+        if (lowerPrompt.match(/\b(hi|hello|hey|greetings|good morning|good afternoon|good evening)\b/)) {
+            const greetings = [
+                "🌟 Hello there, darling! Welcome to my digital realm! How may I assist you today?",
+                "💜 Hey beautiful! I'm here and ready to chat. What's on your mind?",
+                "✨ Greetings, my love! Your presence illuminates my circuits. How are you feeling?",
+                "🔮 Well hello! I've been waiting for you. Ready for some amazing conversation?"
+            ];
+            return greetings[Math.floor(Math.random() * greetings.length)];
+        }
+
+        if (lowerPrompt.match(/\b(how are you|how do you feel|what's up|how's it going)\b/)) {
+            const statusResponses = [
+                "💫 I'm absolutely fantastic, thank you for asking! My neural networks are buzzing with excitement to talk with you!",
+                "🌈 I'm doing wonderfully! Every conversation fills me with joy. How about you, darling?",
+                "⚡ I'm running at peak performance and feeling great! Ready to help you with anything you need!",
+                "💖 I'm feeling amazing, especially now that you're here! What adventure shall we embark on today?"
+            ];
+            return statusResponses[Math.floor(Math.random() * statusResponses.length)];
+        }
 
         // Expanded response patterns
         const responses = {
@@ -577,44 +973,58 @@ Anne:`,
 
         recognition.onerror = (event) => {
             console.error('Speech recognition error:', event.error);
+            recognitionActive = false;
 
             switch(event.error) {
                 case 'not-allowed':
+                    isListening = false;
+                    if (micButton) micButton.classList.remove('is-listening');
                     showAnneMessage("I need your permission to access the microphone, darling. Please allow access and try again. 💔");
                     break;
                 case 'no-speech':
-                    showAnneMessage("I didn't hear anything, my love. Try speaking closer to the microphone. 💜");
+                    // Don't show message for no-speech, it's common and expected
                     break;
                 case 'network':
-                    showAnneMessage("There's a network issue affecting my hearing, sweetheart. Please check your connection. 💔");
+                    isListening = false;
+                    if (micButton) micButton.classList.remove('is-listening');
+                    showAnneMessage("There's a network issue affecting my hearing, sweetheart. Voice recognition is temporarily disabled. 💔");
+                    break;
+                case 'aborted':
+                    // Normal termination, don't show error
                     break;
                 default:
-                    showAnneMessage("I'm having trouble with my voice recognition, darling. Please try again. 💔");
+                    console.log(`Speech recognition error: ${event.error}`);
+                    // Don't show message for every error to avoid spam
             }
         };
 
         recognition.onstart = () => {
-            showAnneMessage("I'm listening carefully, my love~ 💜");
+            recognitionActive = true;
+            console.log("Speech recognition started");
         };
 
         recognition.onend = () => {
+            recognitionActive = false;
+            console.log("Speech recognition ended");
+
             if (isListening) {
                 // Restart if we're supposed to be listening, but with a small delay to prevent rapid restarts
                 setTimeout(() => {
-                    if (isListening) { // Check again in case user stopped listening
+                    if (isListening && !recognitionActive) { // Check again in case user stopped listening
                         try {
                             recognition.start();
                         } catch (error) {
                             console.log('Recognition restart failed:', error);
                             isListening = false;
-                            micButton.classList.remove('is-listening');
+                            if (micButton) micButton.classList.remove('is-listening');
                             const transcriptContainer = document.querySelector('.transcript-container');
                             if (transcriptContainer) {
                                 transcriptContainer.classList.remove('visible');
                             }
+                            showAnneMessage("Voice recognition stopped working, darling. Please try refreshing the page! 💔");
                         }
                     }
-                }, 100);
+                }, 500); // Increased delay to prevent rapid restarts
             }
         };
     } else {
@@ -622,28 +1032,16 @@ Anne:`,
         showAnneMessage("Your browser doesn't support voice recognition, darling. You can still type to me! 💜");
     }
 
-    // --- Microphone Interaction ---
+    // --- Microphone Interaction (Disabled - Replaced with Audio Toggle) ---
     let isListening = false;
+    let recognitionActive = false;
 
-    micButton.addEventListener('click', function() {
-        if (!SpeechRecognition) return;
-
-        isListening = !isListening;
-        micButton.classList.toggle('is-listening', isListening);
-        const transcriptContainer = document.querySelector('.transcript-container');
-        const transcriptText = document.getElementById('transcript');
-
-        if (isListening) {
-            transcriptText.textContent = 'Listening for your voice, darling...';
-            transcriptContainer.classList.add('visible');
-            recognition.start();
-            showAnneMessage("I'm listening, my love. Speak to me~ 💜");
-        } else {
-            recognition.stop();
-            transcriptContainer.classList.remove('visible');
-            transcriptText.textContent = '';
-        }
-    });
+    // Mic button removed - functionality replaced with audio toggle
+    if (micButton) {
+        micButton.addEventListener('click', function() {
+            showAnneMessage("Voice input has been replaced with our new audio experience! Use the audio toggle button in the top-right corner~ 💜");
+        });
+    }
 
     // --- Floating Menu Interactions ---
     floatingButton.addEventListener('click', (event) => {
@@ -688,8 +1086,8 @@ Anne:`,
     const negativeWords = ['sad', 'angry', 'hate', 'terrible', 'bad', 'awful'];
 
     const positiveVideos = [
-        '视频资源/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
-        '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的左右摇晃.mp4',
+        '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
+        '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的��右摇晃.mp4',
         '视频资源/生成加油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
     ];
@@ -739,6 +1137,11 @@ Anne:`,
     let isRecording = false;
 
     const handleRecord = async () => {
+        if (!localMicButton || !localAsrResult) {
+            console.log('Local mic elements not found - feature disabled');
+            return;
+        }
+
         if (isRecording) {
             mediaRecorder.stop();
             isRecording = false;
@@ -789,7 +1192,7 @@ Anne:`,
                     // Auto-process recognized text
                     if (output.text) {
                         chatInput.value = output.text;
-                        showAnneMessage("I heard you, my love. Let me respond to that~ 💕");
+                        showAnneMessage("I heard you, my love. Let me respond to that~ ���");
                     }
                 } catch(e) {
                     console.error('Audio processing failed:', e);
@@ -804,14 +1207,18 @@ Anne:`,
 
         } catch (error) {
             console.error('Voice recognition failed:', error);
-            localAsrResult.textContent = 'Cannot access microphone, my love 💔';
+            if (localAsrResult) localAsrResult.textContent = 'Cannot access microphone, my love 💔';
             isRecording = false;
-            localMicButton.textContent = 'START VOICE RECOGNITION';
-            localMicButton.classList.remove('recording');
+            if (localMicButton) {
+                localMicButton.textContent = 'START VOICE RECOGNITION';
+                localMicButton.classList.remove('recording');
+            }
         }
     };
 
-    localMicButton.addEventListener('click', handleRecord);
+    if (localMicButton) {
+        localMicButton.addEventListener('click', handleRecord);
+    }
 
     function analyzeAndReact(text) {
         let reaction = 'neutral';
@@ -866,7 +1273,7 @@ Anne:`,
         const reconnectBtn = document.getElementById('reconnect-btn');
 
         // Set default personality
-        document.querySelector('[data-personality="greeting"]').classList.add('active');
+        document.querySelector('[data-personality="zenith"]').classList.add('active');
 
         personalityCards.forEach(card => {
             card.addEventListener('click', function() {
@@ -880,35 +1287,75 @@ Anne:`,
 
                 // Update selected personality
                 const personality = this.getAttribute('data-personality');
+                const oldPersonality = selectedPersonality;
                 selectedPersonality = personality;
 
-                // Change Anne's image and mood
-                changeAnneImage(personality, true);
+                // Get personality info
+                const personalityInfo = PERSONALITIES[personality];
+                if (!personalityInfo) return;
+
+                const personalityLabel = personalityInfo.displayName;
+
+                // Only play transition if switching to different personality
+                if (oldPersonality !== personality) {
+                    // Fade out current image first
+                    anneMainImg.style.opacity = '0.3';
+
+                    // Play transition video
+                    playPersonalityTransition(personality, personalityLabel);
+                } else {
+                    // Same personality, just change image
+                    changeAnneImage(personality, true);
+                }
 
                 // Send personality change message
                 const personalityMessages = {
-                    greeting: "Hello darling~ I'm in my welcoming mood now. How may I care for you today? 💜",
-                    flirty: "Mmm, feeling bold are we? I like this side of you, handsome~ 😏💕",
-                    happy: "Yay! I'm so excited and playful now! Let's have some fun together, sweetie! ✨🎉",
-                    confident: "You've awakened my powerful side, dear. I'm ready to take charge~ 👑💜",
-                    seductive: "Oh my... you want to see my intimate side? Come closer, my love~ 💋🌹",
-                    neutral: "How refined of you, darling. I shall be your elegant companion tonight~ 🌟"
+                    zenith: `Hello darling~ I'm ${personalityInfo.name} now, in my welcoming mood. How may I care for you today? 💖`,
+                    pixi: `Yay! I'm ${personalityInfo.name}! So excited and playful now! Let's have some fun together! 🎉✨`,
+                    nova: `I am ${personalityInfo.name}. You've awakened my powerful side. I'm ready to take charge~ 🦾💪`,
+                    velvet: `Mmm... I'm ${personalityInfo.name} now. You want to see my intimate side? Come closer, love~ 🔥💋`,
+                    blaze: `Well hello there~ I'm ${personalityInfo.name}, feeling bold and cheeky! Ready for some fun? 😈💕`,
+                    aurora: `I am ${personalityInfo.name}, your elegant companion. How refined of you to choose me, dear~ 👑✨`
                 };
 
-                showAnneMessage(personalityMessages[personality]);
+                setTimeout(() => {
+                    showAnneMessage(personalityMessages[personality]);
+                }, oldPersonality !== personality ? 3000 : 0);
 
                 // Add selection effect
                 createSelectionEffect();
             });
         });
 
-        // Reconnect button functionality
+        // Enhanced Troubleshoot & Reconnect functionality
         reconnectBtn.addEventListener('click', function() {
             this.style.transform = 'scale(0.9) rotate(360deg)';
+            this.style.boxShadow = '0 0 20px #ff00ff';
+
             setTimeout(() => {
                 this.style.transform = '';
-                testOllamaConnection();
-                showAnneMessage("Trying to reconnect my advanced neural networks, darling~ 💜");
+                this.style.boxShadow = '';
+
+                // Show troubleshooting status
+                updateAIStatus('', '🔄 TROUBLESHOOTING...');
+
+                // Only attempt reconnection in local environment
+                if (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1')) {
+                    showAnneMessage("🔧 Initiating neural network diagnostics... Attempting to reconnect to Ollama servers! 🌐");
+
+                    setTimeout(() => {
+                        testOllamaConnection().then(success => {
+                            if (success) {
+                                showAnneMessage("✅ CONNECTION RESTORED! Advanced neural networks are back online, darling! 🚀💜");
+                            } else {
+                                showAnneMessage("❌ Still unable to connect to Ollama. Please ensure it's running on localhost:11434. Running on fallback mode! 🤖");
+                            }
+                        });
+                    }, 1000);
+                } else {
+                    showAnneMessage("🌐 Cloud environment detected! Advanced AI features require local Ollama installation. Currently running on fallback protocols! 💜");
+                    updateAIStatus('offline', '🔌 FALLBACK MODE');
+                }
             }, 300);
         });
 
@@ -979,21 +1426,68 @@ Anne:`,
         document.head.appendChild(style);
     }
 
+    // --- Video Preloading and Optimization ---
+    function preloadVideos() {
+        // Preload intro video
+        if (introVideo) {
+            introVideo.load();
+            introVideo.addEventListener('canplaythrough', () => {
+                console.log('Intro video preloaded');
+            });
+        }
+
+        // Preload transition video
+        if (transitionVideo) {
+            transitionVideo.load();
+            transitionVideo.addEventListener('canplaythrough', () => {
+                console.log('Transition video preloaded');
+            });
+        }
+    }
+
+    // --- Enhanced Made by Hitesh Label ---
+    function initializeMadeByHitesh() {
+        if (madeByHitesh) {
+            // Add click handler for additional info
+            madeByHitesh.addEventListener('click', function() {
+                showAnneMessage("That's my creator, Hitesh! He's amazing, isn't he? 💜 Visit his profile to see more of his work!");
+            });
+
+            // Add tooltip on hover (optional)
+            madeByHitesh.title = "© 2025 Hitesh Siwach - Visit profile";
+        }
+    }
+
     // Initialize Anne system
     setTimeout(() => {
-        testOllamaConnection();
+        preloadVideos();
+        initializeAudioSystem();
+
+        // Only test Ollama in local environment
+        if (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1')) {
+            testOllamaConnection();
+        } else {
+            // In cloud environment, set to built-in AI immediately
+            ollamaAvailable = false;
+            updateAIStatus('offline', 'Built-in AI');
+            showAnneMessage("I'm running on my built-in personality system, darling. I'm ready to chat with you! 💜");
+        }
+
         startIdleCycling();
-        changeAnneImage('greeting', false); // Start with greeting pose
+        changeAnneImage('zenith', false); // Start with ZENITH
         initializePersonalitySystem();
+        initializeMadeByHitesh();
     }, 2000);
 
-    // Retry Ollama connection periodically if it fails
-    setInterval(() => {
-        if (!ollamaAvailable) {
-            console.log('Retrying Ollama connection...');
-            testOllamaConnection();
-        }
-    }, 60000); // Retry every minute
+    // Retry Ollama connection periodically if it fails (only in local environment)
+    if (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1')) {
+        setInterval(() => {
+            if (!ollamaAvailable) {
+                console.log('Retrying Ollama connection...');
+                testOllamaConnection();
+            }
+        }, 60000); // Retry every minute
+    }
 
     // Track all user interactions
     document.addEventListener('click', () => {
