@@ -1086,7 +1086,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
     const negativeWords = ['sad', 'angry', 'hate', 'terrible', 'bad', 'awful'];
 
     const positiveVideos = [
-        '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手���着下巴，保持微笑.mp4',
+        '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
         '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的��右摇晃.mp4',
         '视频资源/生成加油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
@@ -1327,18 +1327,34 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             });
         });
 
-        // Reconnect button functionality
+        // Enhanced Troubleshoot & Reconnect functionality
         reconnectBtn.addEventListener('click', function() {
             this.style.transform = 'scale(0.9) rotate(360deg)';
+            this.style.boxShadow = '0 0 20px #ff00ff';
+
             setTimeout(() => {
                 this.style.transform = '';
+                this.style.boxShadow = '';
+
+                // Show troubleshooting status
+                updateAIStatus('', '🔄 TROUBLESHOOTING...');
 
                 // Only attempt reconnection in local environment
                 if (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1')) {
-                    testOllamaConnection();
-                    showAnneMessage("Trying to reconnect my advanced neural networks, darling~ 💜");
+                    showAnneMessage("🔧 Initiating neural network diagnostics... Attempting to reconnect to Ollama servers! 🌐");
+
+                    setTimeout(() => {
+                        testOllamaConnection().then(success => {
+                            if (success) {
+                                showAnneMessage("✅ CONNECTION RESTORED! Advanced neural networks are back online, darling! 🚀💜");
+                            } else {
+                                showAnneMessage("❌ Still unable to connect to Ollama. Please ensure it's running on localhost:11434. Running on fallback mode! 🤖");
+                            }
+                        });
+                    }, 1000);
                 } else {
-                    showAnneMessage("I'm running in cloud mode, my love. Advanced AI features need a local Ollama installation! 💜");
+                    showAnneMessage("🌐 Cloud environment detected! Advanced AI features require local Ollama installation. Currently running on fallback protocols! 💜");
+                    updateAIStatus('offline', '🔌 FALLBACK MODE');
                 }
             }, 300);
         });
