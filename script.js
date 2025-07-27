@@ -672,19 +672,28 @@ Anne:`,
 
         recognition.onerror = (event) => {
             console.error('Speech recognition error:', event.error);
+            recognitionActive = false;
 
             switch(event.error) {
                 case 'not-allowed':
+                    isListening = false;
+                    micButton.classList.remove('is-listening');
                     showAnneMessage("I need your permission to access the microphone, darling. Please allow access and try again. 💔");
                     break;
                 case 'no-speech':
-                    showAnneMessage("I didn't hear anything, my love. Try speaking closer to the microphone. 💜");
+                    // Don't show message for no-speech, it's common and expected
                     break;
                 case 'network':
-                    showAnneMessage("There's a network issue affecting my hearing, sweetheart. Please check your connection. 💔");
+                    isListening = false;
+                    micButton.classList.remove('is-listening');
+                    showAnneMessage("There's a network issue affecting my hearing, sweetheart. Voice recognition is temporarily disabled. 💔");
+                    break;
+                case 'aborted':
+                    // Normal termination, don't show error
                     break;
                 default:
-                    showAnneMessage("I'm having trouble with my voice recognition, darling. Please try again. 💔");
+                    console.log(`Speech recognition error: ${event.error}`);
+                    // Don't show message for every error to avoid spam
             }
         };
 
