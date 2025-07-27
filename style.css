@@ -1152,10 +1152,12 @@ html, body {
 }
 
 .status-text {
-    color: #cccccc;
-    font-weight: 600;
+    color: #00ffff;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-shadow: 0 0 10px currentColor;
+    transition: all 0.3s ease;
 }
 
 @keyframes pulse-status {
