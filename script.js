@@ -966,10 +966,32 @@ Anne:`,
 
                 // Update selected personality
                 const personality = this.getAttribute('data-personality');
+                const oldPersonality = selectedPersonality;
                 selectedPersonality = personality;
 
-                // Change Anne's image and mood
-                changeAnneImage(personality, true);
+                // Get personality labels
+                const personalityLabels = {
+                    greeting: "Welcoming",
+                    flirty: "Flirty",
+                    happy: "Playful",
+                    confident: "Confident",
+                    seductive: "Seductive",
+                    neutral: "Elegant"
+                };
+
+                const personalityLabel = personalityLabels[personality];
+
+                // Only play transition if switching to different personality
+                if (oldPersonality !== personality) {
+                    // Fade out current image first
+                    anneMainImg.style.opacity = '0.3';
+
+                    // Play transition video
+                    playPersonalityTransition(personality, personalityLabel);
+                } else {
+                    // Same personality, just change image
+                    changeAnneImage(personality, true);
+                }
 
                 // Send personality change message
                 const personalityMessages = {
@@ -981,7 +1003,9 @@ Anne:`,
                     neutral: "How refined of you, darling. I shall be your elegant companion tonight~ 🌟"
                 };
 
-                showAnneMessage(personalityMessages[personality]);
+                setTimeout(() => {
+                    showAnneMessage(personalityMessages[personality]);
+                }, oldPersonality !== personality ? 3000 : 0);
 
                 // Add selection effect
                 createSelectionEffect();
