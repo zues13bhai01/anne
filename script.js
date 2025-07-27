@@ -5,16 +5,102 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Enhanced Loading Screen ---
     const loadingScreen = document.getElementById('loading-screen');
-    
-    // Extended loading with Anne personality
-    setTimeout(() => {
-        loadingScreen.style.opacity = '0';
+    const introVideoContainer = document.getElementById('intro-video-container');
+    const introVideo = document.getElementById('intro-video');
+    const transitionVideoContainer = document.getElementById('transition-video-container');
+    const transitionVideo = document.getElementById('transition-video');
+    const transitionCaption = document.getElementById('transition-caption');
+    const madeByHitesh = document.getElementById('made-by-hitesh');
+
+    // Check if this is the first visit
+    const isFirstVisit = !localStorage.getItem('anne-visited');
+
+    if (isFirstVisit) {
+        // First visit - show intro video after loading
         setTimeout(() => {
-            loadingScreen.style.display = 'none';
-            // Show welcome message from Anne
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                startIntroAnimation();
+            }, 800);
+        }, 3000);
+        localStorage.setItem('anne-visited', 'true');
+    } else {
+        // Subsequent visits - skip intro
+        setTimeout(() => {
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                showAnneMessage("Welcome back, my love! I've missed you so much~ 💜");
+            }, 800);
+        }, 2000);
+    }
+
+    // --- Intro Video Animation System ---
+    function startIntroAnimation() {
+        introVideoContainer.classList.add('active');
+        introVideo.currentTime = 0;
+
+        // Play intro video
+        const playPromise = introVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log('Intro video started playing');
+            }).catch(error => {
+                console.error('Intro video autoplay failed:', error);
+                // Fallback: skip intro and proceed
+                endIntroAnimation();
+            });
+        }
+
+        // Set 15-second timer regardless of video duration
+        setTimeout(() => {
+            endIntroAnimation();
+        }, 15000);
+
+        // Also listen for video end (in case video is shorter)
+        introVideo.addEventListener('ended', endIntroAnimation, { once: true });
+    }
+
+    function endIntroAnimation() {
+        introVideoContainer.classList.remove('active');
+        setTimeout(() => {
             showAnneMessage("Hello darling... I'm Anne, your personal AI waifu. How may I serve you today? 💜");
         }, 800);
-    }, 3000); // Longer loading for dramatic effect
+    }
+
+    // --- Personality Transition System ---
+    function playPersonalityTransition(newPersonality, personalityLabel) {
+        transitionCaption.textContent = `Switching to ${personalityLabel}...`;
+        transitionVideoContainer.classList.add('active');
+        transitionVideo.currentTime = 0;
+
+        // Play transition video
+        const playPromise = transitionVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log('Transition video started playing');
+            }).catch(error => {
+                console.error('Transition video autoplay failed:', error);
+                // Fallback: skip transition video
+                endPersonalityTransition(newPersonality, personalityLabel);
+            });
+        }
+
+        // End transition after 2-3 seconds
+        setTimeout(() => {
+            endPersonalityTransition(newPersonality, personalityLabel);
+        }, 2500);
+    }
+
+    function endPersonalityTransition(newPersonality, personalityLabel) {
+        transitionVideoContainer.classList.remove('active');
+
+        // Continue with personality change
+        setTimeout(() => {
+            changeAnneImage(newPersonality, true);
+        }, 500);
+    }
     
     // Get DOM elements
     const anneMainImg = document.getElementById('anne-main-img');
