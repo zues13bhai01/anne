@@ -147,19 +147,23 @@ document.addEventListener('DOMContentLoaded', function() {
         introVideoContainer.classList.add('active');
         introVideo.currentTime = 0;
 
+        // Unmute the video for intro experience
+        introVideo.muted = false;
+        introVideo.volume = 0.7;
+
         // Play intro video with audio
         const playPromise = introVideo.play();
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                console.log('Intro video started playing');
-                // Play cyberpunk intro audio if available
-                if (audioEnabled && introAudio) {
-                    introAudio.play().catch(e => console.log('Intro audio failed:', e));
-                }
+                console.log('Intro video started playing with audio');
             }).catch(error => {
-                console.error('Intro video autoplay failed:', error);
-                // Fallback: skip intro and proceed
-                endIntroAnimation();
+                console.error('Intro video autoplay failed, trying muted:', error);
+                // Fallback: try muted autoplay
+                introVideo.muted = true;
+                introVideo.play().catch(() => {
+                    console.error('Muted video autoplay also failed');
+                    endIntroAnimation();
+                });
             });
         }
 
@@ -170,6 +174,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Also listen for video end (in case video is shorter)
         introVideo.addEventListener('ended', endIntroAnimation, { once: true });
+    }
+
+    // Function to play video on demand (for "dance" command)
+    function playVideoOnDemand() {
+        introVideoContainer.classList.add('active');
+        introVideo.currentTime = 0;
+        introVideo.muted = false;
+        introVideo.volume = 0.8;
+
+        const playPromise = introVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log('On-demand video playing');
+                showAnneMessage("Watch me dance for you, darling! 💃✨");
+            }).catch(error => {
+                console.error('On-demand video failed:', error);
+                showAnneMessage("I'm having trouble with the video, my love. Try again soon! 💔");
+            });
+        }
+
+        // Hide after video duration or timeout
+        setTimeout(() => {
+            introVideoContainer.classList.remove('active');
+        }, 15000);
     }
 
     function endIntroAnimation() {
