@@ -689,14 +689,18 @@ Anne:`,
         };
 
         recognition.onstart = () => {
-            showAnneMessage("I'm listening carefully, my love~ 💜");
+            recognitionActive = true;
+            console.log("Speech recognition started");
         };
 
         recognition.onend = () => {
+            recognitionActive = false;
+            console.log("Speech recognition ended");
+
             if (isListening) {
                 // Restart if we're supposed to be listening, but with a small delay to prevent rapid restarts
                 setTimeout(() => {
-                    if (isListening) { // Check again in case user stopped listening
+                    if (isListening && !recognitionActive) { // Check again in case user stopped listening
                         try {
                             recognition.start();
                         } catch (error) {
@@ -707,9 +711,10 @@ Anne:`,
                             if (transcriptContainer) {
                                 transcriptContainer.classList.remove('visible');
                             }
+                            showAnneMessage("Voice recognition stopped working, darling. Please click the microphone again! 💔");
                         }
                     }
-                }, 100);
+                }, 500); // Increased delay to prevent rapid restarts
             }
         };
     } else {
