@@ -749,7 +749,7 @@ Anne:`,
                 showAnneMessage(`Look at me pose for you, darling~ Do you like what you see? 💜`);
             } else if (action.includes('cheer')) {
                 changeAnneImage('happy', true);
-                showAnneMessage(`Yay! I'm so excited to cheer you up, my love! ✨`);
+                showAnneMessage(`Yay! I'm so excited to cheer you up, my love! ��`);
             } else if (action.includes('dance')) {
                 changeAnneImage('flirty', true);
                 showAnneMessage(`Watch me move for you, sweetheart~ 💃💕`);
@@ -1090,12 +1090,46 @@ Anne:`,
         document.head.appendChild(style);
     }
 
+    // --- Video Preloading and Optimization ---
+    function preloadVideos() {
+        // Preload intro video
+        if (introVideo) {
+            introVideo.load();
+            introVideo.addEventListener('canplaythrough', () => {
+                console.log('Intro video preloaded');
+            });
+        }
+
+        // Preload transition video
+        if (transitionVideo) {
+            transitionVideo.load();
+            transitionVideo.addEventListener('canplaythrough', () => {
+                console.log('Transition video preloaded');
+            });
+        }
+    }
+
+    // --- Enhanced Made by Hitesh Label ---
+    function initializeMadeByHitesh() {
+        if (madeByHitesh) {
+            // Add click handler for additional info
+            madeByHitesh.addEventListener('click', function() {
+                showAnneMessage("That's my creator, Hitesh! He's amazing, isn't he? 💜 Visit his profile to see more of his work!");
+            });
+
+            // Add tooltip on hover (optional)
+            madeByHitesh.title = "© 2025 Hitesh Siwach - Visit profile";
+        }
+    }
+
     // Initialize Anne system
     setTimeout(() => {
+        preloadVideos();
         testOllamaConnection();
         startIdleCycling();
         changeAnneImage('greeting', false); // Start with greeting pose
         initializePersonalitySystem();
+        initializeMadeByHitesh();
     }, 2000);
 
     // Retry Ollama connection periodically if it fails
