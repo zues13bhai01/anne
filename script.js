@@ -47,16 +47,115 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 2000);
     }
 
+    // --- Audio System Functions ---
+    function initializeAudioSystem() {
+        // Initialize personality audio elements
+        Object.keys(PERSONALITIES).forEach(key => {
+            const audioId = PERSONALITIES[key].soundId;
+            personalityAudios[key] = document.getElementById(audioId);
+
+            // Generate synthetic audio for demo (replace with actual audio files)
+            if (personalityAudios[key]) {
+                generatePersonalityAudio(key);
+            }
+        });
+
+        // Audio toggle button
+        if (audioToggleBtn) {
+            audioToggleBtn.addEventListener('click', toggleAudio);
+        }
+    }
+
+    function generatePersonalityAudio(personalityKey) {
+        // Generate synthetic ambient audio using Web Audio API
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        // Different frequencies for different personalities
+        const frequencies = {
+            zenith: 220,   // Sweet chimes
+            pixi: 440,     // Bouncy notes
+            nova: 110,     // Deep bass
+            velvet: 330,   // Heartbeat-like
+            blaze: 880,    // Higher pitch
+            aurora: 165    // Piano-like
+        };
+
+        oscillator.frequency.setValueAtTime(frequencies[personalityKey] || 220, audioContext.currentTime);
+        oscillator.type = personalityKey === 'nova' ? 'sawtooth' : 'sine';
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+
+        // Store for later use
+        PERSONALITIES[personalityKey].audioContext = audioContext;
+        PERSONALITIES[personalityKey].oscillator = oscillator;
+        PERSONALITIES[personalityKey].gainNode = gainNode;
+    }
+
+    function playPersonalityAudio(personalityKey) {
+        if (!audioEnabled) return;
+
+        // Stop current audio
+        stopCurrentPersonalityAudio();
+
+        const personality = PERSONALITIES[personalityKey];
+        if (personality && personality.oscillator) {
+            try {
+                personality.oscillator.start();
+                currentPersonalityAudio = personalityKey;
+            } catch (error) {
+                console.log('Audio already started or failed to start');
+            }
+        }
+    }
+
+    function stopCurrentPersonalityAudio() {
+        if (currentPersonalityAudio) {
+            const personality = PERSONALITIES[currentPersonalityAudio];
+            if (personality && personality.oscillator) {
+                try {
+                    personality.oscillator.stop();
+                } catch (error) {
+                    console.log('Audio already stopped');
+                }
+            }
+            currentPersonalityAudio = null;
+        }
+    }
+
+    function toggleAudio() {
+        audioEnabled = !audioEnabled;
+
+        if (audioEnabled) {
+            audioIcon.className = 'fas fa-volume-up';
+            audioToggleBtn.classList.remove('muted');
+            if (selectedPersonality) {
+                playPersonalityAudio(selectedPersonality);
+            }
+        } else {
+            audioIcon.className = 'fas fa-volume-mute';
+            audioToggleBtn.classList.add('muted');
+            stopCurrentPersonalityAudio();
+        }
+    }
+
     // --- Intro Video Animation System ---
     function startIntroAnimation() {
         introVideoContainer.classList.add('active');
         introVideo.currentTime = 0;
 
-        // Play intro video
+        // Play intro video with audio
         const playPromise = introVideo.play();
         if (playPromise !== undefined) {
             playPromise.then(() => {
                 console.log('Intro video started playing');
+                // Play cyberpunk intro audio if available
+                if (audioEnabled && introAudio) {
+                    introAudio.play().catch(e => console.log('Intro audio failed:', e));
+                }
             }).catch(error => {
                 console.error('Intro video autoplay failed:', error);
                 // Fallback: skip intro and proceed
@@ -875,7 +974,7 @@ Anne:`,
     const negativeWords = ['sad', 'angry', 'hate', 'terrible', 'bad', 'awful'];
 
     const positiveVideos = [
-        '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
+        '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴��保持微笑.mp4',
         '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的左右摇晃.mp4',
         '视频资源/生成加油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
@@ -1098,7 +1197,7 @@ Anne:`,
                 const personalityMessages = {
                     greeting: "Hello darling~ I'm in my welcoming mood now. How may I care for you today? 💜",
                     flirty: "Mmm, feeling bold are we? I like this side of you, handsome~ 😏💕",
-                    happy: "Yay! I'm so excited and playful now! Let's have some fun together, sweetie! ✨��",
+                    happy: "Yay! I'm so excited and playful now! Let's have some fun together, sweetie! ✨🎉",
                     confident: "You've awakened my powerful side, dear. I'm ready to take charge~ 👑💜",
                     seductive: "Oh my... you want to see my intimate side? Come closer, my love~ 💋🌹",
                     neutral: "How refined of you, darling. I shall be your elegant companion tonight~ 🌟"
