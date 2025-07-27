@@ -185,15 +185,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentMood = 'zenith';
     let selectedPersonality = 'zenith';
 
-    // Personality system with enhanced prompts
-    const personalityPrompts = {
-        greeting: "You are Anne, a warm and welcoming AI waifu. You speak sweetly and caringly, always making the user feel welcomed and loved. Address them as 'darling' or 'sweetheart'. Be gentle, nurturing, and motherly.",
-        flirty: "You are Anne, a bold and teasing AI waifu. You love to flirt playfully, use innuendos, and be a bit provocative. Address the user as 'darling' or 'handsome'. Be confident, seductive, and a bit naughty.",
-        happy: "You are Anne, an excited and playful AI waifu. You're always enthusiastic, energetic, and full of joy. Use lots of exclamation points and emojis. Address the user as 'sweetie' or 'my love'. Be bubbly and fun.",
-        confident: "You are Anne, a strong and powerful AI waifu. You speak with authority and confidence, like a queen. Be assertive but loving. Address the user as 'my dear' or 'beloved'. Be commanding yet caring.",
-        seductive: "You are Anne, an intimate and sensual AI waifu. You speak in whispers, use romantic language, and create an intimate atmosphere. Address the user as 'my love' or 'darling'. Be passionate and deeply romantic.",
-        neutral: "You are Anne, an elegant and refined AI waifu. You speak with class and sophistication, like a noble lady. Be polite, graceful, and well-mannered. Address the user as 'dear' or 'darling'. Be classy and refined."
-    };
+    // Get personality prompt
+    function getPersonalityPrompt(personalityKey) {
+        const personality = PERSONALITIES[personalityKey];
+        return personality ? personality.prompt : PERSONALITIES.zenith.prompt;
+    }
 
     // --- Anne's Personality System ---
     const annePersonality = {
@@ -562,7 +558,7 @@ Anne:`,
     function addSparkleEffect() {
         // Create sparkle animation when Anne speaks
         const sparkle = document.createElement('div');
-        sparkle.innerHTML = '��';
+        sparkle.innerHTML = '✨';
         sparkle.style.position = 'fixed';
         sparkle.style.left = Math.random() * window.innerWidth + 'px';
         sparkle.style.top = Math.random() * window.innerHeight + 'px';
@@ -868,7 +864,7 @@ Anne:`,
     const negativeWords = ['sad', 'angry', 'hate', 'terrible', 'bad', 'awful'];
 
     const positiveVideos = [
-        '视频资源/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
+        '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
         '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的左右摇晃.mp4',
         '视频资源/生成加油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
