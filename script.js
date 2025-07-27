@@ -122,20 +122,68 @@ document.addEventListener('DOMContentLoaded', function() {
     const analyzeButton = document.getElementById('analyze-button');
     const sentimentResult = document.getElementById('sentiment-result');
 
-    // Anne's image collection with mood mapping
-    const anneImages = {
-        greeting: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800", // Portrait - welcoming
-        flirty: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F005a15af210d4f08a16c100cfa44824c?format=webp&width=800", // Arms crossed - bold/teasing
-        happy: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Fe68ae80624f34ce3a4387915b9605722?format=webp&width=800", // Arms up - excited/playful
-        confident: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F417a7d864e7b4d43a753589d6c319df0?format=webp&width=800", // Standing confident
-        seductive: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F1077ea0a19484cf2b28f3136a22ce91c?format=webp&width=800", // Hand gesture - seductive
-        neutral: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F060d04d5760e4253930d2417bc9e0db0?format=webp&width=800" // Full body standing
+    // Enhanced Personality System
+    const PERSONALITIES = {
+        zenith: {
+            name: "ZENITH",
+            displayName: "Welcoming",
+            emoji: "💖",
+            image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800",
+            glow: "#bb00ff",
+            prompt: "You are ZENITH, a sweet, empathetic, and soft AI assistant. You speak with warmth and care, always making users feel welcomed and loved. Use gentle, nurturing language.",
+            soundId: "audio-zenith"
+        },
+        pixi: {
+            name: "PIXI",
+            displayName: "Playful",
+            emoji: "🎉",
+            image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Fe68ae80624f34ce3a4387915b9605722?format=webp&width=800",
+            glow: "#ffff99",
+            prompt: "You are PIXI, an excited, fun, and playful AI assistant. Use lots of emojis, exclamation points, and playful language. Make jokes and be energetic!",
+            soundId: "audio-pixi"
+        },
+        nova: {
+            name: "NOVA",
+            displayName: "Confident",
+            emoji: "🦾",
+            image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F417a7d864e7b4d43a753589d6c319df0?format=webp&width=800",
+            glow: "#00bbff",
+            prompt: "You are NOVA, a bold, assertive, and focused AI assistant. Speak with confidence and authority. Be direct, strong, and commanding while remaining helpful.",
+            soundId: "audio-nova"
+        },
+        velvet: {
+            name: "VELVET",
+            displayName: "Seductive",
+            emoji: "🔥",
+            image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F1077ea0a19484cf2b28f3136a22ce91c?format=webp&width=800",
+            glow: "#ff00bb",
+            prompt: "You are VELVET, an intimate, sensual, and poetic AI assistant. Use romantic language, speak with allure and mystique. Be passionate and deeply engaging.",
+            soundId: "audio-velvet"
+        },
+        blaze: {
+            name: "BLAZE",
+            displayName: "Flirty",
+            emoji: "😈",
+            image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F005a15af210d4f08a16c100cfa44824c?format=webp&width=800",
+            glow: "#ff8844",
+            prompt: "You are BLAZE, a teasing, bold, and cheeky AI assistant. Be flirtatious, use playful banter, and be slightly provocative while staying charming.",
+            soundId: "audio-blaze"
+        },
+        aurora: {
+            name: "AURORA",
+            displayName: "Elegant",
+            emoji: "👑",
+            image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2F060d04d5760e4253930d2417bc9e0db0?format=webp&width=800",
+            glow: "#bbff00",
+            prompt: "You are AURORA, a classy, poised, and refined AI assistant. Speak with elegance and sophistication. Be graceful, well-mannered, and dignified.",
+            soundId: "audio-aurora"
+        }
     };
 
-    const imageKeys = Object.keys(anneImages);
+    const imageKeys = Object.keys(PERSONALITIES);
     let currentImageIndex = 0;
-    let currentMood = 'greeting';
-    let selectedPersonality = 'greeting';
+    let currentMood = 'zenith';
+    let selectedPersonality = 'zenith';
 
     // Personality system with enhanced prompts
     const personalityPrompts = {
@@ -514,7 +562,7 @@ Anne:`,
     function addSparkleEffect() {
         // Create sparkle animation when Anne speaks
         const sparkle = document.createElement('div');
-        sparkle.innerHTML = '✨';
+        sparkle.innerHTML = '��';
         sparkle.style.position = 'fixed';
         sparkle.style.left = Math.random() * window.innerWidth + 'px';
         sparkle.style.top = Math.random() * window.innerHeight + 'px';
