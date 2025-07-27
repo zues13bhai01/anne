@@ -189,6 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 300);
             } else {
                 anneMainImg.src = anneImages[mood];
+                anneMainImg.style.opacity = '1'; // Ensure opacity is restored
                 updateMoodRing(mood);
             }
         }
