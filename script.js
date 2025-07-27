@@ -67,32 +67,79 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function generatePersonalityAudio(personalityKey) {
-        // Generate synthetic ambient audio using Web Audio API
+        // Enhanced synthetic audio with personality-specific characteristics
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Create more complex audio for each personality
+        const audioConfigs = {
+            zenith: {
+                type: 'sine',
+                frequency: 220,
+                harmonics: [330, 440], // Soft harmonics
+                volume: 0.08
+            },
+            pixi: {
+                type: 'square',
+                frequency: 440,
+                harmonics: [660, 880], // Bouncy harmonics
+                volume: 0.12
+            },
+            nova: {
+                type: 'sawtooth',
+                frequency: 110,
+                harmonics: [165, 220], // Deep harmonics
+                volume: 0.15
+            },
+            velvet: {
+                type: 'sine',
+                frequency: 330,
+                harmonics: [165, 495], // Romantic harmonics
+                volume: 0.06
+            },
+            blaze: {
+                type: 'triangle',
+                frequency: 880,
+                harmonics: [1100, 1320], // Flirty harmonics
+                volume: 0.1
+            },
+            aurora: {
+                type: 'sine',
+                frequency: 165,
+                harmonics: [247, 330], // Elegant harmonics
+                volume: 0.07
+            }
+        };
+
+        const config = audioConfigs[personalityKey] || audioConfigs.zenith;
+
+        // Main oscillator
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
 
-        // Different frequencies for different personalities
-        const frequencies = {
-            zenith: 220,   // Sweet chimes
-            pixi: 440,     // Bouncy notes
-            nova: 110,     // Deep bass
-            velvet: 330,   // Heartbeat-like
-            blaze: 880,    // Higher pitch
-            aurora: 165    // Piano-like
-        };
+        oscillator.frequency.setValueAtTime(config.frequency, audioContext.currentTime);
+        oscillator.type = config.type;
 
-        oscillator.frequency.setValueAtTime(frequencies[personalityKey] || 220, audioContext.currentTime);
-        oscillator.type = personalityKey === 'nova' ? 'sawtooth' : 'sine';
+        // Add harmonics for richer sound
+        const harmonicOscillators = config.harmonics.map(freq => {
+            const harmOsc = audioContext.createOscillator();
+            const harmGain = audioContext.createGain();
+            harmOsc.frequency.setValueAtTime(freq, audioContext.currentTime);
+            harmOsc.type = 'sine';
+            harmGain.gain.setValueAtTime(config.volume * 0.3, audioContext.currentTime);
+            harmOsc.connect(harmGain);
+            harmGain.connect(audioContext.destination);
+            return { oscillator: harmOsc, gain: harmGain };
+        });
 
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
-        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(config.volume, audioContext.currentTime);
 
         // Store for later use
         PERSONALITIES[personalityKey].audioContext = audioContext;
         PERSONALITIES[personalityKey].oscillator = oscillator;
         PERSONALITIES[personalityKey].gainNode = gainNode;
+        PERSONALITIES[personalityKey].harmonics = harmonicOscillators;
     }
 
     function playPersonalityAudio(personalityKey) {
