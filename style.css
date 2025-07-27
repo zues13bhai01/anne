@@ -1371,21 +1371,37 @@ html, body {
     .anne-logo {
         font-size: 2.5rem;
     }
-    
+
     .loading-text {
         font-size: 1rem;
     }
-    
+
     .mic-button {
         width: 75px;
         height: 75px;
     }
-    
+
     .mic-button i {
         font-size: 32px;
     }
-    
-    .footer-credit {
-        font-size: 0.9rem;
+
+    .intro-video {
+        max-width: 95%;
+        max-height: 85%;
+    }
+
+    .transition-video {
+        max-width: 85%;
+        max-height: 65%;
+    }
+
+    .transition-caption {
+        font-size: 1.2rem;
+        bottom: 15%;
+    }
+
+    .made-by-hitesh {
+        font-size: clamp(10px, 1vw, 14px);
+        bottom: env(safe-area-inset-bottom, 2%);
     }
 }
