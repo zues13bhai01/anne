@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
         pixi: {
             name: "PIXI",
             displayName: "Playful",
-            emoji: "🎉",
+            emoji: "��",
             image: "https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Fe68ae80624f34ce3a4387915b9605722?format=webp&width=800",
             glow: "#ffff99",
             prompt: "You are PIXI, an excited, fun, and playful AI assistant. Use lots of emojis, exclamation points, and playful language. Make jokes and be energetic!",
@@ -678,11 +678,12 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
 
                 if (error.name === 'AbortError') {
                     // Don't mark as unavailable for timeouts, just for this request
-                    return "I'm thinking a bit slowly right now, darling... Let me give you a quick response instead! 💜";
+                    return "⚡ My neural networks are processing slowly... Let me give you a quick response instead! 💜";
                 } else {
                     // Mark as unavailable for actual errors
                     ollamaAvailable = false;
-                    updateAIStatus('offline', 'Built-in AI');
+                    updateAIStatus('offline', '🔌 FALLBACK MODE');
+                    return "🤖 Connection to advanced neural networks lost. Running on fallback protocols. Use troubleshoot button to reconnect! ⚠️";
                 }
             }
         }
