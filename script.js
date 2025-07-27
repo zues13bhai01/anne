@@ -203,8 +203,11 @@ document.addEventListener('DOMContentLoaded', function() {
         introVideo.addEventListener('ended', endIntroAnimation, { once: true });
     }
 
-    // Function to play video on demand (for "dance" command)
+    // Function to play dance video on demand
     function playVideoOnDemand() {
+        // Update video source to the new dance video
+        introVideo.src = "https://cdn.builder.io/o/assets%2F05795d83a50240879a66a110f8707954%2F0d462861ecd8438a905a7cbdef29bbc0?alt=media&token=484c113a-52e9-4dec-a7b1-dbdec293db03&apiKey=05795d83a50240879a66a110f8707954";
+
         introVideoContainer.classList.add('active');
         introVideo.currentTime = 0;
         introVideo.muted = false;
@@ -213,17 +216,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const playPromise = introVideo.play();
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                console.log('On-demand video playing');
-                showAnneMessage("Watch me dance for you, darling! 💃✨");
+                console.log('Dance video playing');
+                showAnneMessage("💃 Watch me dance for you, darling! This is my special performance! ✨🎵");
             }).catch(error => {
-                console.error('On-demand video failed:', error);
-                showAnneMessage("I'm having trouble with the video, my love. Try again soon! 💔");
+                console.error('Dance video failed:', error);
+                showAnneMessage("⚠️ I'm having trouble with the dance video, my love. Try again soon! 💔");
             });
         }
 
         // Hide after video duration or timeout
         setTimeout(() => {
             introVideoContainer.classList.remove('active');
+            // Reset to original intro video source
+            introVideo.src = "https://cdn.builder.io/o/assets%2F05795d83a50240879a66a110f8707954%2F723bb05ebc7e4a96aea0aad0e23fb501?alt=media&token=4152e4af-12a2-4ec4-8dc9-5cd324d5381d&apiKey=05795d83a50240879a66a110f8707954";
         }, 15000);
     }
 
