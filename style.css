@@ -589,7 +589,7 @@ html, body {
 /* --- Futuristic Content Overlay --- */
 .content-overlay {
     position: relative;
-    height: 100vh;
+    height: 3px;
     width: calc(100% - 280px);
     margin-left: 280px;
     display: flex;
