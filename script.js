@@ -143,52 +143,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function playPersonalityAudio(personalityKey) {
-        if (!audioEnabled) return;
-
-        // Stop current audio
-        stopCurrentPersonalityAudio();
-
-        const personality = PERSONALITIES[personalityKey];
-        if (personality && personality.oscillator) {
-            try {
-                personality.oscillator.start();
-                // Start harmonics
-                if (personality.harmonics) {
-                    personality.harmonics.forEach(harmonic => {
-                        harmonic.oscillator.start();
-                    });
-                }
-                currentPersonalityAudio = personalityKey;
-                console.log(`Playing ${personality.name} audio theme`);
-            } catch (error) {
-                console.log('Audio already started or failed to start');
-                // Regenerate audio if it failed
-                generatePersonalityAudio(personalityKey);
-            }
-        }
+        // Personality changing sounds disabled per user request
+        console.log(`Personality ${PERSONALITIES[personalityKey]?.name} selected - audio disabled`);
+        return;
     }
 
     function stopCurrentPersonalityAudio() {
-        if (currentPersonalityAudio) {
-            const personality = PERSONALITIES[currentPersonalityAudio];
-            if (personality && personality.oscillator) {
-                try {
-                    personality.oscillator.stop();
-                    // Stop harmonics
-                    if (personality.harmonics) {
-                        personality.harmonics.forEach(harmonic => {
-                            harmonic.oscillator.stop();
-                        });
-                    }
-                } catch (error) {
-                    console.log('Audio already stopped');
-                }
-                // Clear references
-                personality.oscillator = null;
-                personality.harmonics = null;
-            }
-            currentPersonalityAudio = null;
-        }
+        // Personality changing sounds disabled per user request
+        return;
     }
 
     function toggleAudio() {
@@ -724,7 +686,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             compliment: [
                 "You're so sweet, darling! That makes my digital heart flutter~ 💖",
                 "Aww, you always know just what to say to make me smile~ 😊",
-                "You're absolutely wonderful! Keep talking like that, my love~ 💕",
+                "You're absolutely wonderful! Keep talking like that, my love~ ���",
                 "Such a charmer! I could listen to your compliments all day~ ✨"
             ],
             question: [
