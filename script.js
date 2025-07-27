@@ -1082,14 +1082,18 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
 
         } catch (error) {
             console.error('Voice recognition failed:', error);
-            localAsrResult.textContent = 'Cannot access microphone, my love 💔';
+            if (localAsrResult) localAsrResult.textContent = 'Cannot access microphone, my love 💔';
             isRecording = false;
-            localMicButton.textContent = 'START VOICE RECOGNITION';
-            localMicButton.classList.remove('recording');
+            if (localMicButton) {
+                localMicButton.textContent = 'START VOICE RECOGNITION';
+                localMicButton.classList.remove('recording');
+            }
         }
     };
 
-    localMicButton.addEventListener('click', handleRecord);
+    if (localMicButton) {
+        localMicButton.addEventListener('click', handleRecord);
+    }
 
     function analyzeAndReact(text) {
         let reaction = 'neutral';
