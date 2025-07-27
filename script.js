@@ -360,8 +360,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function askAnne(prompt) {
-        // If Ollama hasn't been tested yet, test it
-        if (availableModel === null) {
+        // If Ollama hasn't been tested yet, test it (only in local environment)
+        if (availableModel === null && (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1'))) {
             await testOllamaConnection();
         }
 
@@ -635,7 +635,7 @@ Anne:`,
         } catch (error) {
             console.error('Microphone permission denied:', error);
             hasVoicePermission = false;
-            showAnneMessage("I need microphone permission to hear you, my love. Please allow access in your browser settings. ��");
+            showAnneMessage("I need microphone permission to hear you, my love. Please allow access in your browser settings. 💔");
             return false;
         }
     }
