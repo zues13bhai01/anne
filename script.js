@@ -314,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
             "Mmm, I love when you talk like that~ Keep going, sweetie!"
         ],
         negative: [
-            "Oh no, my poor darling... let Anne comfort you ��",
+            "Oh no, my poor darling... let Anne comfort you 💜",
             "Don't worry, my love. I'm here for you always~",
             "Shh... everything will be okay. Anne is here to protect you ✨"
         ],
@@ -997,7 +997,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
 
     const positiveVideos = [
         '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
-        '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的左右摇晃.mp4',
+        '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的��右摇晃.mp4',
         '视频资源/生成加油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
     ];
@@ -1174,7 +1174,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         const reconnectBtn = document.getElementById('reconnect-btn');
 
         // Set default personality
-        document.querySelector('[data-personality="greeting"]').classList.add('active');
+        document.querySelector('[data-personality="zenith"]').classList.add('active');
 
         personalityCards.forEach(card => {
             card.addEventListener('click', function() {
