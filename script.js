@@ -152,9 +152,18 @@ document.addEventListener('DOMContentLoaded', function() {
         if (personality && personality.oscillator) {
             try {
                 personality.oscillator.start();
+                // Start harmonics
+                if (personality.harmonics) {
+                    personality.harmonics.forEach(harmonic => {
+                        harmonic.oscillator.start();
+                    });
+                }
                 currentPersonalityAudio = personalityKey;
+                console.log(`Playing ${personality.name} audio theme`);
             } catch (error) {
                 console.log('Audio already started or failed to start');
+                // Regenerate audio if it failed
+                generatePersonalityAudio(personalityKey);
             }
         }
     }
@@ -165,9 +174,18 @@ document.addEventListener('DOMContentLoaded', function() {
             if (personality && personality.oscillator) {
                 try {
                     personality.oscillator.stop();
+                    // Stop harmonics
+                    if (personality.harmonics) {
+                        personality.harmonics.forEach(harmonic => {
+                            harmonic.oscillator.stop();
+                        });
+                    }
                 } catch (error) {
                     console.log('Audio already stopped');
                 }
+                // Clear references
+                personality.oscillator = null;
+                personality.harmonics = null;
             }
             currentPersonalityAudio = null;
         }
