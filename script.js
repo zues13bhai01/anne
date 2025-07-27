@@ -707,6 +707,12 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
     function getPersonalityResponse(prompt) {
         const lowerPrompt = prompt.toLowerCase();
 
+        // Check for special commands
+        if (lowerPrompt.includes('dance') || lowerPrompt.includes('show me') || lowerPrompt.includes('perform')) {
+            playVideoOnDemand();
+            return "Watch me dance for you, darling! 💃✨ Isn't this exciting?";
+        }
+
         // Expanded response patterns
         const responses = {
             greeting: [
