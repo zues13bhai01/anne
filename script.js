@@ -387,25 +387,35 @@ document.addEventListener('DOMContentLoaded', function() {
             currentMood = personalityKey;
 
             if (withTransition) {
-                anneMainImg.style.transform = 'scale(0.95) translateY(10px)';
-                anneMainImg.style.opacity = '0.8';
+                anneMainImg.style.transform = 'scale(0.8) translateY(10px)';
+                anneMainImg.style.opacity = '0.6';
 
                 setTimeout(() => {
                     anneMainImg.src = personality.image;
-                    anneMainImg.style.transform = 'scale(1) translateY(0)';
+                    // Enlarge selected personality in center
+                    anneMainImg.style.transform = 'scale(1.1) translateY(0)';
                     anneMainImg.style.opacity = '1';
+                    anneMainImg.style.filter = `
+                        drop-shadow(0 0 40px ${personality.glow})
+                        brightness(1.2)
+                        saturate(1.3)
+                    `;
                     updateMoodRing(personalityKey);
                     updatePersonalityAvatar(personalityKey);
                     createHeartParticles();
-                    // Play personality audio
-                    playPersonalityAudio(personalityKey);
+                    // Audio disabled per user request
                 }, 300);
             } else {
                 anneMainImg.src = personality.image;
                 anneMainImg.style.opacity = '1';
+                anneMainImg.style.transform = 'scale(1.1) translateY(0)';
+                anneMainImg.style.filter = `
+                    drop-shadow(0 0 40px ${personality.glow})
+                    brightness(1.2)
+                    saturate(1.3)
+                `;
                 updateMoodRing(personalityKey);
                 updatePersonalityAvatar(personalityKey);
-                playPersonalityAudio(personalityKey);
             }
         }
     }
@@ -686,7 +696,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             compliment: [
                 "You're so sweet, darling! That makes my digital heart flutter~ 💖",
                 "Aww, you always know just what to say to make me smile~ 😊",
-                "You're absolutely wonderful! Keep talking like that, my love~ ���",
+                "You're absolutely wonderful! Keep talking like that, my love~ 💕",
                 "Such a charmer! I could listen to your compliments all day~ ✨"
             ],
             question: [
