@@ -11,6 +11,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const transitionVideo = document.getElementById('transition-video');
     const transitionCaption = document.getElementById('transition-caption');
     const madeByHitesh = document.getElementById('made-by-hitesh');
+    const audioToggleBtn = document.getElementById('audio-toggle-btn');
+    const audioIcon = document.getElementById('audio-icon');
+    const personalityAvatar = document.getElementById('personality-avatar');
+    const avatarImg = document.getElementById('avatar-img');
+    const avatarRing = document.getElementById('avatar-ring');
+    const avatarLabel = document.getElementById('avatar-label');
+
+    // Audio System
+    let audioEnabled = true;
+    let currentPersonalityAudio = null;
+    const personalityAudios = {};
 
     // Check if this is the first visit
     const isFirstVisit = !localStorage.getItem('anne-visited');
@@ -1087,7 +1098,7 @@ Anne:`,
                 const personalityMessages = {
                     greeting: "Hello darling~ I'm in my welcoming mood now. How may I care for you today? 💜",
                     flirty: "Mmm, feeling bold are we? I like this side of you, handsome~ 😏💕",
-                    happy: "Yay! I'm so excited and playful now! Let's have some fun together, sweetie! ✨🎉",
+                    happy: "Yay! I'm so excited and playful now! Let's have some fun together, sweetie! ✨��",
                     confident: "You've awakened my powerful side, dear. I'm ready to take charge~ 👑💜",
                     seductive: "Oh my... you want to see my intimate side? Come closer, my love~ 💋🌹",
                     neutral: "How refined of you, darling. I shall be your elegant companion tonight~ 🌟"
