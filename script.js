@@ -891,12 +891,12 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                         } catch (error) {
                             console.log('Recognition restart failed:', error);
                             isListening = false;
-                            micButton.classList.remove('is-listening');
+                            if (micButton) micButton.classList.remove('is-listening');
                             const transcriptContainer = document.querySelector('.transcript-container');
                             if (transcriptContainer) {
                                 transcriptContainer.classList.remove('visible');
                             }
-                            showAnneMessage("Voice recognition stopped working, darling. Please click the microphone again! 💔");
+                            showAnneMessage("Voice recognition stopped working, darling. Please try refreshing the page! 💔");
                         }
                     }
                 }, 500); // Increased delay to prevent rapid restarts
