@@ -1191,17 +1191,11 @@ Anne:`,
                 const oldPersonality = selectedPersonality;
                 selectedPersonality = personality;
 
-                // Get personality labels
-                const personalityLabels = {
-                    greeting: "Welcoming",
-                    flirty: "Flirty",
-                    happy: "Playful",
-                    confident: "Confident",
-                    seductive: "Seductive",
-                    neutral: "Elegant"
-                };
+                // Get personality info
+                const personalityInfo = PERSONALITIES[personality];
+                if (!personalityInfo) return;
 
-                const personalityLabel = personalityLabels[personality];
+                const personalityLabel = personalityInfo.displayName;
 
                 // Only play transition if switching to different personality
                 if (oldPersonality !== personality) {
