@@ -1300,36 +1300,7 @@ html, body {
     100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
-.footer-credit {
-    margin-top: 25px;
-    color: #00ffff;
-    text-decoration: none;
-    font-family: 'Orbitron', monospace;
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px #00ffff;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.footer-credit::before {
-    content: '⚡';
-    margin-right: 8px;
-    animation: spark 2s infinite;
-}
-
-.footer-credit:hover {
-    color: #ff00ff;
-    text-shadow: 0 0 20px #ff00ff;
-    transform: scale(1.1);
-}
-
-@keyframes spark {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-}
+/* Footer credit styles moved to .made-by-hitesh */
 
 /* --- Responsive Enhancements --- */
 @media (max-width: 768px) {
