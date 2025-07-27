@@ -1012,6 +1012,11 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
     let isRecording = false;
 
     const handleRecord = async () => {
+        if (!localMicButton || !localAsrResult) {
+            console.log('Local mic elements not found - feature disabled');
+            return;
+        }
+
         if (isRecording) {
             mediaRecorder.stop();
             isRecording = false;
