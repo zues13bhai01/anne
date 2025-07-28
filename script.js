@@ -237,17 +237,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
         introVideoContainer.classList.add('active');
         introVideo.currentTime = 0;
+
+        // Since this is user-initiated, we can try with audio
         introVideo.muted = false;
         introVideo.volume = 0.8;
 
         const playPromise = introVideo.play();
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                console.log('Intro video playing on demand');
+                console.log('Intro video playing on demand with audio');
                 showAnneMessage("✨ Here's my introduction video, darling! This is how I first awakened to meet you! 💜🎬");
             }).catch(error => {
-                console.error('Intro video failed:', error);
-                showAnneMessage("⚠️ I'm having trouble with the intro video, my love. Try again soon! 💔");
+                console.error('Intro video failed, trying muted:', error);
+                // Fallback to muted if audio fails
+                introVideo.muted = true;
+                introVideo.play().then(() => {
+                    showAnneMessage("✨ Playing my intro video (muted). Click on the video to hear my voice! 💜🎬");
+                }).catch(err => {
+                    console.error('Muted intro video also failed:', err);
+                    showAnneMessage("⚠️ I'm having trouble with the intro video, my love. Try refreshing the page! 💔");
+                    introVideoContainer.classList.remove('active');
+                });
             });
         }
 
