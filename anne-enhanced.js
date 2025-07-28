@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (ttsEngine && ttsEngine.isCloudEnvironment) {
                     showAnneMessage("I'm in cloud mode, darling! Text chat is ready, but voice features need local setup~ 💜");
                 } else {
-                    showAnneMessage("I'm in text-only mode right now, but I'll still chat with you, love! 💜");
+                    showAnneMessage("I'm in text-only mode right now, but I'll still chat with you, love! ��");
                 }
                 updateTTSStatus('unavailable');
             }
@@ -1156,7 +1156,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                         const cloudMsg = "🌐 Cloud environment detected! Advanced AI features require local Ollama installation. Currently running on fallback protocols! 💜";
                         showAnneMessage(cloudMsg);
                         safeTTSSpeak(cloudMsg, selectedPersonality);
-                        updateAIStatus('offline', '🔌 FALLBACK MODE');
+                        updateAIStatus('offline', '�� FALLBACK MODE');
                     }
                 }, 300);
             });
@@ -1248,9 +1248,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             madeByHitesh.addEventListener('click', function() {
                 const creatorMsg = "That's my creator, Hitesh! He's amazing, isn't he? 💜 Visit his profile to see more of his work!";
                 showAnneMessage(creatorMsg);
-                if (ttsEngine && ttsAvailable) {
-                    ttsEngine.speak(creatorMsg, selectedPersonality);
-                }
+                safeTTSSpeak(creatorMsg, selectedPersonality);
             });
 
             madeByHitesh.title = "© 2025 Hitesh Siwach - Visit profile";
