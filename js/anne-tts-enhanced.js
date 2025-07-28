@@ -193,10 +193,19 @@ class EnhancedAnneTTSEngine {
 
     async speakWithServer(text, personality) {
         try {
+            const voiceId = this.elevenLabsVoiceIds[personality] || null;
+            const requestBody = { text, personality };
+
+            // Add voice ID if available for this personality
+            if (voiceId) {
+                requestBody.voiceId = voiceId;
+                console.log(`🎤 Using ElevenLabs voice ID: ${voiceId} for ${personality}`);
+            }
+
             const response = await fetch(`${this.serverUrl}/api/tts`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text, personality })
+                body: JSON.stringify(requestBody)
             });
 
             if (!response.ok) throw new Error(`Server error: ${response.status}`);
