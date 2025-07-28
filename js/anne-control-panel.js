@@ -687,9 +687,20 @@ class AnneControlPanel {
 
         if (!indicator || !label) return;
 
-        if (this.currentTTSEngine && this.currentTTSEngine.ttsAvailable) {
-            indicator.textContent = '🎤';
-            label.textContent = 'Voice Ready';
+        if (this.currentTTSEngine) {
+            const stats = this.currentTTSEngine.getStats ? this.currentTTSEngine.getStats() : {};
+
+            if (stats.serverAvailable) {
+                indicator.textContent = '🎤';
+                label.textContent = 'Full TTS Ready';
+            } else if (stats.speechAPIAvailable) {
+                indicator.textContent = '🔊';
+                label.textContent = 'Browser TTS Ready';
+            } else {
+                indicator.textContent = '🎶';
+                label.textContent = 'Voice Tones Ready';
+            }
+
             if (ttsToggle) ttsToggle.disabled = false;
             if (ttsTest) ttsTest.disabled = false;
         } else {
