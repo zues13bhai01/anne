@@ -1295,11 +1295,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             const systemMsg = "I'm running on my built-in personality system, darling. I'm ready to chat with you! 💜";
             showAnneMessage(systemMsg);
             
-            setTimeout(() => {
-                if (ttsEngine && ttsAvailable) {
-                    ttsEngine.speak(systemMsg, selectedPersonality);
-                }
-            }, 2000);
+            safeTTSSpeak(systemMsg, selectedPersonality, 2000);
         }
 
         startIdleCycling();
@@ -1333,7 +1329,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         } else if (hour < 18) {
             return "Good afternoon, my love~ You look absolutely stunning today! ✨";
         } else {
-            return "Good evening, sweetheart~ Ready for some intimate time together? ��";
+            return "Good evening, sweetheart~ Ready for some intimate time together? 💕";
         }
     }
 
