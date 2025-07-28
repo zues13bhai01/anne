@@ -11,15 +11,45 @@ class AnneTTSEngine {
         this.audioQueue = [];
         this.currentAudio = null;
         this.volume = 0.8;
-        this.serverUrl = 'http://localhost:3001';
-        
+
+        // Smart server URL detection
+        this.serverUrl = this.detectServerUrl();
+        this.isCloudEnvironment = !this.isLocalEnvironment();
+
         // Voice cache for better performance
         this.voiceCache = new Map();
         this.maxCacheSize = 50;
-        
+
         // Initialize audio context for better control
         this.audioContext = null;
         this.initializeAudioContext();
+
+        console.log(`🌐 Environment: ${this.isCloudEnvironment ? 'Cloud' : 'Local'}, TTS Server: ${this.serverUrl}`);
+    }
+
+    /**
+     * Detect if running in local environment
+     */
+    isLocalEnvironment() {
+        const hostname = window.location.hostname;
+        return hostname === 'localhost' ||
+               hostname === '127.0.0.1' ||
+               hostname.startsWith('192.168.') ||
+               hostname.startsWith('10.') ||
+               hostname.includes('local');
+    }
+
+    /**
+     * Detect appropriate server URL based on environment
+     */
+    detectServerUrl() {
+        if (this.isLocalEnvironment()) {
+            return 'http://localhost:3001';
+        } else {
+            // In cloud environment, TTS server would need to be deployed separately
+            // For now, return null to indicate TTS is not available
+            return null;
+        }
     }
 
     async initializeAudioContext() {
