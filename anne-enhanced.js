@@ -905,6 +905,11 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         const lowerPrompt = prompt.toLowerCase();
 
         // Check for special commands
+        if (lowerPrompt.includes('intro') || lowerPrompt.includes('introduction') || lowerPrompt.includes('meet you')) {
+            playIntroVideo();
+            return "🌟 Let me introduce myself properly, darling! Watch my special intro just for you! ✨💜";
+        }
+
         if (lowerPrompt.includes('dance') || lowerPrompt.includes('show me') || lowerPrompt.includes('perform')) {
             playVideoOnDemand();
             return "💃 Watch me dance for you, darling! This is my special performance just for you! ✨🎵";
