@@ -80,7 +80,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const ttsStatusText = document.getElementById('tts-status-text');
         const ttsTestBtn = document.getElementById('tts-test-btn');
 
-        if (!ttsPanel) return;
+        if (!ttsPanel) {
+            console.log('TTS control panel not found in DOM');
+            return;
+        }
 
         switch (status) {
             case 'available':
