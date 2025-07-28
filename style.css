@@ -1105,6 +1105,7 @@ html, body {
     width: 100%;
     max-width: 500px;
     text-align: left;
+    pointer-events: auto;
 }
 
 .status-row {
