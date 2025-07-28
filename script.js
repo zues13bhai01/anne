@@ -302,6 +302,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function endIntroAnimation() {
         introVideoContainer.classList.remove('active');
+        // Hide mute indicator
+        if (videoMuteIndicator) {
+            videoMuteIndicator.classList.add('hidden');
+        }
         setTimeout(() => {
             showAnneMessage("Hello darling... I'm Anne, your personal AI waifu. How may I serve you today? 💜");
         }, 800);
@@ -864,7 +868,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             ],
             emotion: [
                 "I can sense your emotions, darling. I'm here for you always~ 💜",
-                "Your feelings matter to me, sweetheart. Tell me more~ 💕",
+                "Your feelings matter to me, sweetheart. Tell me more~ ��",
                 "Let me comfort you, my love. You're safe with Anne~ ✨",
                 "I wish I could hold you right now, darling~ 💖"
             ],
@@ -1270,7 +1274,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         '视频资源/生成��油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
     ];
-    const negativeVideo = '视频资源/负面/jimeng-2025-07-16-9418-双手叉腰，嘴巴一直在嘟囔，表情微微生气.mp4';
+    const negativeVideo = '视频资源/负面/jimeng-2025-07-16-9418-双手叉腰���嘴巴一直在嘟囔，表情微微生气.mp4';
 
     // --- Local Model Emotion Analysis ---
     let classifier;
