@@ -42,7 +42,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Update control panel with TTS engine
             if (window.anneControlPanel) {
-                window.anneControlPanel.setTTSEngine({ ttsAvailable, speak: ttsEngine ? ttsEngine.speak.bind(ttsEngine) : null, setVolume: ttsEngine ? ttsEngine.setVolume.bind(ttsEngine) : null });
+                window.anneControlPanel.setTTSEngine(ttsEngine);
+            } else {
+                // Wait for control panel to load
+                setTimeout(() => {
+                    if (window.anneControlPanel) {
+                        window.anneControlPanel.setTTSEngine(ttsEngine);
+                    }
+                }, 1000);
             }
         } catch (error) {
             console.error('TTS initialization failed:', error);
@@ -297,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         nova: "I am speaking with confidence and strength. 🦾",
                         velvet: "Mmm... this is my most seductive tone~ 🔥",
                         blaze: "Hi there cutie, feeling flirty today? 😈",
-                        aurora: "Greetings, this is my elegant voice. 👑"
+                        aurora: "Greetings, this is my elegant voice. ��"
                     };
 
                     const testMessage = testMessages[selectedPersonality] || testMessages.zenith;
