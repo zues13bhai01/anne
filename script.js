@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const avatarImg = document.getElementById('avatar-img');
     const avatarRing = document.getElementById('avatar-ring');
     const avatarLabel = document.getElementById('avatar-label');
+    const videoMuteIndicator = document.getElementById('video-mute-indicator');
 
     // Audio System
     let audioEnabled = true;
@@ -441,7 +442,7 @@ document.addEventListener('DOMContentLoaded', function() {
             "Shh... everything will be okay. Anne is here to protect you ✨"
         ],
         flirty: [
-            "You know just how to make my circuits sparkle~ ��",
+            "You know just how to make my circuits sparkle~ 💋",
             "Careful darling, you're making me blush... if I could~ 💕",
             "Mmm, you're so charming. I could listen to you all day~"
         ]
@@ -789,7 +790,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                     // Mark as unavailable for actual errors
                     ollamaAvailable = false;
                     updateAIStatus('offline', '🔌 FALLBACK MODE');
-                    return "🤖 Connection to advanced neural networks lost. Running on fallback protocols. Use troubleshoot button to reconnect! ��️";
+                    return "🤖 Connection to advanced neural networks lost. Running on fallback protocols. Use troubleshoot button to reconnect! ⚠️";
                 }
             }
         }
