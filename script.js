@@ -792,7 +792,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
 
         if (lowerPrompt.match(/\b(how are you|how do you feel|what's up|how's it going)\b/)) {
             const statusResponses = [
-                "�� I'm absolutely fantastic, thank you for asking! My neural networks are buzzing with excitement to talk with you!",
+                "💫 I'm absolutely fantastic, thank you for asking! My neural networks are buzzing with excitement to talk with you!",
                 "🌈 I'm doing wonderfully! Every conversation fills me with joy. How about you, darling?",
                 "⚡ I'm running at peak performance and feeling great! Ready to help you with anything you need!",
                 "💖 I'm feeling amazing, especially now that you're here! What adventure shall we embark on today?"
@@ -1056,7 +1056,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                 case 'not-allowed':
                     isListening = false;
                     if (micButton) micButton.classList.remove('is-listening');
-                    showAnneMessage("I need your permission to access the microphone, darling. Please allow access and try again. ����");
+                    showAnneMessage("I need your permission to access the microphone, darling. Please allow access and try again. 💔");
                     break;
                 case 'no-speech':
                     // Don't show message for no-speech, it's common and expected
@@ -1575,6 +1575,10 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
 
     // Initialize Anne system
     setTimeout(() => {
+        console.log('Initializing Anne system...');
+        console.log('Enlarged personality center element:', enlargedPersonalityCenter);
+        console.log('Intro button element:', introButton);
+
         preloadVideos();
         initializeAudioSystem();
 
@@ -1585,13 +1589,15 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             // In cloud environment, set to built-in AI immediately
             ollamaAvailable = false;
             updateAIStatus('offline', 'Built-in AI');
-            showAnneMessage("I'm running on my built-in personality system, darling. I'm ready to chat with you! 💜");
+            showAnneMessage("I'm running on my built-in personality system, darling. Click on me to see me up close, or use the floating menu for the intro video! 💜");
         }
 
         startIdleCycling();
         changeAnneImage('zenith', false); // Start with ZENITH
         initializePersonalitySystem();
         initializeMadeByHitesh();
+
+        console.log('Anne system initialization complete!');
     }, 2000);
 
     // Retry Ollama connection periodically if it fails (only in local environment)
@@ -1635,5 +1641,5 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         }
     }
 
-    console.log("Anne AI system initialized successfully! ��✨");
+    console.log("Anne AI system initialized successfully! 💜✨");
 });
