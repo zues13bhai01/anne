@@ -65,13 +65,36 @@ class AnneTTSEngine {
      * Check if TTS service is available
      */
     async checkAvailability() {
+        // In cloud environment, TTS is not available by default
+        if (this.isCloudEnvironment || !this.serverUrl) {
+            console.log('🌐 Cloud environment detected - TTS service disabled');
+            return false;
+        }
+
         try {
-            const response = await fetch(`${this.serverUrl}/api/health`);
+            // Add timeout for local environment checks
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+            const response = await fetch(`${this.serverUrl}/api/health`, {
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+
+            if (!response.ok) {
+                throw new Error(`Server responded with ${response.status}`);
+            }
+
             const data = await response.json();
             console.log('🎤 TTS Service Status:', data);
             return data.status === 'ok' && data.elevenlabs_configured;
         } catch (error) {
-            console.warn('TTS service not available:', error);
+            if (error.name === 'AbortError') {
+                console.warn('🎤 TTS service connection timeout');
+            } else {
+                console.warn('🎤 TTS service not available:', error.message);
+            }
             return false;
         }
     }
