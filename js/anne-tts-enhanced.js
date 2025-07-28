@@ -234,13 +234,20 @@ class EnhancedAnneTTSEngine {
             utterance.onerror = (event) => {
                 this.isPlaying = false;
                 console.warn(`🎤 Speech synthesis error: ${event.error}`);
-                
-                // Don't treat permission errors as fatal, fall back to samples
+
+                // Handle different error types gracefully
                 if (event.error === 'not-allowed' || event.error === 'permission-denied') {
                     console.log('🎤 Speech synthesis not allowed, falling back to sample voices');
                     resolve(false); // Let caller handle fallback
+                } else if (event.error === 'interrupted' || event.error === 'canceled') {
+                    console.log('🎤 Speech synthesis was interrupted, this is normal');
+                    resolve(false); // Treat interruption as successful completion
+                } else if (event.error === 'network' || event.error === 'synthesis-failed') {
+                    console.log('🎤 Speech synthesis failed, falling back to sample voices');
+                    resolve(false); // Let caller handle fallback
                 } else {
-                    reject(new Error(`Speech synthesis error: ${event.error}`));
+                    console.warn(`🎤 Unexpected speech synthesis error: ${event.error}`);
+                    resolve(false); // Be lenient with unknown errors
                 }
             };
 
