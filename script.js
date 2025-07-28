@@ -208,17 +208,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
         introVideoContainer.classList.add('active');
         introVideo.currentTime = 0;
+
+        // Since this is user-initiated, try with audio first
         introVideo.muted = false;
         introVideo.volume = 0.8;
 
         const playPromise = introVideo.play();
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                console.log('Dance video playing');
+                console.log('Dance video playing with audio');
                 showAnneMessage("💃 Watch me dance for you, darling! This is my special performance! ✨🎵");
             }).catch(error => {
-                console.error('Dance video failed:', error);
-                showAnneMessage("⚠️ I'm having trouble with the dance video, my love. Try again soon! 💔");
+                console.error('Dance video failed, trying muted:', error);
+                // Fallback to muted if audio fails
+                introVideo.muted = true;
+                introVideo.play().then(() => {
+                    showAnneMessage("💃 Dancing for you (muted)! Click on the video to hear the music! ✨🎵");
+                }).catch(err => {
+                    console.error('Muted dance video also failed:', err);
+                    showAnneMessage("⚠️ I'm having trouble with the dance video, my love. Try refreshing the page! 💔");
+                    introVideoContainer.classList.remove('active');
+                });
             });
         }
 
@@ -1226,7 +1236,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         '视频资源/生成��油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
     ];
-    const negativeVideo = '视频资源/负面/jimeng-2025-07-16-9418-双手叉腰，嘴巴一直在嘟囔，表情微微生气.mp4';
+    const negativeVideo = '视频资源/负面/jimeng-2025-07-16-9418-双手���腰，嘴巴一直在嘟囔，表情微微生气.mp4';
 
     // --- Local Model Emotion Analysis ---
     let classifier;
