@@ -840,6 +840,139 @@ html, body {
     overflow: hidden;
 }
 
+/* --- Enlarged Center Personality Display --- */
+.enlarged-personality-center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 500px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 3px solid #ff00ff;
+    border-radius: 30px;
+    backdrop-filter: blur(20px);
+    box-shadow:
+        0 0 60px rgba(255, 0, 255, 0.8),
+        0 0 120px rgba(0, 255, 255, 0.4),
+        inset 0 0 40px rgba(255, 255, 255, 0.1);
+    z-index: 5000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.enlarged-personality-center.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -50%) scale(0.8);
+    pointer-events: none;
+}
+
+.enlarged-personality-image {
+    width: 300px;
+    height: 350px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 20px;
+    border: 2px solid #00ffff;
+    box-shadow:
+        0 0 40px rgba(0, 255, 255, 0.6),
+        0 0 80px rgba(255, 0, 255, 0.4);
+    animation: enlarged-personality-glow 3s ease-in-out infinite;
+    transition: all 0.4s ease;
+}
+
+.enlarged-personality-image:hover {
+    transform: scale(1.05);
+    box-shadow:
+        0 0 60px rgba(0, 255, 255, 0.8),
+        0 0 120px rgba(255, 0, 255, 0.6);
+}
+
+.enlarged-personality-info {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.enlarged-personality-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #00ffff;
+    text-shadow:
+        0 0 15px #00ffff,
+        0 0 30px #00ffff;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    animation: name-pulse 2s ease-in-out infinite;
+}
+
+.enlarged-personality-desc {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.2rem;
+    color: #ff00ff;
+    text-shadow: 0 0 15px #ff00ff;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.enlarged-personality-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, #ff00ff, #00ffff);
+    border: none;
+    border-radius: 50%;
+    color: #000;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+}
+
+.enlarged-personality-close:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.8);
+}
+
+@keyframes enlarged-personality-glow {
+    0%, 100% {
+        box-shadow:
+            0 0 40px rgba(0, 255, 255, 0.6),
+            0 0 80px rgba(255, 0, 255, 0.4);
+    }
+    50% {
+        box-shadow:
+            0 0 60px rgba(0, 255, 255, 0.8),
+            0 0 120px rgba(255, 0, 255, 0.6);
+    }
+}
+
+@keyframes name-pulse {
+    0%, 100% {
+        text-shadow:
+            0 0 15px #00ffff,
+            0 0 30px #00ffff;
+    }
+    50% {
+        text-shadow:
+            0 0 25px #00ffff,
+            0 0 50px #00ffff,
+            0 0 75px #00ffff;
+    }
+}
+
 .selected-image-container {
     position: relative;
     width: 160px;
