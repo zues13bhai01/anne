@@ -2251,10 +2251,32 @@ html, body {
     }
 
     .anne-chat-container {
-        width: 90%;
-        right: 5%;
-        height: 350px;
-        top: 50px;
+        width: 100%;
+        right: 0;
+        left: 0;
+        height: 80vh;
+        top: 10%;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    .chat-messages {
+        padding: 15px;
+    }
+
+    .message-bubble {
+        max-width: 90%;
+        font-size: 13px;
+    }
+
+    .chat-input-container {
+        padding: 10px 15px;
+    }
+
+    .voice-input-btn {
+        width: 35px;
+        height: 35px;
     }
 
     #menu-container {
