@@ -519,11 +519,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showAnneMessage(welcomeMsg);
             
             // Speak welcome message with TTS
-            if (ttsEngine && ttsAvailable) {
-                setTimeout(() => {
-                    ttsEngine.speak(welcomeMsg, selectedPersonality);
-                }, 1000);
-            }
+            safeTTSSpeak(welcomeMsg, selectedPersonality, 1000);
         }, 800);
     }
 
