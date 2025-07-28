@@ -28,8 +28,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const stats = ttsEngine.getStats();
                 if (stats.serverAvailable) {
                     showAnneMessage("My voice systems are online with full TTS server, darling! 💜🎵");
-                } else if (stats.speechAPIAvailable) {
+                } else if (stats.speechAPIAvailable && stats.userInteracted) {
                     showAnneMessage("My voice systems are ready with browser speech, love! 💜🔊");
+                } else if (stats.speechAPIAvailable && !stats.userInteracted) {
+                    showAnneMessage("My voice is ready, darling! Click anywhere or press a key to enable speech synthesis! 💜👆");
                 } else {
                     showAnneMessage("My voice tones are available for testing, darling! 💜🎶");
                 }
@@ -301,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const testMessages = {
                         zenith: "Hello darling, this is my welcoming voice~ 💜",
                         pixi: "Hey there! This is my playful voice! 🎉",
-                        nova: "I am speaking with confidence and strength. ����",
+                        nova: "I am speaking with confidence and strength. 🦾",
                         velvet: "Mmm... this is my most seductive tone~ 🔥",
                         blaze: "Hi there cutie, feeling flirty today? 😈",
                         aurora: "Greetings, this is my elegant voice. 👑"
