@@ -36,6 +36,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 updateTTSStatus('unavailable');
             }
+
+            // Update control panel with TTS engine
+            if (window.anneControlPanel) {
+                window.anneControlPanel.setTTSEngine({ ttsAvailable, speak: ttsEngine ? ttsEngine.speak.bind(ttsEngine) : null, setVolume: ttsEngine ? ttsEngine.setVolume.bind(ttsEngine) : null });
+            }
         } catch (error) {
             console.error('TTS initialization failed:', error);
             ttsAvailable = false;
