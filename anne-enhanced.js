@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         ttsTestBtn.textContent = 'Test Voice';
                     }
                 } else {
-                    showAnneMessage("Voice system not available, my love. Text chat is working perfectly though! ���");
+                    showAnneMessage("Voice system not available, my love. Text chat is working perfectly though! 💜");
                 }
             });
         }
@@ -307,10 +307,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (audioEnabled) {
             audioIcon.className = 'fas fa-volume-up';
             audioToggleBtn.classList.remove('muted');
-            if (ttsEngine) {
+            if (ttsEngine && ttsAvailable) {
                 ttsEngine.setEnabled(true);
+                showAnneMessage("My voice is back online, darling! I can speak to you again~ 🎵💜");
+            } else {
+                showAnneMessage("Audio enabled, but voice features aren't available in this environment, love~ 💜");
             }
-            showAnneMessage("My voice is back online, darling! I can speak to you again~ 🎵💜");
         } else {
             audioIcon.className = 'fas fa-volume-mute';
             audioToggleBtn.classList.add('muted');
