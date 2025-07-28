@@ -1069,7 +1069,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         }
     }
 
-    // Chat event listeners
+    // Chat event listeners with enhanced keyboard accessibility
     console.log('💬 Initializing chat listeners...');
     console.log('💬 Chat input found:', !!chatInput);
     console.log('💬 Chat send button found:', !!chatSendBtn);
@@ -1079,6 +1079,22 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             console.log('💬 Send button clicked');
             sendMessage();
         });
+
+        // Add keyboard accessibility to send button
+        chatSendBtn.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                console.log('💬 Send button activated via keyboard');
+                sendMessage();
+            }
+        });
+
+        // Ensure send button is focusable
+        if (!chatSendBtn.hasAttribute('tabindex')) {
+            chatSendBtn.setAttribute('tabindex', '0');
+        }
+        chatSendBtn.setAttribute('role', 'button');
+        chatSendBtn.setAttribute('aria-label', 'Send message');
     } else {
         console.error('💬 Chat send button not found!');
     }
@@ -1090,9 +1106,67 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                 sendMessage();
             }
         });
+
+        // Enhanced keyboard navigation
+        chatInput.addEventListener('keydown', function(e) {
+            // Allow Ctrl+Enter or Shift+Enter for line breaks if needed
+            if (e.key === 'Enter' && (e.ctrlKey || e.shiftKey)) {
+                // Allow default behavior for line break
+                return;
+            }
+
+            // Tab to send button
+            if (e.key === 'Tab' && !e.shiftKey && chatSendBtn) {
+                e.preventDefault();
+                chatSendBtn.focus();
+            }
+
+            // Escape to clear input
+            if (e.key === 'Escape') {
+                this.value = '';
+                console.log('💬 Chat input cleared via Escape key');
+            }
+        });
+
+        // Add ARIA attributes for accessibility
+        chatInput.setAttribute('role', 'textbox');
+        chatInput.setAttribute('aria-label', 'Type your message to Anne');
+        chatInput.setAttribute('aria-describedby', 'chat-help-text');
+
+        // Add a visually hidden help text for screen readers
+        if (!document.getElementById('chat-help-text')) {
+            const helpText = document.createElement('div');
+            helpText.id = 'chat-help-text';
+            helpText.style.position = 'absolute';
+            helpText.style.left = '-10000px';
+            helpText.style.width = '1px';
+            helpText.style.height = '1px';
+            helpText.style.overflow = 'hidden';
+            helpText.textContent = 'Press Enter to send message, Escape to clear, Tab to navigate to send button';
+            document.body.appendChild(helpText);
+        }
     } else {
         console.error('💬 Chat input not found!');
     }
+
+    // Global keyboard shortcuts for chat accessibility
+    document.addEventListener('keydown', function(e) {
+        // Focus chat input with Ctrl+/ or Alt+C
+        if ((e.ctrlKey && e.key === '/') || (e.altKey && e.key === 'c')) {
+            e.preventDefault();
+            if (chatInput) {
+                chatInput.focus();
+                console.log('💬 Chat input focused via keyboard shortcut');
+            }
+        }
+
+        // Focus send button with Alt+S
+        if (e.altKey && e.key === 's' && chatSendBtn) {
+            e.preventDefault();
+            chatSendBtn.focus();
+            console.log('💬 Send button focused via keyboard shortcut');
+        }
+    });
 
     // --- Floating Menu Interactions ---
     if (floatingButton) {
