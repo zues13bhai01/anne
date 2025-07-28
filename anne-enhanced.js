@@ -344,6 +344,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Make toggle audio available globally
+    window.toggleAudio = toggleAudio;
+
     // --- Video Playback Modal System ---
     function createVideoModal() {
         // Check if modal already exists
