@@ -607,6 +607,19 @@ class AnneControlPanel {
                     item.addEventListener('click', () => {
                         this.playVideo(video.src, video.name);
                     });
+
+                    // Add keyboard support
+                    item.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.playVideo(video.src, video.name);
+                        }
+                    });
+
+                    // Make focusable and accessible
+                    item.setAttribute('tabindex', '0');
+                    item.setAttribute('role', 'button');
+                    item.setAttribute('aria-label', `Play ${video.name} from ${data.name} personality`);
                     
                     videoList.appendChild(item);
                 });
