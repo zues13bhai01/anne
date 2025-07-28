@@ -1054,6 +1054,9 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         }
     }
 
+    // Make sendMessage available globally for voice chat integration
+    window.sendMessage = sendMessage;
+
     function triggerEmotionalResponse(text) {
         lastInteraction = Date.now();
         const lowerText = text.toLowerCase();
