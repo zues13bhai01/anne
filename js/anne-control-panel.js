@@ -700,9 +700,12 @@ class AnneControlPanel {
             if (stats.serverAvailable) {
                 indicator.textContent = '🎤';
                 label.textContent = 'Full TTS Ready';
-            } else if (stats.speechAPIAvailable) {
+            } else if (stats.speechAPIAvailable && stats.userInteracted) {
                 indicator.textContent = '🔊';
                 label.textContent = 'Browser TTS Ready';
+            } else if (stats.speechAPIAvailable && !stats.userInteracted) {
+                indicator.textContent = '👆';
+                label.textContent = 'Click to Enable Speech';
             } else {
                 indicator.textContent = '🎶';
                 label.textContent = 'Voice Tones Ready';
