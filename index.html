@@ -177,29 +177,84 @@
             <p id="transcript"></p>
         </div>
 
-        <!-- Anne Chat Interface -->
-        <div class="anne-chat-container" role="region" aria-label="Chat with Anne">
-            <div class="chat-messages" id="chat-messages" role="log" aria-live="polite" aria-label="Chat conversation" tabindex="0"></div>
-            <div class="chat-input-container" role="group" aria-label="Message input">
-                <input type="text"
-                       id="chat-input"
-                       placeholder="Ask Anne anything, darling..."
-                       class="chat-input"
-                       role="textbox"
-                       aria-label="Type your message to Anne"
-                       aria-describedby="chat-shortcuts-help"
-                       autocomplete="off">
-                <button id="chat-send"
-                        class="chat-send-btn"
-                        type="button"
-                        role="button"
-                        aria-label="Send message to Anne"
-                        tabindex="0">
-                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
-                </button>
+        <!-- Enhanced Anne Chat Interface -->
+        <div class="anne-chat-container enhanced" role="region" aria-label="Chat with Anne">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="chat-title">
+                    <i class="fas fa-comments"></i>
+                    <span>Direct Chat with Anne</span>
+                </div>
+                <div class="chat-controls">
+                    <button class="chat-toggle-btn" id="chat-toggle-btn" title="Toggle Chat Window">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
             </div>
+
+            <!-- Chat Messages Area -->
+            <div class="chat-content" id="chat-content">
+                <div class="chat-messages" id="chat-messages" role="log" aria-live="polite" aria-label="Chat conversation" tabindex="0">
+                    <div class="chat-message anne welcome-message">
+                        <div class="message-bubble anne">
+                            💜 Hello darling! I'm Anne, your AI companion. You can type to me or use voice chat - just click the microphone! ✨
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Input Container -->
+                <div class="chat-input-container" role="group" aria-label="Message input">
+                    <!-- Voice Input Button -->
+                    <button id="voice-input-btn"
+                            class="voice-input-btn"
+                            type="button"
+                            role="button"
+                            aria-label="Start voice recording"
+                            title="Click to speak">
+                        <i class="fas fa-microphone"></i>
+                        <span class="voice-status">Speak</span>
+                    </button>
+
+                    <!-- Text Input -->
+                    <div class="input-wrapper">
+                        <input type="text"
+                               id="chat-input"
+                               placeholder="Type or speak your message..."
+                               class="chat-input"
+                               role="textbox"
+                               aria-label="Type your message to Anne"
+                               aria-describedby="chat-shortcuts-help"
+                               autocomplete="off">
+                        <i class="fas fa-keyboard input-icon" aria-hidden="true"></i>
+                    </div>
+
+                    <!-- Send Button -->
+                    <button id="chat-send"
+                            class="chat-send-btn"
+                            type="button"
+                            role="button"
+                            aria-label="Send message to Anne"
+                            tabindex="0">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <!-- Voice Chat Status -->
+                <div class="voice-chat-status" id="voice-chat-status">
+                    <div class="voice-indicator">
+                        <i class="fas fa-circle-dot"></i>
+                        <span id="voice-status-text">Ready for voice chat</span>
+                    </div>
+                    <div class="voice-controls">
+                        <button class="voice-settings-btn" id="voice-settings-btn" title="Voice Settings">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div id="chat-shortcuts-help" class="sr-only">
-                Press Enter to send message, Escape to clear, Ctrl+/ to focus input, Alt+S to focus send button
+                Press Enter to send message, Escape to clear, Ctrl+/ to focus input, Alt+S to focus send button, Spacebar to start voice recording
             </div>
         </div>
 
