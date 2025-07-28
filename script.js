@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let audioEnabled = true;
     let currentPersonalityAudio = null;
     const personalityAudios = {};
+    let userHasInteracted = false;
 
     // Check if this is the first visit
     const isFirstVisit = !localStorage.getItem('anne-visited');
@@ -1236,7 +1237,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         '视频资源/生成��油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
     ];
-    const negativeVideo = '视频资源/负面/jimeng-2025-07-16-9418-双手���腰，嘴巴一直在嘟囔，表情微微生气.mp4';
+    const negativeVideo = '视频资源/负面/jimeng-2025-07-16-9418-双手叉腰，嘴巴一直在嘟囔，表情微微生气.mp4';
 
     // --- Local Model Emotion Analysis ---
     let classifier;
