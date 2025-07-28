@@ -42,6 +42,16 @@
     mix-blend-mode: lighten;
     z-index: 10000;
     position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.intro-video:hover {
+    transform: scale(1.02);
+    box-shadow:
+        0 0 60px rgba(255, 0, 255, 0.8),
+        0 0 120px rgba(0, 255, 255, 0.6),
+        inset 0 0 60px rgba(255, 255, 255, 0.2);
 }
 
 .intro-video-overlay {
