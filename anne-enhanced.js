@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize TTS Engine
     async function initializeTTSEngine() {
         try {
-            // Load TTS engine script dynamically
-            await loadScript('js/anne-tts-engine.js');
+            // Load enhanced TTS engine script dynamically
+            await loadScript('js/anne-tts-enhanced.js');
 
-            ttsEngine = new window.AnneTTSEngine();
+            ttsEngine = new window.EnhancedAnneTTSEngine();
 
             // Check availability with proper error handling
             try {
