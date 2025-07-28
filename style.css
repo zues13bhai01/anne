@@ -1462,8 +1462,10 @@ html, body {
 }
 
 .chat-input {
+    position: relative;
+    height: auto;
     flex: 1;
-    padding: 12px 18px;
+    padding: 12px 18px 12px 38px;
     border: 2px solid #00ffff;
     border-radius: 25px;
     background: rgba(0, 0, 0, 0.8);
