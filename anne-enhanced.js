@@ -830,11 +830,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const fallbackMsg = "I'm running on my built-in personality system, darling. For advanced AI features, make sure Ollama is installed and running! 💜";
             showAnneMessage(fallbackMsg);
             
-            if (ttsEngine && ttsAvailable) {
-                setTimeout(() => {
-                    ttsEngine.speak(fallbackMsg, selectedPersonality);
-                }, 1000);
-            }
+            safeTTSSpeak(fallbackMsg, selectedPersonality, 1000);
             return false;
         }
     }
