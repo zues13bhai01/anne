@@ -1168,6 +1168,8 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             // Map menu actions to Anne moods
             if (action.includes('intro')) {
                 playIntroVideoOnDemand();
+            } else if (action.includes('view me')) {
+                showEnlargedPersonality();
             } else if (action.includes('pose')) {
                 changeAnneImage('confident', true);
                 showAnneMessage(`Look at me pose for you, darling~ Do you like what you see? 💜`);
