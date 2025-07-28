@@ -408,7 +408,17 @@ class EnhancedAnneTTSEngine {
 
     cleanTextForTTS(text) {
         return text
-            .replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]{3,}/gu, '')
+            // Remove all emojis comprehensively
+            .replace(/[\u{1F600}-\u{1F64F}]/gu, '') // Emoticons
+            .replace(/[\u{1F300}-\u{1F5FF}]/gu, '') // Misc Symbols and Pictographs
+            .replace(/[\u{1F680}-\u{1F6FF}]/gu, '') // Transport and Map
+            .replace(/[\u{1F1E0}-\u{1F1FF}]/gu, '') // Regional indicators
+            .replace(/[\u{2600}-\u{26FF}]/gu, '') // Misc symbols
+            .replace(/[\u{2700}-\u{27BF}]/gu, '') // Dingbats
+            .replace(/[\u{1F900}-\u{1F9FF}]/gu, '') // Supplemental Symbols and Pictographs
+            .replace(/[\u{1F018}-\u{1F270}]/gu, '') // Various symbols
+            .replace(/[\u{238C}-\u{2454}]/gu, '') // Misc symbols range 2
+            .replace(/[\u{20D0}-\u{20FF}]/gu, '') // Combining Diacritical Marks for Symbols
             .replace(/~/g, ',')
             .replace(/[!]{2,}/g, '!')
             .replace(/[?]{2,}/g, '?')
