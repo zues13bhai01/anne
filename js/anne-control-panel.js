@@ -18,7 +18,7 @@ class AnneControlPanel {
                 name: "Welcoming",
                 videos: [
                     { name: "Elegant Sway", src: "视频资源/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4" },
-                    { name: "Gentle Dance", src: "视频资源/jimeng-2025-07-17-1871-优雅的摇晃身体 微笑.mp4" }
+                    { name: "Gentle Dance", src: "���频资源/jimeng-2025-07-17-1871-优雅的摇晃身体 微笑.mp4" }
                 ]
             },
             pixi: {
@@ -822,10 +822,14 @@ class AnneControlPanel {
 // Initialize control panel when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        window.anneControlPanel = new AnneControlPanel();
+        setTimeout(() => {
+            window.anneControlPanel = new AnneControlPanel();
+        }, 500);
     });
 } else {
-    window.anneControlPanel = new AnneControlPanel();
+    setTimeout(() => {
+        window.anneControlPanel = new AnneControlPanel();
+    }, 500);
 }
 
 console.log('🎮 Anne Control Panel module loaded');
