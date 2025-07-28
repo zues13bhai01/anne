@@ -214,52 +214,55 @@ class EnhancedAnneTTSEngine {
 
             this.stop(); // Stop any current speech
 
-            const utterance = new SpeechSynthesisUtterance(text);
-            
-            // Select voice based on personality
-            const voice = this.selectVoiceForPersonality(personality);
-            if (voice) utterance.voice = voice;
-            
-            // Configure utterance based on personality
-            const voiceConfig = this.getVoiceConfig(personality);
-            utterance.rate = voiceConfig.rate;
-            utterance.pitch = voiceConfig.pitch;
-            utterance.volume = this.volume;
+            // Small delay to prevent conflicts with stopped speech
+            setTimeout(() => {
+                const utterance = new SpeechSynthesisUtterance(text);
 
-            utterance.onend = () => {
-                this.isPlaying = false;
-                resolve(true);
-            };
+                // Select voice based on personality
+                const voice = this.selectVoiceForPersonality(personality);
+                if (voice) utterance.voice = voice;
 
-            utterance.onerror = (event) => {
-                this.isPlaying = false;
-                console.warn(`🎤 Speech synthesis error: ${event.error}`);
+                // Configure utterance based on personality
+                const voiceConfig = this.getVoiceConfig(personality);
+                utterance.rate = voiceConfig.rate;
+                utterance.pitch = voiceConfig.pitch;
+                utterance.volume = this.volume;
 
-                // Handle different error types gracefully
-                if (event.error === 'not-allowed' || event.error === 'permission-denied') {
-                    console.log('🎤 Speech synthesis not allowed, falling back to sample voices');
-                    resolve(false); // Let caller handle fallback
-                } else if (event.error === 'interrupted' || event.error === 'canceled') {
-                    console.log('🎤 Speech synthesis was interrupted, this is normal');
-                    resolve(false); // Treat interruption as successful completion
-                } else if (event.error === 'network' || event.error === 'synthesis-failed') {
-                    console.log('🎤 Speech synthesis failed, falling back to sample voices');
-                    resolve(false); // Let caller handle fallback
-                } else {
-                    console.warn(`🎤 Unexpected speech synthesis error: ${event.error}`);
-                    resolve(false); // Be lenient with unknown errors
+                utterance.onend = () => {
+                    this.isPlaying = false;
+                    resolve(true);
+                };
+
+                utterance.onerror = (event) => {
+                    this.isPlaying = false;
+                    console.warn(`🎤 Speech synthesis error: ${event.error}`);
+
+                    // Handle different error types gracefully
+                    if (event.error === 'not-allowed' || event.error === 'permission-denied') {
+                        console.log('🎤 Speech synthesis not allowed, falling back to sample voices');
+                        resolve(false); // Let caller handle fallback
+                    } else if (event.error === 'interrupted' || event.error === 'canceled') {
+                        console.log('🎤 Speech synthesis was interrupted, this is normal');
+                        resolve(false); // Treat interruption as successful completion
+                    } else if (event.error === 'network' || event.error === 'synthesis-failed') {
+                        console.log('🎤 Speech synthesis failed, falling back to sample voices');
+                        resolve(false); // Let caller handle fallback
+                    } else {
+                        console.warn(`🎤 Unexpected speech synthesis error: ${event.error}`);
+                        resolve(false); // Be lenient with unknown errors
+                    }
+                };
+
+                this.isPlaying = true;
+
+                try {
+                    this.speechSynthesis.speak(utterance);
+                    console.log(`🎤 Speaking with Web API: "${text}" (${personality})`);
+                } catch (error) {
+                    this.isPlaying = false;
+                    reject(error);
                 }
-            };
-
-            this.isPlaying = true;
-            
-            try {
-                this.speechSynthesis.speak(utterance);
-                console.log(`🎤 Speaking with Web API: "${text}" (${personality})`);
-            } catch (error) {
-                this.isPlaying = false;
-                reject(error);
-            }
+            }, 50); // 50ms delay to prevent interruption conflicts
         });
     }
 
