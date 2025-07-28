@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (playPromise !== undefined) {
             playPromise.then(() => {
                 console.log('Intro video playing on demand');
-                showAnneMessage("✨ Here's my introduction video, darling! This is how I first awakened to meet you! 💜🎬");
+                showAnneMessage("�� Here's my introduction video, darling! This is how I first awakened to meet you! 💜🎬");
             }).catch(error => {
                 console.error('Intro video failed:', error);
                 showAnneMessage("⚠️ I'm having trouble with the intro video, my love. Try again soon! 💔");
@@ -521,7 +521,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (enlargedPersonalityCenter) {
             enlargedPersonalityCenter.classList.remove('hidden');
             updateEnlargedPersonalityDisplay(selectedPersonality);
-            showAnneMessage(`Here I am in full view, darling! Do you like what you see? 💜✨`);
+            showAnneMessage(`Here I am in full view, darling! Click on me to see me up close! 💜✨`);
+            console.log('Enlarged personality display shown');
+        } else {
+            console.error('Enlarged personality center element not found');
         }
     }
 
