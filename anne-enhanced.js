@@ -1127,11 +1127,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                     showAnneMessage(message);
                     
                     // Speak personality change message
-                    if (ttsEngine && ttsAvailable && audioEnabled) {
-                        setTimeout(() => {
-                            ttsEngine.speak(message, personality);
-                        }, 500);
-                    }
+                    safeTTSSpeak(message, personality, 500);
                 }, oldPersonality !== personality ? 3000 : 0);
 
                 createSelectionEffect();
