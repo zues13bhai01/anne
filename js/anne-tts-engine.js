@@ -93,7 +93,7 @@ class AnneTTSEngine {
             if (error.name === 'AbortError') {
                 console.warn('🎤 TTS service connection timeout');
             } else {
-                console.warn('🎤 TTS service not available:', error.message);
+                console.warn('���� TTS service not available:', error.message);
             }
             return false;
         }
@@ -156,9 +156,15 @@ class AnneTTSEngine {
             return false;
         }
 
+        // In cloud environment or when server is unavailable, skip TTS
+        if (this.isCloudEnvironment || !this.serverUrl) {
+            console.log('🌐 TTS skipped (cloud environment)');
+            return false;
+        }
+
         // Clean text for TTS (remove excessive emojis and special chars)
         const cleanText = this.cleanTextForTTS(text);
-        
+
         if (cleanText.length === 0) {
             return false;
         }
