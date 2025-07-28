@@ -811,11 +811,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const successMsg = `My advanced neural networks are online, darling! I'm running on ${model} 💜✨`;
                         showAnneMessage(successMsg);
                         
-                        if (ttsEngine && ttsAvailable) {
-                            setTimeout(() => {
-                                ttsEngine.speak(successMsg, selectedPersonality);
-                            }, 1000);
-                        }
+                        safeTTSSpeak(successMsg, selectedPersonality, 1000);
                         return true;
                     }
                 } catch (modelError) {
