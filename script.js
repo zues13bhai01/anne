@@ -207,13 +207,21 @@ document.addEventListener('DOMContentLoaded', function() {
         introVideo.addEventListener('ended', endIntroAnimation, { once: true });
 
         // Add click handler to unmute video
-        introVideo.addEventListener('click', function() {
+        const unmuteHandler = function() {
             if (introVideo.muted) {
                 introVideo.muted = false;
+                if (videoMuteIndicator) {
+                    videoMuteIndicator.classList.add('hidden');
+                }
                 showAnneMessage("Now you can hear my voice, darling! 💜🔊");
                 console.log('Intro video unmuted by user click');
             }
-        }, { once: true });
+        };
+
+        introVideo.addEventListener('click', unmuteHandler, { once: true });
+        if (videoMuteIndicator) {
+            videoMuteIndicator.addEventListener('click', unmuteHandler, { once: true });
+        }
     }
 
     // Function to play dance video on demand
@@ -1257,7 +1265,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
     const negativeWords = ['sad', 'angry', 'hate', 'terrible', 'bad', 'awful'];
 
     const positiveVideos = [
-        '视频资��/jimeng-2025-07-16-1043-笑���优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
+        '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
         '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的��右摇晃.mp4',
         '视频资源/生成��油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
