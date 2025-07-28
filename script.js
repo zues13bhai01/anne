@@ -174,23 +174,21 @@ document.addEventListener('DOMContentLoaded', function() {
         introVideoContainer.classList.add('active');
         introVideo.currentTime = 0;
 
-        // Unmute the video for intro experience
-        introVideo.muted = false;
+        // Start muted to comply with autoplay policies
+        introVideo.muted = true;
         introVideo.volume = 0.7;
 
-        // Play intro video with audio
+        // Try to play video (muted initially)
         const playPromise = introVideo.play();
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                console.log('Intro video started playing with audio');
+                console.log('Intro video started playing (muted)');
+                // Show message to user about unmuting
+                showAnneMessage("Click anywhere to hear my voice in the intro video, darling! 💜🔊");
             }).catch(error => {
-                console.error('Intro video autoplay failed, trying muted:', error);
-                // Fallback: try muted autoplay
-                introVideo.muted = true;
-                introVideo.play().catch(() => {
-                    console.error('Muted video autoplay also failed');
-                    endIntroAnimation();
-                });
+                console.error('Intro video autoplay failed completely:', error);
+                // Skip video and go straight to main interface
+                endIntroAnimation();
             });
         }
 
@@ -1215,7 +1213,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
     const positiveVideos = [
         '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
         '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的��右摇晃.mp4',
-        '视频资源/生成加油视频.mp4',
+        '视频资源/生成��油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
     ];
     const negativeVideo = '视频资源/负面/jimeng-2025-07-16-9418-双手叉腰，嘴巴一直在嘟囔，表情微微生气.mp4';
@@ -1468,7 +1466,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
 
                 // Only attempt reconnection in local environment
                 if (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1')) {
-                    showAnneMessage("🔧 Initiating neural network diagnostics... Attempting to reconnect to Ollama servers! 🌐");
+                    showAnneMessage("���� Initiating neural network diagnostics... Attempting to reconnect to Ollama servers! 🌐");
 
                     setTimeout(() => {
                         testOllamaConnection().then(success => {
