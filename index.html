@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anne - AI Waifu Assistant</title>
     <link rel="stylesheet" href="style.css">
-    <!-- 引入 Font Awesome 图标库，用于麦克风图标 -->
+    <!-- 引入 Font Awesome 图标库，��于麦克风图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
@@ -205,6 +205,22 @@
             <button class="audio-toggle-btn" id="audio-toggle-btn" title="Toggle Audio">
                 <i class="fas fa-volume-up" id="audio-icon"></i>
             </button>
+        </div>
+
+        <!-- TTS Control Panel -->
+        <div class="tts-control-panel" id="tts-control-panel">
+            <div class="tts-status">
+                <span class="tts-indicator" id="tts-indicator">🎤</span>
+                <span class="tts-status-text" id="tts-status-text">Voice Loading...</span>
+            </div>
+            <div class="tts-controls">
+                <button class="tts-test-btn" id="tts-test-btn" title="Test Voice">Test Voice</button>
+                <div class="volume-control">
+                    <i class="fas fa-volume-down"></i>
+                    <input type="range" id="volume-slider" min="0" max="100" value="80" class="volume-slider">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+            </div>
         </div>
 
     </div>
