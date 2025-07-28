@@ -56,6 +56,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Safe TTS helper function
+    function safeTTSSpeak(text, personality = selectedPersonality, delay = 0) {
+        if (ttsEngine && ttsAvailable && audioEnabled) {
+            if (delay > 0) {
+                setTimeout(() => {
+                    ttsEngine.speak(text, personality).catch(error => {
+                        console.warn('TTS speak failed:', error);
+                    });
+                }, delay);
+            } else {
+                ttsEngine.speak(text, personality).catch(error => {
+                    console.warn('TTS speak failed:', error);
+                });
+            }
+        }
+    }
+
     // Update TTS status in UI
     function updateTTSStatus(status) {
         const ttsPanel = document.getElementById('tts-control-panel');
