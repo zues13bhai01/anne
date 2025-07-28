@@ -8,6 +8,12 @@ class AnneControlPanel {
         this.isVisible = false;
         this.currentTTSEngine = null;
         this.personalityVideos = {
+            intro: {
+                name: "Introduction",
+                videos: [
+                    { name: "Anne's Intro", src: "https://cdn.builder.io/o/assets%2F05795d83a50240879a66a110f8707954%2Fac662e37de5d4c68b294b28c0b12c931?alt=media&token=4b1d6dd7-70f5-44b0-a2a1-97f049aa7282&apiKey=05795d83a50240879a66a110f8707954" }
+                ]
+            },
             zenith: {
                 name: "Welcoming",
                 videos: [
@@ -123,7 +129,7 @@ class AnneControlPanel {
 
                 <!-- Video Controls Section -->
                 <div class="control-section">
-                    <h4>🎬 Video Performances</h4>
+                    <h4>���� Video Performances</h4>
                     <div class="video-controls" id="video-controls">
                         <div class="video-categories">
                             <select id="personality-selector" class="personality-select">
