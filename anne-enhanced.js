@@ -12,20 +12,36 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             // Load TTS engine script dynamically
             await loadScript('js/anne-tts-engine.js');
-            
+
             ttsEngine = new window.AnneTTSEngine();
-            ttsAvailable = await ttsEngine.checkAvailability();
-            
+
+            // Check availability with proper error handling
+            try {
+                ttsAvailable = await ttsEngine.checkAvailability();
+            } catch (availabilityError) {
+                console.warn('TTS availability check failed:', availabilityError);
+                ttsAvailable = false;
+            }
+
             if (ttsAvailable) {
                 console.log('🎤 TTS Engine initialized successfully');
                 showAnneMessage("My voice systems are online, darling! I can speak to you now~ 💜🎵");
+                updateTTSStatus('available');
             } else {
                 console.log('🎤 TTS Engine not available, using text-only mode');
-                showAnneMessage("I'm in text-only mode right now, but I'll still chat with you, love! 💜");
+                if (ttsEngine && ttsEngine.isCloudEnvironment) {
+                    showAnneMessage("I'm in cloud mode, darling! Text chat is ready, but voice features need local setup~ 💜");
+                } else {
+                    showAnneMessage("I'm in text-only mode right now, but I'll still chat with you, love! 💜");
+                }
+                updateTTSStatus('unavailable');
             }
         } catch (error) {
             console.error('TTS initialization failed:', error);
             ttsAvailable = false;
+            ttsEngine = null;
+            updateTTSStatus('error');
+            showAnneMessage("Having some voice system issues, but I'm still here for text chat, darling! 💜");
         }
     }
 
