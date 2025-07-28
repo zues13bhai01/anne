@@ -18,7 +18,7 @@ class AnneControlPanel {
                 name: "Welcoming",
                 videos: [
                     { name: "Elegant Sway", src: "视频资源/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4" },
-                    { name: "Gentle Dance", src: "���频资源/jimeng-2025-07-17-1871-优雅的摇晃身体 微笑.mp4" }
+                    { name: "Gentle Dance", src: "视频资源/jimeng-2025-07-17-1871-优雅的摇晃身体 微笑.mp4" }
                 ]
             },
             pixi: {
@@ -732,10 +732,20 @@ class AnneControlPanel {
                 testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Testing...</span>';
             }
 
-            this.currentTTSEngine.testVoice().then(() => {
+            this.currentTTSEngine.testVoice().then((success) => {
                 if (testBtn) {
                     testBtn.disabled = false;
                     testBtn.innerHTML = '<i class="fas fa-microphone"></i><span>Test Voice</span>';
+                }
+
+                if (success) {
+                    if (window.showAnneMessage) {
+                        window.showAnneMessage("Voice test successful, darling! Did you hear me? 💜🎵");
+                    }
+                } else {
+                    if (window.showAnneMessage) {
+                        window.showAnneMessage("Voice test complete! I used sample tones since speech synthesis needs permission, love! 💜🎶");
+                    }
                 }
             }).catch(error => {
                 console.error('Voice test failed:', error);
@@ -744,9 +754,13 @@ class AnneControlPanel {
                     testBtn.innerHTML = '<i class="fas fa-microphone"></i><span>Test Voice</span>';
                 }
                 if (window.showAnneMessage) {
-                    window.showAnneMessage("Voice test failed, but I'm still here for you, darling! 💜");
+                    window.showAnneMessage("Voice test used fallback tones, darling! I'm still here for you! 💜🎶");
                 }
             });
+        } else {
+            if (window.showAnneMessage) {
+                window.showAnneMessage("Voice system not ready yet, my love. Try again in a moment! 💜");
+            }
         }
     }
 
