@@ -3,6 +3,11 @@
  * Works in both cloud and local environments
  */
 
+// Prevent duplicate class declaration
+if (typeof window.EnhancedAnneTTSEngine !== 'undefined') {
+    console.log('🎤 Enhanced TTS Engine already loaded, using existing instance');
+} else {
+
 class EnhancedAnneTTSEngine {
     constructor() {
         this.isEnabled = true;
@@ -10,46 +15,60 @@ class EnhancedAnneTTSEngine {
         this.isPlaying = false;
         this.currentAudio = null;
         this.volume = 0.8;
+        this.userInteracted = false;
         
         // Server configuration
         this.serverUrl = this.detectServerUrl();
         this.isCloudEnvironment = !this.isLocalEnvironment();
         this.serverAvailable = false;
         
-        // Built-in sample voices for demo/cloud environment
-        this.sampleVoices = {
-            zenith: {
-                url: 'https://cdn.builder.io/o/assets%2Ffa667d61b04349a1b5f967185269a859%2Fzenith-voice-sample.mp3?alt=media',
-                text: "Hello darling, this is my welcoming voice~ 💜"
-            },
-            pixi: {
-                url: 'https://cdn.builder.io/o/assets%2Ffa667d61b04349a1b5f967185269a859%2Fpixi-voice-sample.mp3?alt=media',
-                text: "Hey there! This is my playful voice! 🎉"
-            },
-            nova: {
-                url: 'https://cdn.builder.io/o/assets%2Ffa667d61b04349a1b5f967185269a859%2Fnova-voice-sample.mp3?alt=media',
-                text: "I am speaking with confidence and strength. 🦾"
-            },
-            velvet: {
-                url: 'https://cdn.builder.io/o/assets%2Ffa667d61b04349a1b5f967185269a859%2Fvelvet-voice-sample.mp3?alt=media',
-                text: "Mmm... this is my most seductive tone~ 🔥"
-            },
-            blaze: {
-                url: 'https://cdn.builder.io/o/assets%2Ffa667d61b04349a1b5f967185269a859%2Fblaze-voice-sample.mp3?alt=media',
-                text: "Hi there cutie, feeling flirty today? 😈"
-            },
-            aurora: {
-                url: 'https://cdn.builder.io/o/assets%2Ffa667d61b04349a1b5f967185269a859%2Faurora-voice-sample.mp3?alt=media',
-                text: "Greetings, this is my elegant voice. 👑"
-            }
-        };
-        
         // Fallback to Web Speech API if available
         this.speechSynthesis = window.speechSynthesis;
         this.speechVoices = [];
+        this.speechReady = false;
         
         this.initializeVoices();
+        
+        // Listen for user interaction to enable speech synthesis
+        this.setupUserInteractionHandler();
+        
         console.log(`🎤 Enhanced TTS Engine: ${this.isCloudEnvironment ? 'Cloud' : 'Local'} mode`);
+    }
+
+    setupUserInteractionHandler() {
+        const enableSpeech = () => {
+            this.userInteracted = true;
+            console.log('🎤 User interaction detected, speech synthesis enabled');
+            
+            // Test speech synthesis availability
+            if (this.speechSynthesis) {
+                this.testSpeechSynthesis();
+            }
+        };
+
+        // Listen for various user interactions
+        document.addEventListener('click', enableSpeech, { once: true });
+        document.addEventListener('keydown', enableSpeech, { once: true });
+        document.addEventListener('touchstart', enableSpeech, { once: true });
+    }
+
+    testSpeechSynthesis() {
+        if (!this.speechSynthesis || this.speechReady) return;
+
+        try {
+            const utterance = new SpeechSynthesisUtterance('');
+            utterance.volume = 0; // Silent test
+            utterance.onend = () => {
+                this.speechReady = true;
+                console.log('🎤 Speech synthesis ready');
+            };
+            utterance.onerror = (e) => {
+                console.warn('🎤 Speech synthesis test failed:', e.error);
+            };
+            this.speechSynthesis.speak(utterance);
+        } catch (error) {
+            console.warn('🎤 Speech synthesis test error:', error);
+        }
     }
 
     isLocalEnvironment() {
@@ -147,8 +166,8 @@ class EnhancedAnneTTSEngine {
                 return await this.speakWithServer(cleanText, personality);
             }
             
-            // Fallback to Web Speech API
-            if (this.speechSynthesis && this.speechVoices.length > 0) {
+            // Fallback to Web Speech API (with user interaction check)
+            if (this.speechSynthesis && this.speechVoices.length > 0 && this.userInteracted) {
                 return await this.speakWithWebAPI(cleanText, personality);
             }
             
@@ -157,7 +176,8 @@ class EnhancedAnneTTSEngine {
             
         } catch (error) {
             console.error('🎤 TTS Error:', error);
-            return false;
+            // Fallback to sample voices on any error
+            return await this.speakWithSample(personality);
         }
     }
 
@@ -186,6 +206,12 @@ class EnhancedAnneTTSEngine {
                 return;
             }
 
+            if (!this.userInteracted) {
+                console.warn('🎤 Speech synthesis requires user interaction first');
+                reject(new Error('User interaction required'));
+                return;
+            }
+
             this.stop(); // Stop any current speech
 
             const utterance = new SpeechSynthesisUtterance(text);
@@ -207,18 +233,30 @@ class EnhancedAnneTTSEngine {
 
             utterance.onerror = (event) => {
                 this.isPlaying = false;
-                reject(new Error(`Speech synthesis error: ${event.error}`));
+                console.warn(`🎤 Speech synthesis error: ${event.error}`);
+                
+                // Don't treat permission errors as fatal, fall back to samples
+                if (event.error === 'not-allowed' || event.error === 'permission-denied') {
+                    console.log('🎤 Speech synthesis not allowed, falling back to sample voices');
+                    resolve(false); // Let caller handle fallback
+                } else {
+                    reject(new Error(`Speech synthesis error: ${event.error}`));
+                }
             };
 
             this.isPlaying = true;
-            this.speechSynthesis.speak(utterance);
-            console.log(`🎤 Speaking with Web API: "${text}" (${personality})`);
+            
+            try {
+                this.speechSynthesis.speak(utterance);
+                console.log(`🎤 Speaking with Web API: "${text}" (${personality})`);
+            } catch (error) {
+                this.isPlaying = false;
+                reject(error);
+            }
         });
     }
 
     async speakWithSample(personality) {
-        const sample = this.sampleVoices[personality] || this.sampleVoices.zenith;
-        
         try {
             // For demo purposes, we'll use a beep sound or create a synthetic tone
             return await this.playBeepForPersonality(personality);
@@ -230,41 +268,47 @@ class EnhancedAnneTTSEngine {
 
     async playBeepForPersonality(personality) {
         return new Promise((resolve) => {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            
-            const frequencies = {
-                zenith: 440,  // A4 - welcoming
-                pixi: 659,    // E5 - playful/high
-                nova: 330,    // E4 - confident/lower
-                velvet: 523,  // C5 - seductive
-                blaze: 784,   // G5 - flirty/bright
-                aurora: 392   // G4 - elegant
-            };
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                const frequencies = {
+                    zenith: 440,  // A4 - welcoming
+                    pixi: 659,    // E5 - playful/high
+                    nova: 330,    // E4 - confident/lower
+                    velvet: 523,  // C5 - seductive
+                    blaze: 784,   // G5 - flirty/bright
+                    aurora: 392   // G4 - elegant
+                };
 
-            const frequency = frequencies[personality] || frequencies.zenith;
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
+                const frequency = frequencies[personality] || frequencies.zenith;
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
 
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
 
-            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-            oscillator.type = 'sine';
-            
-            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(this.volume * 0.3, audioContext.currentTime + 0.05);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(this.volume * 0.3, audioContext.currentTime + 0.05);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
 
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.8);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.8);
 
-            oscillator.onended = () => {
+                oscillator.onended = () => {
+                    this.isPlaying = false;
+                    resolve(true);
+                };
+
+                this.isPlaying = true;
+                console.log(`🎤 Playing ${personality} voice tone (${frequency}Hz)`);
+            } catch (error) {
+                console.warn('🎤 Beep generation failed:', error);
                 this.isPlaying = false;
-                resolve(true);
-            };
-
-            this.isPlaying = true;
-            console.log(`🎤 Playing ${personality} voice tone (${frequency}Hz)`);
+                resolve(false);
+            }
         });
     }
 
@@ -374,6 +418,14 @@ class EnhancedAnneTTSEngine {
         };
 
         const message = testMessages[personality] || testMessages.zenith;
+        console.log(`🎤 Testing voice for ${personality}: "${message}"`);
+        
+        // Show user interaction prompt if needed
+        if (!this.userInteracted && this.speechSynthesis) {
+            console.log('🎤 Speech synthesis requires user interaction - using fallback');
+            return await this.speakWithSample(personality);
+        }
+        
         return await this.speak(message, personality);
     }
 
@@ -385,6 +437,8 @@ class EnhancedAnneTTSEngine {
             environment: this.isCloudEnvironment ? 'cloud' : 'local',
             serverAvailable: this.serverAvailable,
             speechAPIAvailable: !!(this.speechSynthesis && this.speechVoices.length > 0),
+            speechReady: this.speechReady,
+            userInteracted: this.userInteracted,
             volume: this.volume
         };
     }
@@ -393,3 +447,5 @@ class EnhancedAnneTTSEngine {
 // Export enhanced TTS engine
 window.EnhancedAnneTTSEngine = EnhancedAnneTTSEngine;
 console.log('🎤 Enhanced Anne TTS Engine loaded successfully');
+
+} // End of duplicate protection block
