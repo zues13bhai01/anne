@@ -537,15 +537,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 800);
     }
 
+    // Function to play intro video
+    function playIntroVideo() {
+        const introVideoUrl = "https://cdn.builder.io/o/assets%2F05795d83a50240879a66a110f8707954%2Fac662e37de5d4c68b294b28c0b12c931?alt=media&token=4b1d6dd7-70f5-44b0-a2a1-97f049aa7282&apiKey=05795d83a50240879a66a110f8707954";
+
+        playVideoModal(introVideoUrl, "Anne's Introduction 🌟");
+
+        const introMsg = "🌟 Hello! I'm Anne, your AI companion. Let me show you who I am! ✨💜";
+        showAnneMessage(introMsg);
+
+        safeTTSSpeak(introMsg, selectedPersonality, 500);
+    }
+
     // Function to play dance video on demand
     function playVideoOnDemand() {
         const danceVideoUrl = "https://cdn.builder.io/o/assets%2F05795d83a50240879a66a110f8707954%2F0d462861ecd8438a905a7cbdef29bbc0?alt=media&token=484c113a-52e9-4dec-a7b1-dbdec293db03&apiKey=05795d83a50240879a66a110f8707954";
-        
+
         playVideoModal(danceVideoUrl, "Anne's Dance Performance 💃");
-        
+
         const danceMsg = "💃 Watch me dance for you, darling! This is my special performance! ✨🎵";
         showAnneMessage(danceMsg);
-        
+
         safeTTSSpeak(danceMsg, selectedPersonality, 500);
     }
 
