@@ -119,17 +119,8 @@ class AnnePremiumFeatures {
     }
 
     displayHeartCounter() {
-        if (!document.getElementById('heart-counter')) {
-            const heartDisplay = document.createElement('div');
-            heartDisplay.id = 'heart-counter';
-            heartDisplay.className = 'heart-counter';
-            heartDisplay.innerHTML = `
-                <div class="heart-icon">💜</div>
-                <div class="heart-count">${this.heartCounter}</div>
-                <div class="heart-label">Hearts</div>
-            `;
-            document.body.appendChild(heartDisplay);
-        }
+        // Heart counter display disabled as per user request
+        console.log('Heart counter display disabled');
     }
 
     createHeartButton() {
