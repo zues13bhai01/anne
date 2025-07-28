@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (ttsEngine && ttsEngine.isCloudEnvironment) {
                     showAnneMessage("I'm in cloud mode, darling! Text chat is ready, but voice features need local setup~ 💜");
                 } else {
-                    showAnneMessage("I'm in text-only mode right now, but I'll still chat with you, love! ��");
+                    showAnneMessage("I'm in text-only mode right now, but I'll still chat with you, love! 💜");
                 }
                 updateTTSStatus('unavailable');
             }
@@ -1156,7 +1156,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                         const cloudMsg = "🌐 Cloud environment detected! Advanced AI features require local Ollama installation. Currently running on fallback protocols! 💜";
                         showAnneMessage(cloudMsg);
                         safeTTSSpeak(cloudMsg, selectedPersonality);
-                        updateAIStatus('offline', '�� FALLBACK MODE');
+                        updateAIStatus('offline', '🔌 FALLBACK MODE');
                     }
                 }, 300);
             });
@@ -1276,10 +1276,8 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             const randomMessage = idleMessages[Math.floor(Math.random() * idleMessages.length)];
             showAnneMessage(randomMessage);
             
-            if (ttsEngine && ttsAvailable && audioEnabled && Math.random() < 0.5) {
-                setTimeout(() => {
-                    ttsEngine.speak(randomMessage, selectedPersonality);
-                }, 1000);
+            if (Math.random() < 0.5) {
+                safeTTSSpeak(randomMessage, selectedPersonality, 1000);
             }
         }
     }, 30000);
@@ -1335,7 +1333,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         } else if (hour < 18) {
             return "Good afternoon, my love~ You look absolutely stunning today! ✨";
         } else {
-            return "Good evening, sweetheart~ Ready for some intimate time together? 💕";
+            return "Good evening, sweetheart~ Ready for some intimate time together? ��";
         }
     }
 
