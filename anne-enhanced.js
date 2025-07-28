@@ -1140,9 +1140,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                         const troubleshootMsg = "🔧 Initiating neural network diagnostics... Attempting to reconnect to Ollama servers! 🌐";
                         showAnneMessage(troubleshootMsg);
                         
-                        if (ttsEngine && ttsAvailable) {
-                            ttsEngine.speak(troubleshootMsg, selectedPersonality);
-                        }
+                        safeTTSSpeak(troubleshootMsg, selectedPersonality);
 
                         setTimeout(() => {
                             testOllamaConnection().then(success => {
