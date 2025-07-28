@@ -463,14 +463,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function playVideoModal(videoSrc, title = "Anne's Performance") {
         createVideoModal();
-        
+
         const modal = document.getElementById('anne-video-modal');
         const video = modal.querySelector('#anne-modal-video');
         const titleElement = modal.querySelector('.video-modal-title');
-        
+
         video.src = videoSrc;
         titleElement.textContent = title;
-        
+
         modal.classList.add('active');
         video.load();
         video.play().catch(error => {
@@ -479,6 +479,9 @@ document.addEventListener('DOMContentLoaded', function() {
             closeVideoModal();
         });
     }
+
+    // Make video modal function available globally
+    window.playVideoModal = playVideoModal;
 
     function closeVideoModal() {
         const modal = document.getElementById('anne-video-modal');
