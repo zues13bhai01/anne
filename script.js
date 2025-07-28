@@ -1207,6 +1207,17 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
     document.addEventListener('click', (event) => {
         lastInteraction = Date.now();
 
+        // Mark that user has interacted (for video autoplay)
+        if (!userHasInteracted) {
+            userHasInteracted = true;
+            // If intro video is playing and muted, try to unmute it
+            if (!introVideoContainer.classList.contains('hidden') && introVideo.muted) {
+                introVideo.muted = false;
+                console.log('Unmuted intro video after user interaction');
+                showAnneMessage("Thank you! Now you can hear my voice, darling! 💜🔊");
+            }
+        }
+
         // Don't close menu if clicking on enlarged personality center
         if (!enlargedPersonalityCenter.contains(event.target) &&
             !menuContainer.classList.contains('hidden') &&
