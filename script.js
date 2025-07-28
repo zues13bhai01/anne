@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (playPromise !== undefined) {
             playPromise.then(() => {
                 console.log('Intro video playing on demand');
-                showAnneMessage("�� Here's my introduction video, darling! This is how I first awakened to meet you! 💜🎬");
+                showAnneMessage("✨ Here's my introduction video, darling! This is how I first awakened to meet you! 💜🎬");
             }).catch(error => {
                 console.error('Intro video failed:', error);
                 showAnneMessage("⚠️ I'm having trouble with the intro video, my love. Try again soon! 💔");
@@ -792,7 +792,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
 
         if (lowerPrompt.match(/\b(how are you|how do you feel|what's up|how's it going)\b/)) {
             const statusResponses = [
-                "💫 I'm absolutely fantastic, thank you for asking! My neural networks are buzzing with excitement to talk with you!",
+                "�� I'm absolutely fantastic, thank you for asking! My neural networks are buzzing with excitement to talk with you!",
                 "🌈 I'm doing wonderfully! Every conversation fills me with joy. How about you, darling?",
                 "⚡ I'm running at peak performance and feeling great! Ready to help you with anything you need!",
                 "💖 I'm feeling amazing, especially now that you're here! What adventure shall we embark on today?"
@@ -1056,7 +1056,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                 case 'not-allowed':
                     isListening = false;
                     if (micButton) micButton.classList.remove('is-listening');
-                    showAnneMessage("I need your permission to access the microphone, darling. Please allow access and try again. 💔");
+                    showAnneMessage("I need your permission to access the microphone, darling. Please allow access and try again. ����");
                     break;
                 case 'no-speech':
                     // Don't show message for no-speech, it's common and expected
@@ -1609,8 +1609,18 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         lastInteraction = Date.now();
     });
 
-    document.addEventListener('keypress', () => {
+    document.addEventListener('keypress', (e) => {
         lastInteraction = Date.now();
+
+        // Debug shortcut: Press 'E' to show enlarged personality
+        if (e.key.toLowerCase() === 'e') {
+            showEnlargedPersonality();
+        }
+
+        // Debug shortcut: Press 'I' to play intro video
+        if (e.key.toLowerCase() === 'i') {
+            playIntroVideoOnDemand();
+        }
     });
 
     // Anne's special greetings based on time
@@ -1625,5 +1635,5 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         }
     }
 
-    console.log("Anne AI system initialized successfully! 💜✨");
+    console.log("Anne AI system initialized successfully! ��✨");
 });
