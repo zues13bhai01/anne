@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const testMessages = {
                         zenith: "Hello darling, this is my welcoming voice~ 💜",
                         pixi: "Hey there! This is my playful voice! 🎉",
-                        nova: "I am speaking with confidence and strength. 🦾",
+                        nova: "I am speaking with confidence and strength. ����",
                         velvet: "Mmm... this is my most seductive tone~ 🔥",
                         blaze: "Hi there cutie, feeling flirty today? 😈",
                         aurora: "Greetings, this is my elegant voice. 👑"
@@ -1068,13 +1068,28 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
     }
 
     // Chat event listeners
-    if (chatSendBtn) chatSendBtn.addEventListener('click', sendMessage);
+    console.log('💬 Initializing chat listeners...');
+    console.log('💬 Chat input found:', !!chatInput);
+    console.log('💬 Chat send button found:', !!chatSendBtn);
+
+    if (chatSendBtn) {
+        chatSendBtn.addEventListener('click', (e) => {
+            console.log('💬 Send button clicked');
+            sendMessage();
+        });
+    } else {
+        console.error('💬 Chat send button not found!');
+    }
+
     if (chatInput) {
         chatInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
+                console.log('💬 Enter key pressed');
                 sendMessage();
             }
         });
+    } else {
+        console.error('💬 Chat input not found!');
     }
 
     // --- Floating Menu Interactions ---
