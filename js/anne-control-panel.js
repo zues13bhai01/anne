@@ -707,25 +707,36 @@ class AnneControlPanel {
     }
 
     testCurrentVoice() {
-        if (this.currentTTSEngine && this.currentTTSEngine.ttsAvailable) {
-            const testMessage = "Hello darling, this is my voice test~ 💜";
-            this.currentTTSEngine.speak(testMessage).catch(console.error);
+        if (this.currentTTSEngine && this.currentTTSEngine.testVoice) {
+            const testBtn = document.getElementById('tts-test');
+            if (testBtn) {
+                testBtn.disabled = true;
+                testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Testing...</span>';
+            }
+
+            this.currentTTSEngine.testVoice().then(() => {
+                if (testBtn) {
+                    testBtn.disabled = false;
+                    testBtn.innerHTML = '<i class="fas fa-microphone"></i><span>Test Voice</span>';
+                }
+            }).catch(error => {
+                console.error('Voice test failed:', error);
+                if (testBtn) {
+                    testBtn.disabled = false;
+                    testBtn.innerHTML = '<i class="fas fa-microphone"></i><span>Test Voice</span>';
+                }
+                if (window.showAnneMessage) {
+                    window.showAnneMessage("Voice test failed, but I'm still here for you, darling! 💜");
+                }
+            });
         }
     }
 
     testPersonalityVoice(personality) {
-        if (this.currentTTSEngine && this.currentTTSEngine.ttsAvailable) {
-            const messages = {
-                zenith: "Hello darling, this is my welcoming voice~ 💜",
-                pixi: "Hey there! This is my playful voice! 🎉",
-                nova: "I am speaking with confidence and strength. 🦾",
-                velvet: "Mmm... this is my most seductive tone~ 🔥",
-                blaze: "Hi there cutie, feeling flirty today? 😈",
-                aurora: "Greetings, this is my elegant voice. 👑"
-            };
-            
-            const message = messages[personality] || messages.zenith;
-            this.currentTTSEngine.speak(message, personality).catch(console.error);
+        if (this.currentTTSEngine && this.currentTTSEngine.testVoice) {
+            this.currentTTSEngine.testVoice(personality).catch(error => {
+                console.error('Personality voice test failed:', error);
+            });
         }
     }
 
