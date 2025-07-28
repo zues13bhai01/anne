@@ -1058,9 +1058,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                 changeAnneImage('pixi', true);
                 const cheerMsg = `Yay! I'm so excited to cheer you up, my love! ✨`;
                 showAnneMessage(cheerMsg);
-                if (ttsEngine && ttsAvailable) {
-                    ttsEngine.speak(cheerMsg, selectedPersonality);
-                }
+                safeTTSSpeak(cheerMsg, selectedPersonality);
             } else if (action.includes('dance')) {
                 changeAnneImage('blaze', true);
                 playVideoOnDemand();
@@ -1162,7 +1160,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                         setTimeout(() => {
                             testOllamaConnection().then(success => {
                                 const resultMsg = success ? 
-                                    "✅ CONNECTION RESTORED! Advanced neural networks are back online, darling! 🚀���" :
+                                    "✅ CONNECTION RESTORED! Advanced neural networks are back online, darling! 🚀💜" :
                                     "❌ Still unable to connect to Ollama. Please ensure it's running on localhost:11434. Running on fallback mode! 🤖";
                                 
                                 showAnneMessage(resultMsg);
