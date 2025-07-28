@@ -1087,7 +1087,7 @@ html, body {
 /* --- Futuristic Content Overlay --- */
 .content-overlay {
     position: relative;
-    height: 4px;
+    height: 100vh;
     width: calc(100% - 280px);
     margin-left: 280px;
     display: flex;
@@ -1095,8 +1095,9 @@ html, body {
     justify-content: space-between;
     align-items: center;
     padding: 25px;
-    z-index: 2;
-    background: rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    background: transparent;
+    pointer-events: none;
 }
 
 /* --- Neural Sync Bar --- */
