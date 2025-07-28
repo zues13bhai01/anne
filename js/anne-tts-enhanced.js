@@ -448,23 +448,30 @@ class EnhancedAnneTTSEngine {
     // Test voice for personality
     async testVoice(personality = this.currentPersonality) {
         const testMessages = {
-            zenith: "Hello darling, this is my welcoming voice~ 💜",
-            pixi: "Hey there! This is my playful voice! 🎉",
-            nova: "I am speaking with confidence and strength. 🦾",
-            velvet: "Mmm... this is my most seductive tone~ 🔥",
-            blaze: "Hi there cutie, feeling flirty today? 😈",
-            aurora: "Greetings, this is my elegant voice. 👑"
+            zenith: "Hello darling, this is my welcoming voice using ElevenLabs",
+            pixi: "Hey there! This is my playful voice!",
+            nova: "I am speaking with confidence and strength.",
+            velvet: "Mmm... this is my most seductive tone",
+            blaze: "Hi there cutie, feeling flirty today with my ElevenLabs voice",
+            aurora: "Greetings, this is my elegant ElevenLabs voice."
         };
 
         const message = testMessages[personality] || testMessages.zenith;
+        const voiceId = this.elevenLabsVoiceIds[personality];
+
         console.log(`🎤 Testing voice for ${personality}: "${message}"`);
-        
+        if (voiceId) {
+            console.log(`🎤 Using ElevenLabs voice ID: ${voiceId}`);
+        } else {
+            console.log(`🎤 Using system voice fallback for ${personality}`);
+        }
+
         // Show user interaction prompt if needed
         if (!this.userInteracted && this.speechSynthesis) {
             console.log('🎤 Speech synthesis requires user interaction - using fallback');
             return await this.speakWithSample(personality);
         }
-        
+
         return await this.speak(message, personality);
     }
 
