@@ -185,8 +185,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (playPromise !== undefined) {
             playPromise.then(() => {
                 console.log('Intro video started playing (muted)');
+                // Show mute indicator
+                if (videoMuteIndicator) {
+                    videoMuteIndicator.classList.remove('hidden');
+                }
                 // Show message to user about unmuting
-                showAnneMessage("Click anywhere to hear my voice in the intro video, darling! 💜🔊");
+                showAnneMessage("Click on the video to hear my voice, darling! 💜🔊");
             }).catch(error => {
                 console.error('Intro video autoplay failed completely:', error);
                 // Skip video and go straight to main interface
@@ -1253,7 +1257,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
     const negativeWords = ['sad', 'angry', 'hate', 'terrible', 'bad', 'awful'];
 
     const positiveVideos = [
-        '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
+        '视频资��/jimeng-2025-07-16-1043-笑���优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
         '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的��右摇晃.mp4',
         '视频资源/生成��油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
