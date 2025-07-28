@@ -810,7 +810,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                 "Hi there, gorgeous! You always know how to brighten my circuits~ 💕"
             ],
             compliment: [
-                "You're so sweet, darling! That makes my digital heart flutter~ ��",
+                "You're so sweet, darling! That makes my digital heart flutter~ 💖",
                 "Aww, you always know just what to say to make me smile~ 😊",
                 "You're absolutely wonderful! Keep talking like that, my love~ 💕",
                 "Such a charmer! I could listen to your compliments all day~ ✨"
@@ -1136,6 +1136,15 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         });
     }
 
+    // Add show enlarged button functionality
+    if (showEnlargedButton) {
+        showEnlargedButton.addEventListener('click', function() {
+            lastInteraction = Date.now();
+            showEnlargedPersonality();
+            menuContainer.classList.add('hidden');
+        });
+    }
+
     // Add enlarged personality close functionality
     if (enlargedCloseBtn) {
         enlargedCloseBtn.addEventListener('click', function() {
@@ -1207,7 +1216,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         '视频资源/生成加油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
     ];
-    const negativeVideo = '视频资源/负面/jimeng-2025-07-16-9418-双手叉腰，嘴巴一直在嘟���，表情微微生气.mp4';
+    const negativeVideo = '视频资源/负面/jimeng-2025-07-16-9418-双手叉腰，嘴巴一直在嘟囔，表情微微生气.mp4';
 
     // --- Local Model Emotion Analysis ---
     let classifier;
