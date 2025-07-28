@@ -177,27 +177,84 @@
             <p id="transcript"></p>
         </div>
 
-        <!-- 情感分析测试区域 -->
-        <div class="sentiment-analysis-container">
-            <input type="text" id="sentiment-input" placeholder="Tell me something, darling...">
-            <button id="analyze-button">ANALYZE EMOTION</button>
-            <p id="sentiment-result"></p>
-        </div>
+        <!-- Enhanced Anne Chat Interface -->
+        <div class="anne-chat-container enhanced" role="region" aria-label="Chat with Anne">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="chat-title">
+                    <i class="fas fa-comments"></i>
+                    <span>Direct Chat with Anne</span>
+                </div>
+                <div class="chat-controls">
+                    <button class="chat-toggle-btn" id="chat-toggle-btn" title="Toggle Chat Window">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
 
-        <!-- 本地语音识别测试区域 -->
-        <div id="local-asr-container" class="local-asr-container">
-            <button id="local-mic-button">START VOICE RECOGNITION</button>
-            <p>Neural Voice Analysis: <span id="local-asr-result"></span></p>
-        </div>
+            <!-- Chat Messages Area -->
+            <div class="chat-content" id="chat-content">
+                <div class="chat-messages" id="chat-messages" role="log" aria-live="polite" aria-label="Chat conversation" tabindex="0">
+                    <div class="chat-message anne welcome-message">
+                        <div class="message-bubble anne">
+                            💜 Hello darling! I'm Anne, your AI companion. You can type to me or use voice chat - just click the microphone! ✨
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Anne Chat Interface -->
-        <div class="anne-chat-container">
-            <div class="chat-messages" id="chat-messages"></div>
-            <div class="chat-input-container">
-                <input type="text" id="chat-input" placeholder="Ask Anne anything, darling..." class="chat-input">
-                <button id="chat-send" class="chat-send-btn">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
+                <!-- Enhanced Input Container -->
+                <div class="chat-input-container" role="group" aria-label="Message input">
+                    <!-- Voice Input Button -->
+                    <button id="voice-input-btn"
+                            class="voice-input-btn"
+                            type="button"
+                            role="button"
+                            aria-label="Start voice recording"
+                            title="Click to speak">
+                        <i class="fas fa-microphone"></i>
+                        <span class="voice-status">Speak</span>
+                    </button>
+
+                    <!-- Text Input -->
+                    <div class="input-wrapper">
+                        <input type="text"
+                               id="chat-input"
+                               placeholder="Type or speak your message..."
+                               class="chat-input"
+                               role="textbox"
+                               aria-label="Type your message to Anne"
+                               aria-describedby="chat-shortcuts-help"
+                               autocomplete="off">
+                        <i class="fas fa-keyboard input-icon" aria-hidden="true"></i>
+                    </div>
+
+                    <!-- Send Button -->
+                    <button id="chat-send"
+                            class="chat-send-btn"
+                            type="button"
+                            role="button"
+                            aria-label="Send message to Anne"
+                            tabindex="0">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <!-- Voice Chat Status -->
+                <div class="voice-chat-status" id="voice-chat-status">
+                    <div class="voice-indicator">
+                        <i class="fas fa-circle-dot"></i>
+                        <span id="voice-status-text">Ready for voice chat</span>
+                    </div>
+                    <div class="voice-controls">
+                        <button class="voice-settings-btn" id="voice-settings-btn" title="Voice Settings">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="chat-shortcuts-help" class="sr-only">
+                Press Enter to send message, Escape to clear, Ctrl+/ to focus input, Alt+S to focus send button, Alt+V to toggle voice input, Alt+M to toggle chat window
             </div>
         </div>
 
@@ -208,9 +265,14 @@
 
         <!-- 悬浮菜单 -->
         <div id="menu-container" class="hidden">
-            <button class="menu-item" data-video="视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的左右摇晃.mp4">Pose</button>
-            <button class="menu-item" data-video="视频资源/生成加油视频.mp4">Cheer</button>
-            <button class="menu-item" data-video="视频资源/生成跳舞视频.mp4">Dance</button>
+            <div class="menu-header">💜 Anne's Performances</div>
+            <button class="menu-item" data-video="视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的左右摇晃.mp4">Victory Pose</button>
+            <button class="menu-item" data-video="视频资源/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4">Elegant Sway</button>
+            <button class="menu-item" data-video="视频资源/jimeng-2025-07-17-1871-优雅的摇晃身体 微笑.mp4">Gentle Dance</button>
+            <button class="menu-item" data-video="视频资源/jimeng-2025-07-17-2665-若有所思，手扶下巴.mp4">Thoughtful</button>
+            <button class="menu-item" data-video="视频资源/生成加油视频.mp4">Cheer Up</button>
+            <button class="menu-item" data-video="视频资源/生成跳舞视频.mp4">Dance Party</button>
+            <button class="menu-item negative" data-video="视频资源/负面/jimeng-2025-07-16-9418-双手叉腰，嘴巴一直在嘟囔，表情微微生气.mp4">Pouting</button>
         </div>
 
         <!-- Audio Control -->
@@ -218,6 +280,22 @@
             <button class="audio-toggle-btn" id="audio-toggle-btn" title="Toggle Audio">
                 <i class="fas fa-volume-up" id="audio-icon"></i>
             </button>
+        </div>
+
+        <!-- TTS Control Panel -->
+        <div class="tts-control-panel" id="tts-control-panel">
+            <div class="tts-status">
+                <span class="tts-indicator" id="tts-indicator">🎤</span>
+                <span class="tts-status-text" id="tts-status-text">Voice Loading...</span>
+            </div>
+            <div class="tts-controls">
+                <button class="tts-test-btn" id="tts-test-btn" title="Test Voice">Test Voice</button>
+                <div class="volume-control">
+                    <i class="fas fa-volume-down"></i>
+                    <input type="range" id="volume-slider" min="0" max="100" value="80" class="volume-slider">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -228,6 +306,10 @@
         <div class="credit-underline"></div>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <script src="js/anne-tts-enhanced.js"></script>
+    <script src="js/anne-voice-chat.js"></script>
+    <script type="module" src="anne-enhanced.js"></script>
+    <script src="js/anne-premium-features.js"></script>
+    <script src="js/anne-control-panel.js"></script>
 </body>
 </html>
