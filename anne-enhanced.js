@@ -1155,9 +1155,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                     } else {
                         const cloudMsg = "🌐 Cloud environment detected! Advanced AI features require local Ollama installation. Currently running on fallback protocols! 💜";
                         showAnneMessage(cloudMsg);
-                        if (ttsEngine && ttsAvailable) {
-                            ttsEngine.speak(cloudMsg, selectedPersonality);
-                        }
+                        safeTTSSpeak(cloudMsg, selectedPersonality);
                         updateAIStatus('offline', '🔌 FALLBACK MODE');
                     }
                 }, 300);
