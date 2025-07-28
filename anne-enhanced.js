@@ -66,6 +66,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Safe TTS helper function
     function safeTTSSpeak(text, personality = selectedPersonality, delay = 0) {
+        console.log(`🎤 SafeTTS: "${text}" (${personality}) - Available: ${ttsAvailable}, Enabled: ${audioEnabled}`);
+
         if (ttsEngine && ttsAvailable && audioEnabled) {
             if (delay > 0) {
                 setTimeout(() => {
@@ -78,6 +80,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.warn('TTS speak failed:', error);
                 });
             }
+        } else {
+            if (!ttsEngine) console.log('🎤 No TTS engine available');
+            if (!ttsAvailable) console.log('🎤 TTS not available');
+            if (!audioEnabled) console.log('🎤 Audio disabled');
         }
     }
 
