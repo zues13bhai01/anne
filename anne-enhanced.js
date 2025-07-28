@@ -1149,9 +1149,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                                     "❌ Still unable to connect to Ollama. Please ensure it's running on localhost:11434. Running on fallback mode! 🤖";
                                 
                                 showAnneMessage(resultMsg);
-                                if (ttsEngine && ttsAvailable) {
-                                    ttsEngine.speak(resultMsg, selectedPersonality);
-                                }
+                                safeTTSSpeak(resultMsg, selectedPersonality);
                             });
                         }, 1000);
                     } else {
