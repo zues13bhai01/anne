@@ -24,16 +24,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (ttsAvailable) {
-                console.log('🎤 TTS Engine initialized successfully');
-                showAnneMessage("My voice systems are online, darling! I can speak to you now~ 💜🎵");
+                console.log('🎤 Enhanced TTS Engine initialized successfully');
+                const stats = ttsEngine.getStats();
+                if (stats.serverAvailable) {
+                    showAnneMessage("My voice systems are online with full TTS server, darling! 💜🎵");
+                } else if (stats.speechAPIAvailable) {
+                    showAnneMessage("My voice systems are ready with browser speech, love! 💜🔊");
+                } else {
+                    showAnneMessage("My voice tones are available for testing, darling! 💜🎶");
+                }
                 updateTTSStatus('available');
             } else {
                 console.log('🎤 TTS Engine not available, using text-only mode');
-                if (ttsEngine && ttsEngine.isCloudEnvironment) {
-                    showAnneMessage("I'm in cloud mode, darling! Text chat is ready, but voice features need local setup~ 💜");
-                } else {
-                    showAnneMessage("I'm in text-only mode right now, but I'll still chat with you, love! 💜");
-                }
+                showAnneMessage("I'm in text-only mode right now, but I'll still chat with you, love! 💜");
                 updateTTSStatus('unavailable');
             }
 
