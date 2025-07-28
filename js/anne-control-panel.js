@@ -562,6 +562,20 @@ class AnneControlPanel {
                 this.testPersonalityVoice(personality);
                 this.updateActivePersonalityVoice(personality);
             });
+
+            // Add keyboard support
+            btn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.testPersonalityVoice(personality);
+                    this.updateActivePersonalityVoice(personality);
+                }
+            });
+
+            // Make focusable
+            btn.setAttribute('tabindex', '0');
+            btn.setAttribute('role', 'button');
+            btn.setAttribute('aria-label', `Test ${personalityNames[personality]} voice`);
             
             grid.appendChild(btn);
         });
