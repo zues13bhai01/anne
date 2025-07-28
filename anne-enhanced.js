@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case 'error':
                 ttsPanel.classList.add('active');
-                if (ttsIndicator) ttsIndicator.textContent = '⚠️';
+                if (ttsIndicator) ttsIndicator.textContent = '⚠��';
                 if (ttsStatusText) ttsStatusText.textContent = 'Voice Error';
                 if (ttsTestBtn) ttsTestBtn.disabled = true;
                 break;
@@ -533,11 +533,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const danceMsg = "💃 Watch me dance for you, darling! This is my special performance! ✨🎵";
         showAnneMessage(danceMsg);
         
-        if (ttsEngine && ttsAvailable) {
-            setTimeout(() => {
-                ttsEngine.speak(danceMsg, selectedPersonality);
-            }, 500);
-        }
+        safeTTSSpeak(danceMsg, selectedPersonality, 500);
     }
 
     // --- Personality Transition System ---
