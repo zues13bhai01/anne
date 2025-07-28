@@ -16,22 +16,32 @@ class EnhancedAnneTTSEngine {
         this.currentAudio = null;
         this.volume = 0.8;
         this.userInteracted = false;
-        
+
+        // ElevenLabs Voice ID configuration
+        this.elevenLabsVoiceIds = {
+            zenith: 'j05EIz3iI3JmBTWC3CsA',
+            blaze: 'WxqqAhUiswIRQNTBz2a5',
+            aurora: '6p0P6gezgvY1v6xbLzmU',
+            pixi: null, // Use default or web speech
+            nova: null, // Use default or web speech
+            velvet: null // Use default or web speech
+        };
+
         // Server configuration
         this.serverUrl = this.detectServerUrl();
         this.isCloudEnvironment = !this.isLocalEnvironment();
         this.serverAvailable = false;
-        
+
         // Fallback to Web Speech API if available
         this.speechSynthesis = window.speechSynthesis;
         this.speechVoices = [];
         this.speechReady = false;
-        
+
         this.initializeVoices();
-        
+
         // Listen for user interaction to enable speech synthesis
         this.setupUserInteractionHandler();
-        
+
         console.log(`🎤 Enhanced TTS Engine: ${this.isCloudEnvironment ? 'Cloud' : 'Local'} mode`);
     }
 
