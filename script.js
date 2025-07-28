@@ -232,6 +232,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 15000);
     }
 
+    // Function to play intro video on demand
+    function playIntroVideoOnDemand() {
+        // Reset to original intro video source
+        introVideo.src = "https://cdn.builder.io/o/assets%2F05795d83a50240879a66a110f8707954%2F723bb05ebc7e4a96aea0aad0e23fb501?alt=media&token=4152e4af-12a2-4ec4-8dc9-5cd324d5381d&apiKey=05795d83a50240879a66a110f8707954";
+
+        introVideoContainer.classList.add('active');
+        introVideo.currentTime = 0;
+        introVideo.muted = false;
+        introVideo.volume = 0.8;
+
+        const playPromise = introVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log('Intro video playing on demand');
+                showAnneMessage("✨ Here's my introduction video, darling! This is how I first awakened to meet you! 💜🎬");
+            }).catch(error => {
+                console.error('Intro video failed:', error);
+                showAnneMessage("⚠️ I'm having trouble with the intro video, my love. Try again soon! 💔");
+            });
+        }
+
+        // Hide after video duration or timeout
+        setTimeout(() => {
+            introVideoContainer.classList.remove('active');
+        }, 15000);
+    }
+
     function endIntroAnimation() {
         introVideoContainer.classList.remove('active');
         setTimeout(() => {
@@ -281,6 +308,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const floatingButton = document.getElementById('floating-button');
     const menuContainer = document.getElementById('menu-container');
     const menuItems = document.querySelectorAll('.menu-item');
+    const introButton = document.getElementById('intro-button');
+    const enlargedPersonalityCenter = document.getElementById('enlarged-personality-center');
+    const enlargedPersonalityImage = document.getElementById('enlarged-personality-image');
+    const enlargedPersonalityName = document.getElementById('enlarged-personality-name');
+    const enlargedPersonalityDesc = document.getElementById('enlarged-personality-desc');
+    const enlargedCloseBtn = document.getElementById('enlarged-close-btn');
 
     // Chat elements
     const chatInput = document.getElementById('chat-input');
@@ -442,6 +475,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update sidebar selected personality display
         updateSidebarPersonalityDisplay(personalityKey);
+
+        // Update enlarged center display
+        updateEnlargedPersonalityDisplay(personalityKey);
     }
 
     function updateSidebarPersonalityDisplay(personalityKey) {
@@ -455,6 +491,44 @@ document.addEventListener('DOMContentLoaded', function() {
         if (selectedImg) selectedImg.src = personality.image;
         if (selectedLabel) selectedLabel.textContent = personality.name;
         if (selectedDesc) selectedDesc.textContent = `${personality.emoji} ${personality.displayName}`;
+    }
+
+    function updateEnlargedPersonalityDisplay(personalityKey) {
+        const personality = PERSONALITIES[personalityKey];
+        if (!personality) return;
+
+        if (enlargedPersonalityImage) enlargedPersonalityImage.src = personality.image;
+        if (enlargedPersonalityName) {
+            enlargedPersonalityName.textContent = personality.name;
+            enlargedPersonalityName.style.color = personality.glow;
+            enlargedPersonalityName.style.textShadow = `0 0 15px ${personality.glow}, 0 0 30px ${personality.glow}`;
+        }
+        if (enlargedPersonalityDesc) {
+            enlargedPersonalityDesc.textContent = `${personality.emoji} ${personality.displayName}`;
+        }
+
+        // Update border color of the enlarged image
+        if (enlargedPersonalityImage) {
+            enlargedPersonalityImage.style.borderColor = personality.glow;
+            enlargedPersonalityImage.style.boxShadow = `
+                0 0 40px ${personality.glow}99,
+                0 0 80px ${personality.glow}66
+            `;
+        }
+    }
+
+    function showEnlargedPersonality() {
+        if (enlargedPersonalityCenter) {
+            enlargedPersonalityCenter.classList.remove('hidden');
+            updateEnlargedPersonalityDisplay(selectedPersonality);
+            showAnneMessage(`Here I am in full view, darling! Do you like what you see? 💜✨`);
+        }
+    }
+
+    function hideEnlargedPersonality() {
+        if (enlargedPersonalityCenter) {
+            enlargedPersonalityCenter.classList.add('hidden');
+        }
     }
 
     function updateMoodRing(mood) {
@@ -1049,13 +1123,39 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         menuContainer.classList.toggle('hidden');
     });
 
+    // Add intro button functionality
+    if (introButton) {
+        introButton.addEventListener('click', function() {
+            lastInteraction = Date.now();
+            playIntroVideoOnDemand();
+            menuContainer.classList.add('hidden');
+        });
+    }
+
+    // Add enlarged personality close functionality
+    if (enlargedCloseBtn) {
+        enlargedCloseBtn.addEventListener('click', function() {
+            hideEnlargedPersonality();
+        });
+    }
+
+    // Show enlarged personality when clicking on main Anne image
+    if (anneMainImg) {
+        anneMainImg.addEventListener('click', function() {
+            lastInteraction = Date.now();
+            showEnlargedPersonality();
+        });
+    }
+
     menuItems.forEach(item => {
         item.addEventListener('click', function() {
             lastInteraction = Date.now();
             const action = this.textContent.toLowerCase();
 
             // Map menu actions to Anne moods
-            if (action.includes('pose')) {
+            if (action.includes('intro')) {
+                playIntroVideoOnDemand();
+            } else if (action.includes('pose')) {
                 changeAnneImage('confident', true);
                 showAnneMessage(`Look at me pose for you, darling~ Do you like what you see? 💜`);
             } else if (action.includes('cheer')) {
@@ -1070,10 +1170,22 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         });
     });
 
-    document.addEventListener('click', () => {
+    document.addEventListener('click', (event) => {
         lastInteraction = Date.now();
-        if (!menuContainer.classList.contains('hidden')) {
+
+        // Don't close menu if clicking on enlarged personality center
+        if (!enlargedPersonalityCenter.contains(event.target) &&
+            !menuContainer.classList.contains('hidden') &&
+            !menuContainer.contains(event.target) &&
+            !floatingButton.contains(event.target)) {
             menuContainer.classList.add('hidden');
+        }
+
+        // Close enlarged personality if clicking outside
+        if (!enlargedPersonalityCenter.contains(event.target) &&
+            !enlargedPersonalityCenter.classList.contains('hidden') &&
+            !anneMainImg.contains(event.target)) {
+            hideEnlargedPersonality();
         }
     });
 
