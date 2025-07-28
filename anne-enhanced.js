@@ -150,11 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const welcomeMsg = "Welcome back, my love! I've missed you so much~ 💜";
                 showAnneMessage(welcomeMsg);
                 // Speak welcome message if TTS is available
-                setTimeout(() => {
-                    if (ttsEngine && ttsAvailable) {
-                        ttsEngine.speak(welcomeMsg, selectedPersonality);
-                    }
-                }, 1000);
+            safeTTSSpeak(welcomeMsg, selectedPersonality, 1000);
             }, 800);
         }, 2000);
     }
