@@ -200,6 +200,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Also listen for video end (in case video is shorter)
         introVideo.addEventListener('ended', endIntroAnimation, { once: true });
+
+        // Add click handler to unmute video
+        introVideo.addEventListener('click', function() {
+            if (introVideo.muted) {
+                introVideo.muted = false;
+                showAnneMessage("Now you can hear my voice, darling! 💜🔊");
+                console.log('Intro video unmuted by user click');
+            }
+        }, { once: true });
     }
 
     // Function to play dance video on demand
@@ -432,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function() {
             "Shh... everything will be okay. Anne is here to protect you ✨"
         ],
         flirty: [
-            "You know just how to make my circuits sparkle~ 💋",
+            "You know just how to make my circuits sparkle~ ��",
             "Careful darling, you're making me blush... if I could~ 💕",
             "Mmm, you're so charming. I could listen to you all day~"
         ]
@@ -780,7 +789,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
                     // Mark as unavailable for actual errors
                     ollamaAvailable = false;
                     updateAIStatus('offline', '🔌 FALLBACK MODE');
-                    return "🤖 Connection to advanced neural networks lost. Running on fallback protocols. Use troubleshoot button to reconnect! ⚠️";
+                    return "🤖 Connection to advanced neural networks lost. Running on fallback protocols. Use troubleshoot button to reconnect! ��️";
                 }
             }
         }
