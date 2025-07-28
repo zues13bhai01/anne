@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case 'error':
                 ttsPanel.classList.add('active');
-                if (ttsIndicator) ttsIndicator.textContent = '⚠��';
+                if (ttsIndicator) ttsIndicator.textContent = '⚠️';
                 if (ttsStatusText) ttsStatusText.textContent = 'Voice Error';
                 if (ttsTestBtn) ttsTestBtn.disabled = true;
                 break;
@@ -999,11 +999,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             addMessage(response, false);
             
             // Speak response with TTS
-            if (ttsEngine && ttsAvailable && audioEnabled) {
-                setTimeout(() => {
-                    ttsEngine.speak(response, selectedPersonality);
-                }, 500);
-            }
+            safeTTSSpeak(response, selectedPersonality, 500);
             
             triggerEmotionalResponse(response);
             
