@@ -250,6 +250,55 @@ document.addEventListener('DOMContentLoaded', function() {
         if (audioToggleBtn) {
             audioToggleBtn.addEventListener('click', toggleAudio);
         }
+
+        // TTS control panel event listeners
+        initializeTTSControls();
+    }
+
+    function initializeTTSControls() {
+        // TTS test button
+        const ttsTestBtn = document.getElementById('tts-test-btn');
+        if (ttsTestBtn) {
+            ttsTestBtn.addEventListener('click', async () => {
+                if (ttsEngine && ttsAvailable) {
+                    const testMessages = {
+                        zenith: "Hello darling, this is my welcoming voice~ 💜",
+                        pixi: "Hey there! This is my playful voice! 🎉",
+                        nova: "I am speaking with confidence and strength. 🦾",
+                        velvet: "Mmm... this is my most seductive tone~ 🔥",
+                        blaze: "Hi there cutie, feeling flirty today? 😈",
+                        aurora: "Greetings, this is my elegant voice. 👑"
+                    };
+
+                    const testMessage = testMessages[selectedPersonality] || testMessages.zenith;
+                    ttsTestBtn.disabled = true;
+                    ttsTestBtn.textContent = 'Testing...';
+
+                    try {
+                        await ttsEngine.speak(testMessage, selectedPersonality);
+                    } catch (error) {
+                        console.error('TTS test failed:', error);
+                        showAnneMessage("Voice test failed, darling. I'll stick to text for now~ 💔");
+                    } finally {
+                        ttsTestBtn.disabled = false;
+                        ttsTestBtn.textContent = 'Test Voice';
+                    }
+                } else {
+                    showAnneMessage("Voice system not available, my love. Text chat is working perfectly though! ���");
+                }
+            });
+        }
+
+        // Volume slider
+        const volumeSlider = document.getElementById('volume-slider');
+        if (volumeSlider) {
+            volumeSlider.addEventListener('input', (e) => {
+                const volume = parseInt(e.target.value) / 100;
+                if (ttsEngine) {
+                    ttsEngine.setVolume(volume);
+                }
+            });
+        }
     }
 
     function toggleAudio() {
