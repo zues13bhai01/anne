@@ -1586,6 +1586,30 @@ html, body {
     box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
 }
 
+.menu-item.negative {
+    border-color: rgba(255, 68, 68, 0.5);
+    color: #ff4444;
+}
+
+.menu-item.negative:hover {
+    background: linear-gradient(45deg, rgba(255, 68, 68, 0.2), rgba(255, 0, 255, 0.1));
+    border-color: #ff4444;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+}
+
+#menu-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+#menu-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+#menu-container::-webkit-scrollbar-thumb {
+    background: #ff00ff;
+    border-radius: 3px;
+}
+
 /* --- Audio Control System --- */
 .audio-control-container {
     position: fixed;
