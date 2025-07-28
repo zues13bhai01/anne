@@ -129,11 +129,12 @@ class AnneControlPanel {
 
                 <!-- Video Controls Section -->
                 <div class="control-section">
-                    <h4>���� Video Performances</h4>
+                    <h4>🎬 Video Performances</h4>
                     <div class="video-controls" id="video-controls">
                         <div class="video-categories">
                             <select id="personality-selector" class="personality-select">
-                                <option value="">All Personalities</option>
+                                <option value="">All Videos</option>
+                                <option value="intro">🌟 Introduction</option>
                                 <option value="zenith">💖 Welcoming</option>
                                 <option value="pixi">🎉 Playful</option>
                                 <option value="nova">🦾 Confident</option>
