@@ -56,6 +56,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Update TTS status in UI
+    function updateTTSStatus(status) {
+        const ttsPanel = document.getElementById('tts-control-panel');
+        const ttsIndicator = document.getElementById('tts-indicator');
+        const ttsStatusText = document.getElementById('tts-status-text');
+        const ttsTestBtn = document.getElementById('tts-test-btn');
+
+        if (!ttsPanel) return;
+
+        switch (status) {
+            case 'available':
+                ttsPanel.classList.add('active');
+                if (ttsIndicator) ttsIndicator.textContent = '🎤';
+                if (ttsStatusText) ttsStatusText.textContent = 'Voice Ready';
+                if (ttsTestBtn) ttsTestBtn.disabled = false;
+                break;
+            case 'unavailable':
+                ttsPanel.classList.add('active');
+                if (ttsIndicator) ttsIndicator.textContent = '💬';
+                if (ttsStatusText) ttsStatusText.textContent = 'Text Only';
+                if (ttsTestBtn) ttsTestBtn.disabled = true;
+                break;
+            case 'error':
+                ttsPanel.classList.add('active');
+                if (ttsIndicator) ttsIndicator.textContent = '⚠️';
+                if (ttsStatusText) ttsStatusText.textContent = 'Voice Error';
+                if (ttsTestBtn) ttsTestBtn.disabled = true;
+                break;
+            default:
+                if (ttsIndicator) ttsIndicator.textContent = '⏳';
+                if (ttsStatusText) ttsStatusText.textContent = 'Loading...';
+                if (ttsTestBtn) ttsTestBtn.disabled = true;
+        }
+    }
+
     // --- Enhanced Loading Screen ---
     const loadingScreen = document.getElementById('loading-screen');
     const introVideoContainer = document.getElementById('intro-video-container');
