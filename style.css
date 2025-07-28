@@ -1543,6 +1543,7 @@ html, body {
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #ff00ff rgba(0, 0, 0, 0.3);
+    display: none;
 }
 
 .menu-header {
