@@ -304,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         nova: "I am speaking with confidence and strength. 🦾",
                         velvet: "Mmm... this is my most seductive tone~ 🔥",
                         blaze: "Hi there cutie, feeling flirty today? 😈",
-                        aurora: "Greetings, this is my elegant voice. ��"
+                        aurora: "Greetings, this is my elegant voice. 👑"
                     };
 
                     const testMessage = testMessages[selectedPersonality] || testMessages.zenith;
@@ -1016,7 +1016,12 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
 
     async function sendMessage() {
         const message = chatInput.value.trim();
-        if (!message) return;
+        console.log(`💬 Sending message: "${message}"`);
+
+        if (!message) {
+            console.log('💬 Empty message, ignoring');
+            return;
+        }
 
         addMessage(message, true);
         chatInput.value = '';
@@ -1028,17 +1033,20 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
         try {
+            console.log('💬 Getting Anne response...');
             const response = await askAnne(message);
-            
+            console.log(`💬 Anne responds: "${response}"`);
+
             typingDiv.remove();
             addMessage(response, false);
-            
+
             // Speak response with TTS
             safeTTSSpeak(response, selectedPersonality, 500);
-            
+
             triggerEmotionalResponse(response);
-            
+
         } catch (error) {
+            console.error('💬 Chat error:', error);
             typingDiv.remove();
             addMessage("I'm experiencing some neural interference, darling... Please try again~ 💔", false);
         }
