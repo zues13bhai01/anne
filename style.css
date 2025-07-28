@@ -1679,6 +1679,87 @@ html, body {
     box-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
 }
 
+/* Voice Chat Status Bar */
+.voice-chat-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px;
+    background: rgba(0, 0, 0, 0.4);
+    border-top: 1px solid rgba(0, 255, 255, 0.2);
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+}
+
+.voice-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #00ffff;
+}
+
+.voice-indicator i {
+    color: #00ff00;
+    animation: status-blink 2s ease-in-out infinite;
+}
+
+.voice-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.voice-settings-btn {
+    background: rgba(255, 0, 255, 0.1);
+    border: 1px solid rgba(255, 0, 255, 0.3);
+    border-radius: 4px;
+    color: #ff00ff;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: all 0.3s ease;
+    font-size: 10px;
+}
+
+.voice-settings-btn:hover {
+    background: rgba(255, 0, 255, 0.2);
+    transform: scale(1.1);
+}
+
+@keyframes status-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Voice Recognition Visual Feedback */
+.voice-input-btn.listening::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent, #ff00ff, transparent);
+    animation: listening-rotate 2s linear infinite;
+    z-index: -1;
+}
+
+@keyframes listening-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Chat Toggle Animation */
+.chat-content.minimized {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.chat-toggle-btn.minimized i {
+    transform: rotate(180deg);
+}
+
 @keyframes message-appear {
     from { 
         opacity: 0; 
