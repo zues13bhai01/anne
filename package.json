@@ -5,7 +5,10 @@
   "main": "script.js",
   "scripts": {
     "start": "npx http-server . -p 3000 -c-1",
-    "dev": "npx http-server . -p 3000 -c-1"
+    "dev": "npx http-server . -p 3000 -c-1",
+    "server": "node server.js",
+    "dev-server": "nodemon server.js",
+    "dev-full": "concurrently \"npm run dev\" \"npm run dev-server\""
   },
   "repository": {
     "type": "git",
