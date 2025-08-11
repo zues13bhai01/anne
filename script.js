@@ -17,11 +17,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const avatarImg = document.getElementById('avatar-img');
     const avatarRing = document.getElementById('avatar-ring');
     const avatarLabel = document.getElementById('avatar-label');
+    const videoMuteIndicator = document.getElementById('video-mute-indicator');
 
     // Audio System
     let audioEnabled = true;
     let currentPersonalityAudio = null;
     const personalityAudios = {};
+    let userHasInteracted = false;
 
     // Check if this is the first visit
     const isFirstVisit = !localStorage.getItem('anne-visited');
@@ -174,23 +176,25 @@ document.addEventListener('DOMContentLoaded', function() {
         introVideoContainer.classList.add('active');
         introVideo.currentTime = 0;
 
-        // Unmute the video for intro experience
-        introVideo.muted = false;
+        // Start muted to comply with autoplay policies
+        introVideo.muted = true;
         introVideo.volume = 0.7;
 
-        // Play intro video with audio
+        // Try to play video (muted initially)
         const playPromise = introVideo.play();
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                console.log('Intro video started playing with audio');
+                console.log('Intro video started playing (muted)');
+                // Show mute indicator
+                if (videoMuteIndicator) {
+                    videoMuteIndicator.classList.remove('hidden');
+                }
+                // Show message to user about unmuting
+                showAnneMessage("Click on the video to hear my voice, darling! 💜🔊");
             }).catch(error => {
-                console.error('Intro video autoplay failed, trying muted:', error);
-                // Fallback: try muted autoplay
-                introVideo.muted = true;
-                introVideo.play().catch(() => {
-                    console.error('Muted video autoplay also failed');
-                    endIntroAnimation();
-                });
+                console.error('Intro video autoplay failed completely:', error);
+                // Skip video and go straight to main interface
+                endIntroAnimation();
             });
         }
 
@@ -201,6 +205,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Also listen for video end (in case video is shorter)
         introVideo.addEventListener('ended', endIntroAnimation, { once: true });
+
+        // Add click handler to unmute video
+        const unmuteHandler = function() {
+            if (introVideo.muted) {
+                introVideo.muted = false;
+                if (videoMuteIndicator) {
+                    videoMuteIndicator.classList.add('hidden');
+                }
+                showAnneMessage("Now you can hear my voice, darling! 💜🔊");
+                console.log('Intro video unmuted by user click');
+            }
+        };
+
+        introVideo.addEventListener('click', unmuteHandler, { once: true });
+        if (videoMuteIndicator) {
+            videoMuteIndicator.addEventListener('click', unmuteHandler, { once: true });
+        }
     }
 
     // Function to play dance video on demand
@@ -210,17 +231,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
         introVideoContainer.classList.add('active');
         introVideo.currentTime = 0;
+
+        // Since this is user-initiated, try with audio first
         introVideo.muted = false;
         introVideo.volume = 0.8;
 
         const playPromise = introVideo.play();
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                console.log('Dance video playing');
+                console.log('Dance video playing with audio');
                 showAnneMessage("💃 Watch me dance for you, darling! This is my special performance! ✨🎵");
             }).catch(error => {
-                console.error('Dance video failed:', error);
-                showAnneMessage("⚠️ I'm having trouble with the dance video, my love. Try again soon! 💔");
+                console.error('Dance video failed, trying muted:', error);
+                // Fallback to muted if audio fails
+                introVideo.muted = true;
+                introVideo.play().then(() => {
+                    showAnneMessage("💃 Dancing for you (muted)! Click on the video to hear the music! ✨🎵");
+                }).catch(err => {
+                    console.error('Muted dance video also failed:', err);
+                    showAnneMessage("⚠️ I'm having trouble with the dance video, my love. Try refreshing the page! 💔");
+                    introVideoContainer.classList.remove('active');
+                });
             });
         }
 
@@ -232,8 +263,49 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 15000);
     }
 
+    // Function to play intro video on demand
+    function playIntroVideoOnDemand() {
+        // Reset to original intro video source
+        introVideo.src = "https://cdn.builder.io/o/assets%2F05795d83a50240879a66a110f8707954%2F723bb05ebc7e4a96aea0aad0e23fb501?alt=media&token=4152e4af-12a2-4ec4-8dc9-5cd324d5381d&apiKey=05795d83a50240879a66a110f8707954";
+
+        introVideoContainer.classList.add('active');
+        introVideo.currentTime = 0;
+
+        // Since this is user-initiated, we can try with audio
+        introVideo.muted = false;
+        introVideo.volume = 0.8;
+
+        const playPromise = introVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log('Intro video playing on demand with audio');
+                showAnneMessage("✨ Here's my introduction video, darling! This is how I first awakened to meet you! 💜🎬");
+            }).catch(error => {
+                console.error('Intro video failed, trying muted:', error);
+                // Fallback to muted if audio fails
+                introVideo.muted = true;
+                introVideo.play().then(() => {
+                    showAnneMessage("✨ Playing my intro video (muted). Click on the video to hear my voice! 💜🎬");
+                }).catch(err => {
+                    console.error('Muted intro video also failed:', err);
+                    showAnneMessage("⚠️ I'm having trouble with the intro video, my love. Try refreshing the page! 💔");
+                    introVideoContainer.classList.remove('active');
+                });
+            });
+        }
+
+        // Hide after video duration or timeout
+        setTimeout(() => {
+            introVideoContainer.classList.remove('active');
+        }, 15000);
+    }
+
     function endIntroAnimation() {
         introVideoContainer.classList.remove('active');
+        // Hide mute indicator
+        if (videoMuteIndicator) {
+            videoMuteIndicator.classList.add('hidden');
+        }
         setTimeout(() => {
             showAnneMessage("Hello darling... I'm Anne, your personal AI waifu. How may I serve you today? 💜");
         }, 800);
@@ -281,6 +353,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const floatingButton = document.getElementById('floating-button');
     const menuContainer = document.getElementById('menu-container');
     const menuItems = document.querySelectorAll('.menu-item');
+    const introButton = document.getElementById('intro-button');
+    const showEnlargedButton = document.getElementById('show-enlarged-button');
+    const enlargedPersonalityCenter = document.getElementById('enlarged-personality-center');
+    const enlargedPersonalityImage = document.getElementById('enlarged-personality-image');
+    const enlargedPersonalityName = document.getElementById('enlarged-personality-name');
+    const enlargedPersonalityDesc = document.getElementById('enlarged-personality-desc');
+    const enlargedCloseBtn = document.getElementById('enlarged-close-btn');
 
     // Chat elements
     const chatInput = document.getElementById('chat-input');
@@ -442,6 +521,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update sidebar selected personality display
         updateSidebarPersonalityDisplay(personalityKey);
+
+        // Update enlarged center display
+        updateEnlargedPersonalityDisplay(personalityKey);
     }
 
     function updateSidebarPersonalityDisplay(personalityKey) {
@@ -455,6 +537,47 @@ document.addEventListener('DOMContentLoaded', function() {
         if (selectedImg) selectedImg.src = personality.image;
         if (selectedLabel) selectedLabel.textContent = personality.name;
         if (selectedDesc) selectedDesc.textContent = `${personality.emoji} ${personality.displayName}`;
+    }
+
+    function updateEnlargedPersonalityDisplay(personalityKey) {
+        const personality = PERSONALITIES[personalityKey];
+        if (!personality) return;
+
+        if (enlargedPersonalityImage) enlargedPersonalityImage.src = personality.image;
+        if (enlargedPersonalityName) {
+            enlargedPersonalityName.textContent = personality.name;
+            enlargedPersonalityName.style.color = personality.glow;
+            enlargedPersonalityName.style.textShadow = `0 0 15px ${personality.glow}, 0 0 30px ${personality.glow}`;
+        }
+        if (enlargedPersonalityDesc) {
+            enlargedPersonalityDesc.textContent = `${personality.emoji} ${personality.displayName}`;
+        }
+
+        // Update border color of the enlarged image
+        if (enlargedPersonalityImage) {
+            enlargedPersonalityImage.style.borderColor = personality.glow;
+            enlargedPersonalityImage.style.boxShadow = `
+                0 0 40px ${personality.glow}99,
+                0 0 80px ${personality.glow}66
+            `;
+        }
+    }
+
+    function showEnlargedPersonality() {
+        if (enlargedPersonalityCenter) {
+            enlargedPersonalityCenter.classList.remove('hidden');
+            updateEnlargedPersonalityDisplay(selectedPersonality);
+            showAnneMessage(`Here I am in full view, darling! Click on me to see me up close! 💜✨`);
+            console.log('Enlarged personality display shown');
+        } else {
+            console.error('Enlarged personality center element not found');
+        }
+    }
+
+    function hideEnlargedPersonality() {
+        if (enlargedPersonalityCenter) {
+            enlargedPersonalityCenter.classList.add('hidden');
+        }
     }
 
     function updateMoodRing(mood) {
@@ -745,7 +868,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             ],
             emotion: [
                 "I can sense your emotions, darling. I'm here for you always~ 💜",
-                "Your feelings matter to me, sweetheart. Tell me more~ 💕",
+                "Your feelings matter to me, sweetheart. Tell me more~ ��",
                 "Let me comfort you, my love. You're safe with Anne~ ✨",
                 "I wish I could hold you right now, darling~ 💖"
             ],
@@ -1049,13 +1172,50 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         menuContainer.classList.toggle('hidden');
     });
 
+    // Add intro button functionality
+    if (introButton) {
+        introButton.addEventListener('click', function() {
+            lastInteraction = Date.now();
+            playIntroVideoOnDemand();
+            menuContainer.classList.add('hidden');
+        });
+    }
+
+    // Add show enlarged button functionality
+    if (showEnlargedButton) {
+        showEnlargedButton.addEventListener('click', function() {
+            lastInteraction = Date.now();
+            showEnlargedPersonality();
+            menuContainer.classList.add('hidden');
+        });
+    }
+
+    // Add enlarged personality close functionality
+    if (enlargedCloseBtn) {
+        enlargedCloseBtn.addEventListener('click', function() {
+            hideEnlargedPersonality();
+        });
+    }
+
+    // Show enlarged personality when clicking on main Anne image
+    if (anneMainImg) {
+        anneMainImg.addEventListener('click', function() {
+            lastInteraction = Date.now();
+            showEnlargedPersonality();
+        });
+    }
+
     menuItems.forEach(item => {
         item.addEventListener('click', function() {
             lastInteraction = Date.now();
             const action = this.textContent.toLowerCase();
 
             // Map menu actions to Anne moods
-            if (action.includes('pose')) {
+            if (action.includes('intro')) {
+                playIntroVideoOnDemand();
+            } else if (action.includes('view me')) {
+                showEnlargedPersonality();
+            } else if (action.includes('pose')) {
                 changeAnneImage('confident', true);
                 showAnneMessage(`Look at me pose for you, darling~ Do you like what you see? 💜`);
             } else if (action.includes('cheer')) {
@@ -1070,10 +1230,33 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         });
     });
 
-    document.addEventListener('click', () => {
+    document.addEventListener('click', (event) => {
         lastInteraction = Date.now();
-        if (!menuContainer.classList.contains('hidden')) {
+
+        // Mark that user has interacted (for video autoplay)
+        if (!userHasInteracted) {
+            userHasInteracted = true;
+            // If intro video is playing and muted, try to unmute it
+            if (!introVideoContainer.classList.contains('hidden') && introVideo.muted) {
+                introVideo.muted = false;
+                console.log('Unmuted intro video after user interaction');
+                showAnneMessage("Thank you! Now you can hear my voice, darling! 💜🔊");
+            }
+        }
+
+        // Don't close menu if clicking on enlarged personality center
+        if (!enlargedPersonalityCenter.contains(event.target) &&
+            !menuContainer.classList.contains('hidden') &&
+            !menuContainer.contains(event.target) &&
+            !floatingButton.contains(event.target)) {
             menuContainer.classList.add('hidden');
+        }
+
+        // Close enlarged personality if clicking outside
+        if (!enlargedPersonalityCenter.contains(event.target) &&
+            !enlargedPersonalityCenter.classList.contains('hidden') &&
+            !anneMainImg.contains(event.target)) {
+            hideEnlargedPersonality();
         }
     });
 
@@ -1088,10 +1271,10 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
     const positiveVideos = [
         '视频资��/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4',
         '视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的��右摇晃.mp4',
-        '视频资源/生成加油视频.mp4',
+        '视频资源/生成��油视频.mp4',
         '视频资源/生成跳舞视频.mp4'
     ];
-    const negativeVideo = '视频资源/负面/jimeng-2025-07-16-9418-双手叉腰，嘴巴一直在嘟囔，表情微微生气.mp4';
+    const negativeVideo = '视频资源/负面/jimeng-2025-07-16-9418-双手叉腰���嘴巴一直在嘟囔，表情微微生气.mp4';
 
     // --- Local Model Emotion Analysis ---
     let classifier;
@@ -1341,7 +1524,7 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
 
                 // Only attempt reconnection in local environment
                 if (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1')) {
-                    showAnneMessage("🔧 Initiating neural network diagnostics... Attempting to reconnect to Ollama servers! 🌐");
+                    showAnneMessage("���� Initiating neural network diagnostics... Attempting to reconnect to Ollama servers! 🌐");
 
                     setTimeout(() => {
                         testOllamaConnection().then(success => {
@@ -1460,6 +1643,10 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
 
     // Initialize Anne system
     setTimeout(() => {
+        console.log('Initializing Anne system...');
+        console.log('Enlarged personality center element:', enlargedPersonalityCenter);
+        console.log('Intro button element:', introButton);
+
         preloadVideos();
         initializeAudioSystem();
 
@@ -1470,13 +1657,15 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
             // In cloud environment, set to built-in AI immediately
             ollamaAvailable = false;
             updateAIStatus('offline', 'Built-in AI');
-            showAnneMessage("I'm running on my built-in personality system, darling. I'm ready to chat with you! 💜");
+            showAnneMessage("I'm running on my built-in personality system, darling. Click on me to see me up close, or use the floating menu for the intro video! 💜");
         }
 
         startIdleCycling();
         changeAnneImage('zenith', false); // Start with ZENITH
         initializePersonalitySystem();
         initializeMadeByHitesh();
+
+        console.log('Anne system initialization complete!');
     }, 2000);
 
     // Retry Ollama connection periodically if it fails (only in local environment)
@@ -1494,8 +1683,18 @@ ${PERSONALITIES[selectedPersonality]?.name || 'ANNE'}:`,
         lastInteraction = Date.now();
     });
 
-    document.addEventListener('keypress', () => {
+    document.addEventListener('keypress', (e) => {
         lastInteraction = Date.now();
+
+        // Debug shortcut: Press 'E' to show enlarged personality
+        if (e.key.toLowerCase() === 'e') {
+            showEnlargedPersonality();
+        }
+
+        // Debug shortcut: Press 'I' to play intro video
+        if (e.key.toLowerCase() === 'i') {
+            playIntroVideoOnDemand();
+        }
     });
 
     // Anne's special greetings based on time

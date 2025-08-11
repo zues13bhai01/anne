@@ -40,6 +40,10 @@
         <div class="intro-video-overlay"></div>
         <div class="intro-title">ANNE AI</div>
         <div class="intro-subtitle">Advanced Neural Network Entity</div>
+        <div class="video-mute-indicator" id="video-mute-indicator">
+            <i class="fas fa-volume-mute"></i>
+            <span>Click to hear my voice!</span>
+        </div>
     </div>
 
     <!-- Personality Transition Video -->
@@ -265,14 +269,7 @@
 
         <!-- 悬浮菜单 -->
         <div id="menu-container" class="hidden">
-            <div class="menu-header">💜 Anne's Performances</div>
-            <button class="menu-item" data-video="视频资源/jimeng-2025-07-16-4437-比耶，然后微笑着优雅的左右摇晃.mp4">Victory Pose</button>
-            <button class="menu-item" data-video="视频资源/jimeng-2025-07-16-1043-笑着优雅的左右摇晃，过一会儿手扶着下巴，保持微笑.mp4">Elegant Sway</button>
-            <button class="menu-item" data-video="视频资源/jimeng-2025-07-17-1871-优雅的摇晃身体 微笑.mp4">Gentle Dance</button>
-            <button class="menu-item" data-video="视频资源/jimeng-2025-07-17-2665-若有所思，手扶下巴.mp4">Thoughtful</button>
-            <button class="menu-item" data-video="视频资源/生成加油视频.mp4">Cheer Up</button>
-            <button class="menu-item" data-video="视频资源/生成跳舞视频.mp4">Dance Party</button>
-            <button class="menu-item negative" data-video="视频资源/负面/jimeng-2025-07-16-9418-双手叉腰，嘴巴一直在嘟囔，表情微微生气.mp4">Pouting</button>
+
         </div>
 
         <!-- Audio Control -->
@@ -298,6 +295,16 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- Enlarged Personality Center Display -->
+    <div class="enlarged-personality-center hidden" id="enlarged-personality-center">
+        <button class="enlarged-personality-close" id="enlarged-close-btn">&times;</button>
+        <img src="https://cdn.builder.io/api/v1/image/assets%2Ffa667d61b04349a1b5f967185269a859%2Feeaae84d6cc0451b830ee3d14f416a42?format=webp&width=800" alt="Enlarged Personality" class="enlarged-personality-image" id="enlarged-personality-image">
+        <div class="enlarged-personality-info">
+            <div class="enlarged-personality-name" id="enlarged-personality-name">ZENITH</div>
+            <div class="enlarged-personality-desc" id="enlarged-personality-desc">💖 Welcoming</div>
+        </div>
     </div>
 
     <!-- Made by Hitesh Label - Always Visible -->
